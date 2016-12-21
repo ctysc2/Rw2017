@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/bac_color_EFEFF4">
+    <include layout="@layout/common_toolbar"
+        />
+    <!-- 轮播图 -->
+    <RelativeLayout
+        android:id="@+id/cur"
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:layout_below="@+id/toolbar">
+
+        <com.home.rw.widget.AutoScrollViewPager
+            android:id="@+id/AutoScrollViewPager"
+            android:layout_width="match_parent"
+            android:focusable="true"
+            android:layout_height="175dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/viewPagerIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="7dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/midTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/cur"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="15dp"
+        android:textSize="17sp"
+        android:text="@string/intelligentMobileWork"
+        android:textColor="@color/text_color_333333"
+        />
+    <View
+        android:id="@+id/sperate"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/midTitle"
+        android:background="@color/text_color_E4E4E4"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sperate">
+        <LinearLayout
+            android:id="@+id/ll_signin"
+            android:layout_width="70dp"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/icon_signin"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/text_color_333333"
+                android:text="@string/signLabel"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_dairy"
+            android:layout_width="70dp"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/icon_dairy"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/text_color_333333"
+                android:text="@string/dairyLabel"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_approve"
+            android:layout_width="70dp"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/icon_approve"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/text_color_333333"
+                android:text="@string/approveLabel"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_check"
+            android:layout_width="70dp"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/ll_signin"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/icon_check"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/text_color_333333"
+                android:text="@string/cardLabel"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_roll"
+            android:layout_width="70dp"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/ll_signin"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/icon_roll"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/text_color_333333"
+                android:text="@string/rollLabel"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_height="30dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

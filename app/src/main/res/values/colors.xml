@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#254FFA</color>
+    <color name="colorPrimaryDark">#254FFA</color>
+    <color name="colorAccent">#7AA3DF</color>
+    <color name="widowColor">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="black_0.1">#19000000</color>
+    <color name="black_0.5">#80000000</color>
+    <color name="black_0.7">#B2000000</color>
+    <color name="black_0.8">#CC000000</color>
+    <!--Tabbar默认-->
+    <color name="text_color_7B858E">#7B858E</color>
+    <!--Tabbar选中-->
+    <color name="text_color_176BF9">#176BF9</color>
+    <!--Tabbar分割线-->
+    <color name="text_color_DEDEDE">#DEDEDE</color>
+    <!--Tabbar背景色-->
+    <color name="text_color_F7F7F7">#F7F7F7</color>
+    <!--头像边框颜色-->
+    <color name="text_color_A2A8EB">#A2A8EB</color>
+    <!--个人中心关注背景色-->
+    <color name="bac_color_263276">#263276</color>
+    <!--个人中心中间栏背景色-->
+    <color name="bac_color_3B56B4">#3B56B4</color>
+    <!--个人中心广告标题色-->
+    <color name="bac_color_EFEFF4">#EFEFF4</color>
+    <!--个人中心置业版中文-->
+    <color name="text_color_333333">#333333</color>
+    <!--个人中心置业版英文-->
+    <color name="text_color_999999">#999999</color>
+    <!--个人中心小分割线-->
+    <color name="text_color_E4E4E4">#E4E4E4</color>
+    <!--个人中心选择头像pop字体-->
+    <color name="text_color_2635EC">#2635EC</color>
+    <!--轮播图下方滚动条颜色-->
+    <color name="text_color_2851ff">#2851ff</color>
+
+    <!--审批界面字体-->
+    <color name="text_color_666666">#666666</color>
+
+    <!--segment背景色-->
+    <color name="text_color_3B41FF">#3B41FF</color>
+
+    <!--评审cell字体颜色-->
+    <color name="text_color_9B9B9B">#9B9B9B</color>
+
+</resources>

@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Rw</string>
+    <!--登录-->
+    <string name="login">登录</string>
+    <string name="loging">登录中...</string>
+
+    <!--TabBar-->
+    <string name="message">消息</string>
+    <string name="work">办公</string>
+    <string name="increment">增值服务</string>
+    <string name="social">社区</string>
+    <string name="mine">我的</string>
+    <!--消息-->
+    <string name="messageTitle">商务中心</string>
+    <string name="more">更多</string>
+    <string name="addPhone">添加电话</string>
+
+    <!--办公-->
+    <string name="compWork">企业办公</string>
+    <string name="intelligentMobileWork">智能移动办公</string>
+    <string name="signLabel">签到</string>
+    <string name="dairyLabel">日志</string>
+    <string name="approveLabel">审批</string>
+    <string name="cardLabel">考勤打卡</string>
+    <string name="rollLabel">若一下</string>
+
+    <string name="approvebyme">待我审批</string>
+    <string name="fromme">我发起的</string>
+    <string name="getout">外出</string>
+    <string name="askforleave">请假</string>
+    <string name="extrawork">加班</string>
+    <string name="wiped">报销</string>
+
+    <string name="daiwoshenpi">待我审批的</string>
+    <string name="woyishenpi">我已审批的</string>
+    <string name="passed">已通过</string>
+    <string name="approving">审核中</string>
+    <string name="unpassed">未通过</string>
+
+    <!--增值服务-->
+    <string name="incrementService">增值服务</string>
+
+    <!--企业交流-->
+    <string name="compSocial">企业交流</string>
+    <string name="publish">发布</string>
+
+    <!--我的-->
+    <string name="order">订单</string>
+    <string name="facus">关注</string>
+    <string name="company">公司</string>
+    <string name="companyBoard">置业公告板</string>
+    <string name="companyBoardEn">Real estate board</string>
+    <string name="gender">性别</string>
+    <string name="phoneNum">电话</string>
+    <string name="chagePsw">修改密码</string>
+    <string name="contactUs">联系我们</string>
+    <string name="fromAlbum">从相册中选择</string>
+    <string name="fromCamera">拍照</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
