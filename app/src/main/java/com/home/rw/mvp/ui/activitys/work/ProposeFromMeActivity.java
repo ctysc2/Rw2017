@@ -23,6 +23,8 @@ import com.home.rw.utils.DrawableUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -37,9 +39,12 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
     private static final int RIGHT = 2;
 
     private FragmentAdapter mAdapter;
-    private Fragment passedFragment = new ProposeFromMePassedFragment();
-    private Fragment unPassedFragment = new ProposeFromMeUnPassedFragment();
-    private Fragment approvingFragment = new ProposeFromMeApprovingFragment();
+    @Inject
+    ProposeFromMePassedFragment passedFragment;
+    @Inject
+    ProposeFromMeUnPassedFragment unPassedFragment;
+    @Inject
+    ProposeFromMeApprovingFragment approvingFragment;
 
     private List<Fragment> mFragmentList = new ArrayList<>();
     @BindView(R.id.back)
@@ -66,7 +71,8 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
     @OnClick({
             R.id.tv_left,
             R.id.tv_right,
-            R.id.tv_mid
+            R.id.tv_mid,
+            R.id.back
     })
     public void OnClick(View v){
         switch (v.getId()){
@@ -81,6 +87,9 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
             case R.id.tv_mid:
                 setSegmentSelect(MIDDLE);
                 mViewPager.setCurrentItem(MIDDLE);
+                break;
+            case R.id.back:
+                finish();
             default:
                 break;
 
@@ -95,7 +104,7 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
 

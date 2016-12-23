@@ -31,16 +31,18 @@ public class ApprovementActivity extends BaseActivity {
             R.id.ll_extrawork,
             R.id.ll_wiped})
     public void onClick(View v){
-
+        Intent intent;
         switch (v.getId()){
 
             case R.id.back:
                 finish();
                 break;
             case R.id.ll_byme:
+                intent = new Intent(this,ApprovedByMeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_fromme:
-                Intent intent = new Intent(this,ProposeFromMeActivity.class);
+                intent = new Intent(this,ProposeFromMeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ll_getout:
@@ -48,6 +50,9 @@ public class ApprovementActivity extends BaseActivity {
             case R.id.ll_leave:
                 break;
             case R.id.ll_extrawork:
+                intent = new Intent(this,ExtraWorkActivity.class);
+                intent.putExtra("entryType","edit");
+                startActivity(intent);
                 break;
             case R.id.ll_wiped:
                 break;

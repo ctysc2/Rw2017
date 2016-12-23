@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:background="@color/widowColor"
+    android:background="@drawable/selector_layoutbac"
     android:layout_height="60dp">
 <com.facebook.drawee.view.SimpleDraweeView
     android:id="@+id/iv_header"
@@ -44,6 +44,7 @@
         android:layout_alignBaseline="@+id/tv_name"
         android:textColor="@color/widowColor"
         android:layout_marginLeft="5dp"
+        android:gravity="center"
         android:layout_toRightOf="@+id/tv_name"
         />
 
@@ -59,12 +60,12 @@
 
      <TextView
          android:id="@+id/tv_result"
-         android:layout_width="50dp"
-         android:layout_height="30dp"
+         android:layout_width="46dp"
+         android:layout_height="26dp"
          android:layout_toLeftOf="@+id/iv_right"
          android:gravity="center"
          android:layout_marginRight="15dp"
-         android:textSize="18sp"
+         android:textSize="16sp"
          android:text="同意"
          android:textColor="@color/black"
          android:layout_centerVertical="true"/>

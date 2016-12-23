@@ -12,12 +12,20 @@ public class ApprovementListEntity extends BaseEntity {
 
     public ArrayList<DataEntity> data;
 
+    public ArrayList<DataEntity> getData() {
+        return data;
+    }
+
+    public void setData(ArrayList<DataEntity> data) {
+        this.data = data;
+    }
+
     public static class DataEntity {
         public String headUrl;
         public String name;
         public String date;
-        public int appStatus;
-        private int appType;
+        public int appStatus = -1;
+        private int appType = -1;
 
         public void setAppType(int appType) {
             this.appType = appType;

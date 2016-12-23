@@ -34,9 +34,24 @@
     <string name="daiwoshenpi">待我审批的</string>
     <string name="woyishenpi">我已审批的</string>
     <string name="passed">已通过</string>
+    <string name="pass">通过</string>
     <string name="approving">审核中</string>
     <string name="unpassed">未通过</string>
-
+    <string name="agree">同意</string>
+    <string name="disagree">拒绝</string>
+    <string name="commit">提交</string>
+    <string name="approver">审批人</string>
+    <string name="picture">图片</string>
+    <string name="reason">加班事由</string>
+    <string name="reasonHint">请输入加班理由(必填)</string>
+    <string name="durationHint">请输入加班时间(小时)</string>
+    <string name="selectHint">请选择(必填)</string>
+    <string name="startTime">开始时间</string>
+    <string name="endTime">结束时间</string>
+    <string name="extraworkType">加班类型</string>
+    <string name="extraworkDuration">加班时间</string>
+    <string name="hours">小时</string>
+    <string name="day">天</string>
     <!--增值服务-->
     <string name="incrementService">增值服务</string>
 

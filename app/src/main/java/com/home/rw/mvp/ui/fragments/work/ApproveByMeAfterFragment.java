@@ -2,14 +2,10 @@ package com.home.rw.mvp.ui.fragments.work;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.home.rw.R;
@@ -26,43 +22,40 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Created by cty on 2016/12/20.
+ * Created by cty on 2016/12/21.
  */
 
-public class ProposeFromMePassedFragment extends BaseFragment {
+public class ApproveByMeAfterFragment extends BaseFragment {
+    private ApprovementListAdapter mAdapter;
+
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
 
-    private ApprovementListAdapter mAdapter;
+    @Inject
+    Activity mActivity;
 
-    private ArrayList<ApprovementListEntity.DataEntity> dataSource  = new ArrayList<>();
+    @Inject
+    public ApproveByMeAfterFragment(){
+
+    }
 
     @Override
     public void initInjector() {
         mFragmentComponent.inject(this);
     }
 
+
+
+    private ArrayList<ApprovementListEntity.DataEntity> dataSource  = new ArrayList<>();
     @Override
     public void initViews(View view) {
         initRecycleView();
     }
 
-    @Inject
-    Activity mActivity;
 
-    @Inject
-    public ProposeFromMePassedFragment(){
-
-    }
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_proposepassed;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return R.layout.fragment_approvedbymeafter;
     }
 
     private void initRecycleView(){
@@ -74,26 +67,26 @@ public class ProposeFromMePassedFragment extends BaseFragment {
         ApprovementListEntity.DataEntity child1 = new ApprovementListEntity.DataEntity();
         child1.setName("cyan");
         child1.setAppType(2);
-        //child1.setAppStatus(0);
+        child1.setAppStatus(0);
 
 
         //2
         ApprovementListEntity.DataEntity child2 = new ApprovementListEntity.DataEntity();
         child2.setName("macsed");
         child2.setAppType(1);
-        //child2.setAppStatus(1);
+        child2.setAppStatus(1);
 
         //3
         ApprovementListEntity.DataEntity child3 = new ApprovementListEntity.DataEntity();
         child3.setName("xigua");
         child3.setAppType(3);
-        //child3.setAppStatus(1);
+        child3.setAppStatus(1);
 
         //4
         ApprovementListEntity.DataEntity child4 = new ApprovementListEntity.DataEntity();
         child4.setName("leelee");
         child4.setAppType(0);
-        //child4.setAppStatus(0);
+        child4.setAppStatus(0);
 
 
         list.add(child1);
@@ -106,6 +99,7 @@ public class ProposeFromMePassedFragment extends BaseFragment {
 
 
         mAdapter = new ApprovementListAdapter(dataSource,mActivity);
+
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

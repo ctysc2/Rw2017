@@ -9,6 +9,9 @@ import com.home.rw.di.scope.ContextLife;
 import com.home.rw.di.scope.PerActivity;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
+import com.home.rw.mvp.ui.activitys.work.ApprovedByMeActivity;
+import com.home.rw.mvp.ui.activitys.work.ExtraWorkActivity;
+import com.home.rw.mvp.ui.activitys.work.ProposeFromMeActivity;
 
 import dagger.Component;
 
@@ -29,4 +32,10 @@ public interface ActivityComponent {
 
     void inject(LoginActivity loginActivity);
     void inject(MainActivity mainActivity);
+    void inject(ApprovedByMeActivity bymeActivity);
+    void inject(ProposeFromMeActivity frommeActivity);
+    void inject(ExtraWorkActivity extraWorkActivity);
+
+
+
 }

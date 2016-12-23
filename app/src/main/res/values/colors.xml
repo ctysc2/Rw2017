@@ -46,4 +46,24 @@
     <!--评审cell字体颜色-->
     <color name="text_color_9B9B9B">#9B9B9B</color>
 
+    <!--外出-->
+    <color name="text_color_49CA5D">#49CA5D</color>
+
+    <!--请假-->
+    <color name="text_color_F46C61">#F46C61</color>
+
+    <!--报销-->
+    <color name="text_color_9956B9">#9956B9</color>
+
+    <!--加班提交-->
+    <color name="text_color_365BEC">#365BEC</color>
+
+    <!--拒绝字体颜色-->
+    <color name="text_color_373737">#373737</color>
+
+    <!--拒绝边框颜色-->
+    <color name="text_color_BFBFC3">#BFBFC3</color>
+
+    <!--提示字体颜色颜色-->
+    <color name="text_color_A0A0A0">#A0A0A0</color>
 </resources>

@@ -14,6 +14,8 @@ import com.home.rw.mvp.ui.fragments.MessageFragment;
 import com.home.rw.mvp.ui.fragments.MineMeFragment;
 import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
+import com.home.rw.mvp.ui.fragments.work.ApproveByMeAfterFragment;
+import com.home.rw.mvp.ui.fragments.work.ApproveByMeBeforeFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMeApprovingFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMePassedFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMeUnPassedFragment;
@@ -41,5 +43,7 @@ public interface FragmentComponent {
     void inject(ProposeFromMePassedFragment passedFragment);
     void inject(ProposeFromMeUnPassedFragment unPassedFragment);
     void inject(ProposeFromMeApprovingFragment approvingFragment);
+    void inject(ApproveByMeBeforeFragment approvedBeforeFragment);
+    void inject(ApproveByMeAfterFragment approvedAfterFragment);
 
 }

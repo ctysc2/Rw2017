@@ -110,11 +110,11 @@ public class MineMeFragment extends BaseFragment {
         switch (v.getId()){
             case R.id.iv_header:
                 showHeaderSelectPopWin();
-                Map<String,String> map = new HashMap<>();
-                map.put(UserInfoDaoHelper.NICKNAME,"cty");
-                map.put(UserInfoDaoHelper.HEADURL,"www.baidu.com");
-                map.put("hahah","sb");
-                UserInfoDaoHelper.getInstance().updateUserInfo("15502145237",map);
+//                Map<String,String> map = new HashMap<>();
+//                map.put(UserInfoDaoHelper.NICKNAME,"cty");
+//                map.put(UserInfoDaoHelper.HEADURL,"www.baidu.com");
+//                map.put("hahah","sb");
+//                UserInfoDaoHelper.getInstance().updateUserInfo("15502145237",map);
                 break;
             default:
                 break;
