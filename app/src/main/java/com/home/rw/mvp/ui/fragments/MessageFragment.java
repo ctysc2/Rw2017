@@ -1,10 +1,8 @@
 package com.home.rw.mvp.ui.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
-import com.home.rw.mvp.ui.activitys.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 
 import javax.inject.Inject;
@@ -42,7 +39,6 @@ public class MessageFragment extends BaseFragment {
 
         switch (v.getId()){
             case R.id.back:
-                startActivity(new Intent(mActivity,SignInActivity.class));
                 break;
             default:
                 break;

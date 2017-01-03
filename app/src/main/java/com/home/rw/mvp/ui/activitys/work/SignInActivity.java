@@ -1,54 +1,48 @@
-package com.home.rw.mvp.ui.activitys;
+package com.home.rw.mvp.ui.activitys.work;
 
-import android.Manifest;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+import android.content.Intent;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.home.rw.R;
 import com.home.rw.listener.OnAddressReceive;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.utils.GoogleMapUtils;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.Subscription;
 
 public class SignInActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    @BindView(R.id.back)
+    ImageButton mback;
+
+    @BindView(R.id.midText)
+    TextView midText;
+
+    @BindView(R.id.bt_sign)
+    Button mSign;
+
+    @BindView(R.id.tv_hint)
+    TextView mHint;
 
     private MapFragment mMapFragment;
 
@@ -72,9 +66,35 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
 
     }
 
+    @OnClick({
+            R.id.back,
+            R.id.bt_sign,
+            R.id.iv_list
+    })
+    public void OnClick(View v){
+        switch (v.getId()){
+            case R.id.back:
+                finish();
+                break;
+            case R.id.bt_sign:
+                mSign.setEnabled(false);
+                mSign.setText(getString(R.string.signed));
+                mHint.setText(getString(R.string.signedtoday));
+                break;
+            case R.id.iv_list:
+                startActivity(new Intent(this,SignListActivity.class));
+                break;
+            default:
+                break;
+
+
+        }
+
+    }
     @Override
     public void initViews() {
-
+        midText.setText(R.string.signLabel);
+        mback.setImageResource(R.drawable.btn_back);
     }
 
     @Override

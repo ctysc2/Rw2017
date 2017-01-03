@@ -16,6 +16,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.mvp.entity.CarouselResponseEntity;
 import com.home.rw.mvp.ui.activitys.work.ApprovementActivity;
+import com.home.rw.mvp.ui.activitys.work.CardActivity;
+import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
+import com.home.rw.mvp.ui.activitys.work.DailyLogActivity$$ViewBinder;
+import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
+import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
+import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.SystemTool;
@@ -123,17 +129,24 @@ public class WorkFragment extends BaseFragment {
         switch (v.getId()){
 
             case R.id.ll_signin:
-
+                intent = new Intent(mActivity, SignInActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_dairy:
+                intent = new Intent(mActivity, DailyLogActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_approve:
                 intent = new Intent(mActivity, ApprovementActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ll_check:
+                intent = new Intent(mActivity, CardActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_roll:
+                intent = new Intent(mActivity, SendRollActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

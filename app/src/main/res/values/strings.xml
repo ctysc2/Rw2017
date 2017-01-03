@@ -52,6 +52,62 @@
     <string name="extraworkDuration">加班时间</string>
     <string name="hours">小时</string>
     <string name="day">天</string>
+    <string name="leaveType">请假类型</string>
+    <string name="leaveTime">请假时间</string>
+    <string name="leaveTimeHint">请输入请假时间(小时)</string>
+    <string name="leaveReason">请假事由</string>
+    <string name="leaveReasonHint">请输入请假事由(必填)</string>
+
+    <string name="getOutTime">外出时间</string>
+    <string name="getOutTimeHint">请输入外出时间(小时)</string>
+    <string name="getOutReason">外出事由</string>
+    <string name="getOutReasonHint">请输入外出事由(必填)</string>
+
+    <string name="wipedTitle">报销明细(%1$d)</string>
+    <string name="wipedMoney">报销金额</string>
+    <string name="wipedType">报销类别</string>
+    <string name="wipedDetail">费用明细</string>
+    <string name="wipedSum">总金额报销: %1$d元</string>
+    <string name="addWipedDetail">增加报销明细</string>
+    <string name="access">附件</string>
+
+    <string name="wipedMoneyHint">请输入数字金额(必填)</string>
+    <string name="wipedTypeHint">如:采购经费、活动经费(必填)</string>
+    <string name="wipedDetailHint">请输入费用明细描述</string>
+
+    <string name="shangban">上班</string>
+    <string name="xiaban">下班</string>
+    <string name="shangbanCardHint">上班请打卡</string>
+    <string name="xiabanCardHint">下班请打卡</string>
+    <string name="card">打卡</string>
+    <string name="sendLog">我发出的</string>
+    <string name="receivedLog">我收到的</string>
+
+    <string name="shangbanCard">上班打卡</string>
+    <string name="xiabanCard">下班打卡</string>
+
+    <string name="rollme">若我的人</string>
+
+    <string name="today">今天</string>
+    <string name="receiver">接收人</string>
+    <string name="sendtime">发送时间</string>
+    <string name="sendnow">立即发送</string>
+    <string name="deadline">事件截止时间</string>
+    <string name="deadlinehint">期待完成此次事件的时间</string>
+    <string name="content">内容</string>
+    <string name="inputContent">输入内容</string>
+
+    <string name="title">标题</string>
+    <string name="titleHint">请填写日志标题</string>
+
+    <string name="signed">已签到</string>
+    <string name="signedtoday">今日你已签到</string>
+    <string name="unsignedtoday">今日你还未签到</string>
+    <string name="signList">列表</string>
+    <string name="send">发送</string>
+    <string name="writeLog">写日志</string>
+
+    <string name="sender">发送人</string>
     <!--增值服务-->
     <string name="incrementService">增值服务</string>
 
@@ -71,7 +127,12 @@
     <string name="contactUs">联系我们</string>
     <string name="fromAlbum">从相册中选择</string>
     <string name="fromCamera">拍照</string>
-
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="setting">设置</string>
+    <string name="currentVer">当前版本</string>
+    <string name="clearCache">清除缓存</string>
+    <string name="FeedBack">意见反馈</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

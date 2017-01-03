@@ -26,4 +26,11 @@ public class DateUtils {
         }
         return null;
     }
+
+    public static String getTimeHHmmss(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(date);
+    }
+
+
 }

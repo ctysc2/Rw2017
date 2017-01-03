@@ -16,7 +16,6 @@ import butterknife.OnClick;
 
 public class ApprovementActivity extends BaseActivity {
 
-    boolean isAdd = false;
     @BindView(R.id.back)
     ImageButton mback;
 
@@ -46,8 +45,14 @@ public class ApprovementActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_getout:
+                intent = new Intent(this,GetOutActivity.class);
+                intent.putExtra("entryType","edit");
+                startActivity(intent);
                 break;
             case R.id.ll_leave:
+                intent = new Intent(this,AskForLeaveActivity.class);
+                intent.putExtra("entryType","edit");
+                startActivity(intent);
                 break;
             case R.id.ll_extrawork:
                 intent = new Intent(this,ExtraWorkActivity.class);
@@ -55,6 +60,9 @@ public class ApprovementActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_wiped:
+                intent = new Intent(this,WipedActivity.class);
+                intent.putExtra("entryType","edit");
+                startActivity(intent);
                 break;
             default:
                 break;

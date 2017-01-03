@@ -12,7 +12,10 @@ import com.home.rw.R;
 import com.home.rw.event.BeforeReadEvent;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.ui.activitys.work.AskForLeaveActivity;
 import com.home.rw.mvp.ui.activitys.work.ExtraWorkActivity;
+import com.home.rw.mvp.ui.activitys.work.GetOutActivity;
+import com.home.rw.mvp.ui.activitys.work.WipedActivity;
 import com.home.rw.mvp.ui.adapters.ApprovementListAdapter;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.RxBus;
@@ -121,8 +124,23 @@ public class ApproveByMeBeforeFragment extends BaseFragment {
             public void onItemClick(int position) {
                 Intent intent;
                 switch (dataSource.get(position).getAppType()){
+                    case 0:
+                        intent = new Intent(mActivity,GetOutActivity.class);
+                        intent.putExtra("entryType","approve");
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(mActivity,AskForLeaveActivity.class);
+                        intent.putExtra("entryType","approve");
+                        startActivity(intent);
+                        break;
                     case 2:
                         intent = new Intent(mActivity,ExtraWorkActivity.class);
+                        intent.putExtra("entryType","approve");
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(mActivity,WipedActivity.class);
                         intent.putExtra("entryType","approve");
                         startActivity(intent);
                         break;

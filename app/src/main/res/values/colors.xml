@@ -66,4 +66,21 @@
 
     <!--提示字体颜色颜色-->
     <color name="text_color_A0A0A0">#A0A0A0</color>
+
+    <color name="text_color_9E9F9F">#9E9F9F</color>
+
+    <color name="text_color_383838">#383838</color>
+
+    <color name="text_color_878787">#878787</color>
+
+    <color name="text_color_949494">#949494</color>
+
+    <color name="text_color_616161">#616161</color>
+
+    <color name="text_color_F2D241">#F2D241</color>
+
+    <color name="text_color_8C8C8C">#8C8C8C</color>
+
+    <!--删除报销-->
+    <color name="text_color_F36C61">#F36C61</color>
 </resources>

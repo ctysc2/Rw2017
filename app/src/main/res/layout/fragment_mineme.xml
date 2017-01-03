@@ -173,6 +173,7 @@
         android:layout_above="@+id/ll_board"
         android:orientation="vertical">
         <RelativeLayout
+            android:id="@+id/rl_gender"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clickable="true"

@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -23,6 +24,7 @@ import com.home.rw.R;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.UriUtils;
+import com.home.rw.widget.GenderTakerPopWindow;
 import com.home.rw.widget.PicTakerPopWindow;
 
 import java.io.File;
@@ -55,12 +57,21 @@ public class MineMeFragment extends BaseFragment {
     @BindView(R.id.iv_header)
     SimpleDraweeView mHeaderView;
 
+    @BindView(R.id.rl_gender)
+    RelativeLayout mGender;
+
+    @BindView(R.id.tv_gender)
+    TextView mtvGender;
+
+
     @Inject
     Activity mActivity;
 
-    //自定义的弹出框类
+    //选择投降
     PicTakerPopWindow menuWindow;
 
+    //选择性别
+    GenderTakerPopWindow genderWindow;
     //图库
     private static final int RESULT_PICK_FROM_PHOTO_NORMAL = 0;
 
@@ -78,7 +89,14 @@ public class MineMeFragment extends BaseFragment {
     private View.OnClickListener itemsOnClick = new View.OnClickListener(){
 
         public void onClick(View v) {
-            menuWindow.dismiss();
+            if(menuWindow!=null){
+                menuWindow.dismiss();
+                menuWindow = null;
+            }
+            if(genderWindow!=null){
+                genderWindow.dismiss();
+                genderWindow = null;
+            }
             Intent intent;
             switch (v.getId()) {
                 case R.id.btn_take_photo:
@@ -99,13 +117,20 @@ public class MineMeFragment extends BaseFragment {
                     startActivityForResult(intent, RESULT_PICK_FROM_PHOTO_NORMAL);
 
                     break;
+                case R.id.btn_male:
+                    mtvGender.setText(getString(R.string.male));
+                    break;
+                case R.id.btn_female:
+                    mtvGender.setText(getString(R.string.female));
+                    break;
                 case R.id.btn_cancel:
                     UserInfoDaoHelper.getInstance().getDataByUser("15502145237",UserInfoDaoHelper.HEADURL);
                     break;
             }
         }
     };
-    @OnClick({R.id.iv_header})
+    @OnClick({R.id.iv_header,
+                R.id.rl_gender})
     public void OnClick(View v){
         switch (v.getId()){
             case R.id.iv_header:
@@ -115,6 +140,9 @@ public class MineMeFragment extends BaseFragment {
 //                map.put(UserInfoDaoHelper.HEADURL,"www.baidu.com");
 //                map.put("hahah","sb");
 //                UserInfoDaoHelper.getInstance().updateUserInfo("15502145237",map);
+                break;
+            case R.id.rl_gender:
+                showGenderSelectPopWin();
                 break;
             default:
                 break;
@@ -159,7 +187,14 @@ public class MineMeFragment extends BaseFragment {
                 Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 
     }
+    //选择图片
+    private void showGenderSelectPopWin(){
 
+        genderWindow = new GenderTakerPopWindow(mActivity,itemsOnClick);
+        genderWindow.showAtLocation(mHeaderView,
+                Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+
+    }
     private void initCache(){
 
         File mFilePath = new File(root);

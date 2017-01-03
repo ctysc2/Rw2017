@@ -1,11 +1,14 @@
 package com.home.rw.mvp.ui.activitys.base;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -90,11 +93,19 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     }
     public void setStatusBarTranslucent(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
+            // 状态栏字体设置为深色，SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 为SDK23增加
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);// SDK21
+
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             // 设置状态栏透明
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-        }else{
+        }
+        else{
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 

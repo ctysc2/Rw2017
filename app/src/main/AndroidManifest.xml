@@ -36,11 +36,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.ui.activitys.SignInActivity" />
         <activity android:name=".mvp.ui.activitys.work.ApprovementActivity" />
         <activity android:name=".mvp.ui.activitys.work.ApprovedByMeActivity" />
         <activity android:name=".mvp.ui.activitys.work.ProposeFromMeActivity" />
-        <activity android:name=".mvp.ui.activitys.work.ExtraWorkActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.work.AskForLeaveActivity" />
+        <activity android:name=".mvp.ui.activitys.work.GetOutActivity" />
+        <activity android:name=".mvp.ui.activitys.work.WipedActivity" />
+        <activity android:name=".mvp.ui.activitys.work.SignInActivity" />
+        <activity android:name=".mvp.ui.activitys.work.SignListActivity" />
+        <activity android:name=".mvp.ui.activitys.work.CardActivity" />
+        <activity android:name=".mvp.ui.activitys.work.RollMeActivity" />
+        <activity android:name=".mvp.ui.activitys.work.DailyLogActivity" />
+        <activity android:name=".mvp.ui.activitys.work.SendRollActivity" />
+        <activity android:name=".mvp.ui.activitys.work.WriteLogActivity" />
+        <activity android:name=".mvp.ui.activitys.work.ExtraWorkActivity" />
+        <activity android:name=".mvp.ui.activitys.mineme.SettingActivity"></activity>
     </application>
 
 </manifest>

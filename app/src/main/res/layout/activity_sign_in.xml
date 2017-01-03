@@ -5,9 +5,44 @@
     android:id="@+id/activity_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bac_color_EFEFF4"
     tools:context="com.home.rw.mvp.ui.activitys.SignInActivity">
-
+    <include layout="@layout/common_toolbar"
+        />
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_height="40dp">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/icon_calendar"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/today"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="2016年11月11日"
+            android:textSize="16sp"
+            android:textColor="@color/text_color_616161"
+            />
+    </LinearLayout>
     <fragment
+        android:layout_below="@+id/ll_top"
         android:name="com.google.android.gms.maps.MapFragment"
         android:id="@+id/map"
         map:uiRotateGestures="false"
@@ -17,5 +52,36 @@
         map:uiZoomGestures ="false"
         map:cameraTilt="20"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="270dp"/>
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="50dp"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:text="@string/unsignedtoday"
+        android:textColor="@color/text_color_A0A0A0"
+        android:layout_below="@+id/map"/>
+    <Button
+        android:id="@+id/bt_sign"
+        android:layout_below="@+id/tv_hint"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:text="@string/signLabel"
+        android:textSize="22sp"
+        android:background="@drawable/selector_card_bac"
+        android:textColor="@color/widowColor"/>
+    <ImageView
+        android:layout_below="@+id/ll_top"
+        android:layout_marginTop="230dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:id="@+id/iv_list"
+        android:src="@drawable/icon_sign_list"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
 </RelativeLayout>

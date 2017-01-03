@@ -19,6 +19,8 @@ import com.home.rw.mvp.ui.fragments.work.ApproveByMeBeforeFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMeApprovingFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMePassedFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMeUnPassedFragment;
+import com.home.rw.mvp.ui.fragments.work.ReceivedLogFragment;
+import com.home.rw.mvp.ui.fragments.work.SendLogFragment;
 
 import dagger.Component;
 
@@ -45,5 +47,7 @@ public interface FragmentComponent {
     void inject(ProposeFromMeApprovingFragment approvingFragment);
     void inject(ApproveByMeBeforeFragment approvedBeforeFragment);
     void inject(ApproveByMeAfterFragment approvedAfterFragment);
+    void inject(ReceivedLogFragment receivedLogFragment);
+    void inject(SendLogFragment sendLogFragment);
 
 }

@@ -15,7 +15,10 @@ import android.widget.Toast;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.ui.activitys.work.AskForLeaveActivity;
 import com.home.rw.mvp.ui.activitys.work.ExtraWorkActivity;
+import com.home.rw.mvp.ui.activitys.work.GetOutActivity;
+import com.home.rw.mvp.ui.activitys.work.WipedActivity;
 import com.home.rw.mvp.ui.adapters.ApprovementListAdapter;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 
@@ -111,8 +114,23 @@ public class ProposeFromMePassedFragment extends BaseFragment {
             public void onItemClick(int position) {
                 Intent intent;
                 switch (dataSource.get(position).getAppType()){
+                    case 0:
+                        intent = new Intent(mActivity,GetOutActivity.class);
+                        intent.putExtra("entryType","show");
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(mActivity,AskForLeaveActivity.class);
+                        intent.putExtra("entryType","show");
+                        startActivity(intent);
+                        break;
                     case 2:
                         intent = new Intent(mActivity,ExtraWorkActivity.class);
+                        intent.putExtra("entryType","show");
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(mActivity,WipedActivity.class);
                         intent.putExtra("entryType","show");
                         startActivity(intent);
                         break;
