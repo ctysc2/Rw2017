@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ApprovementListEntity extends BaseEntity {
 
-    public ArrayList<DataEntity> data ;
+    public ArrayList<DataEntity> data;
 
     public ArrayList<DataEntity> getData() {
         return data;
