@@ -132,7 +132,7 @@
     <string name="setting">设置</string>
     <string name="currentVer">当前版本</string>
     <string name="clearCache">清除缓存</string>
-    <string name="FeedBack">意见反馈 </string>
+    <string name="FeedBack">意见反馈</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
