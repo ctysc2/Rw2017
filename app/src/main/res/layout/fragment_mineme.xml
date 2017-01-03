@@ -289,7 +289,7 @@
     <LinearLayout
         android:id="@+id/ll_board"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/bac_color_EFEFF4"
         android:orientation="horizontal"
         android:layout_above="@+id/iv_ad">
@@ -313,7 +313,7 @@
     </LinearLayout>
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="160dp"
         android:scaleType="centerCrop"
         android:layout_alignParentBottom="true"
         android:src="@drawable/test_ad"
