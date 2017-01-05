@@ -49,6 +49,7 @@
                     android:layout_marginTop="8dp"
                     android:textColor="@color/widowColor"/>
                 <ImageButton
+                    android:id="@+id/ib_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="23dp"
                     android:layout_marginTop="7dp"
@@ -232,6 +233,7 @@
                 android:background="@color/text_color_E4E4E4"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rl_changePsw"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clickable="true"
@@ -246,10 +248,13 @@
                 android:textColor="@color/text_color_333333"
                 android:gravity="center"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="10dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp" />
+                android:src="@drawable/icon_right_more"
+                android:textColor="@color/black"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -271,10 +276,13 @@
                 android:textColor="@color/text_color_333333"
                 android:gravity="center"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="10dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp" />
+                android:src="@drawable/icon_right_more"
+                android:textColor="@color/black"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

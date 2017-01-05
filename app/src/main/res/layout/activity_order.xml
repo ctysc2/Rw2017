@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_order"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.home.rw.mvp.ui.activitys.mineme.OrderActivity">
+    <include layout="@layout/common_toolbar"
+        />
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tb_Top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/black"
+        />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_view"
+        android:background="@color/bac_color_EFEFF4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

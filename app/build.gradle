@@ -47,6 +47,11 @@ dependencies {
     //loading Animation
     //greenDao
     //recycleview
+    compile project(':pickerview')
+    compile project(':photoSelector')
+    compile project(':library')
+
+    compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.jakewharton:butterknife:8.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
@@ -71,8 +76,4 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile project(':pickerview')
-    compile project(':photoSelector')
-    compile project(':library')
-
 }

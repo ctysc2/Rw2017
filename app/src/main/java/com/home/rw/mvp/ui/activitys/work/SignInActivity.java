@@ -145,6 +145,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
     protected void onStart() {
         Log.i("GoogleMap", "onStart");
         if((mGoogleApiClient !=null) && (!mGoogleApiClient.isConnected())){
+            Log.i("GoogleMap", "mGoogleApiClient.connect");
             mGoogleApiClient.connect();
         }
 
@@ -154,6 +155,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
     protected void onStop() {
         if((mGoogleApiClient !=null) && mGoogleApiClient.isConnected()){
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            Log.i("GoogleMap", "mGoogleApiClient.disconnect");
             mGoogleApiClient.disconnect();
 
             if((mSubscription !=null) && (!mSubscription.isUnsubscribed()))
@@ -217,7 +219,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.i("GoogleMap","onConnectionSuspended:"+i);
     }
 
     @Override

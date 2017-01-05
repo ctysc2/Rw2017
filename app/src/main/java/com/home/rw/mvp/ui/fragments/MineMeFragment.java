@@ -22,6 +22,10 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
+import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
+import com.home.rw.mvp.ui.activitys.mineme.SettingActivity;
+import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.UriUtils;
 import com.home.rw.widget.GenderTakerPopWindow;
@@ -130,7 +134,11 @@ public class MineMeFragment extends BaseFragment {
         }
     };
     @OnClick({R.id.iv_header,
-                R.id.rl_gender})
+              R.id.back,
+              R.id.rl_changePsw,
+              R.id.rightText,
+              R.id.rl_gender,
+              R.id.ib_wallet})
     public void OnClick(View v){
         switch (v.getId()){
             case R.id.iv_header:
@@ -144,10 +152,23 @@ public class MineMeFragment extends BaseFragment {
             case R.id.rl_gender:
                 showGenderSelectPopWin();
                 break;
+            case R.id.back:
+                startActivity(new Intent(mActivity, SettingActivity.class));
+                break;
+            case R.id.rl_changePsw:
+                startActivity(new Intent(mActivity, ChangePassWord.class));
+                break;
+            case R.id.rightText:
+                startActivity(new Intent(mActivity, OrderActivity.class));
+                break;
+            case R.id.ib_wallet:
+                startActivity(new Intent(mActivity, WalletActivity.class));
+                break;
             default:
                 break;
         }
     }
+
     @Override
     public void initInjector() {
         mFragmentComponent.inject(this);

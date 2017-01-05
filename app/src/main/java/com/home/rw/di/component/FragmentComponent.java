@@ -14,6 +14,11 @@ import com.home.rw.mvp.ui.fragments.MessageFragment;
 import com.home.rw.mvp.ui.fragments.MineMeFragment;
 import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
+import com.home.rw.mvp.ui.fragments.mine.AllOrderFragment;
+import com.home.rw.mvp.ui.fragments.mine.CompanyWalletFragment;
+import com.home.rw.mvp.ui.fragments.mine.LastMonthOrderFragment;
+import com.home.rw.mvp.ui.fragments.mine.LastWeekOrderFragment;
+import com.home.rw.mvp.ui.fragments.mine.PersonerWalletFragment;
 import com.home.rw.mvp.ui.fragments.work.ApproveByMeAfterFragment;
 import com.home.rw.mvp.ui.fragments.work.ApproveByMeBeforeFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMeApprovingFragment;
@@ -49,5 +54,13 @@ public interface FragmentComponent {
     void inject(ApproveByMeAfterFragment approvedAfterFragment);
     void inject(ReceivedLogFragment receivedLogFragment);
     void inject(SendLogFragment sendLogFragment);
+
+    //mine
+    void inject(AllOrderFragment allOrderFragment);
+    void inject(LastWeekOrderFragment lastWeekOrderFragment);
+    void inject(LastMonthOrderFragment lastMonthOrderFragment);
+    void inject(PersonerWalletFragment personerWalletFragment);
+    void inject(CompanyWalletFragment companyWalletFragment);
+
 
 }

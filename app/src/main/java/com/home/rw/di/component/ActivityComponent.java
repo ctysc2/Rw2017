@@ -9,6 +9,8 @@ import com.home.rw.di.scope.ContextLife;
 import com.home.rw.di.scope.PerActivity;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
+import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
+import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovedByMeActivity;
 import com.home.rw.mvp.ui.activitys.work.AskForLeaveActivity;
 import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
@@ -45,6 +47,8 @@ public interface ActivityComponent {
     void inject(WipedActivity wipedActivity);
     void inject(AskForLeaveActivity askforleaveActivity);
     void inject(DailyLogActivity dailyLogActivity);
+    void inject(OrderActivity orderActivity);
+    void inject(WalletActivity walletActivity);
 
 
 }

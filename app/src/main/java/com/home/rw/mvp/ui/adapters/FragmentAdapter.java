@@ -14,10 +14,16 @@ import java.util.List;
 
 public class FragmentAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments;
-
+    private List<String> titleList;
     public  FragmentAdapter(FragmentManager fm, List<Fragment> fragments){
         super(fm);
         this.fragments = fragments;
+
+    }
+    public  FragmentAdapter(FragmentManager fm, List<Fragment> fragments,List<String> titleList){
+        super(fm);
+        this.fragments = fragments;
+        this.titleList = titleList;
 
     }
     @Override
@@ -29,5 +35,10 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return fragments.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titleList.get(position);//页卡标题
     }
 }

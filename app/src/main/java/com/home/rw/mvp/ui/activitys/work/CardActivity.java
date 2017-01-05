@@ -228,12 +228,12 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.i("GoogleMap","onConnectionSuspended:"+i);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.i("GoogleMap","onConnectionFailed:"+connectionResult.getErrorMessage());
     }
 
     @Override
