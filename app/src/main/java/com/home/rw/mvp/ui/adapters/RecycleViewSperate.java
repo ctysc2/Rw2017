@@ -14,7 +14,7 @@ public class RecycleViewSperate extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
 
-            outRect.set(0, 0, 0, (int)DimenUtil.dp2px(10));
+            outRect.set(0, 0, 0, (int)DimenUtil.dp2px(13));
 
     }
 }

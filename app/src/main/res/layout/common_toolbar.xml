@@ -40,6 +40,15 @@
             android:layout_alignBottom="@+id/midText"
             android:textSize="15sp"
             android:gravity="center" />
+        <TextView
+            android:id="@+id/rightTextFacus"
+            android:layout_width="65dp"
+            android:visibility="gone"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="25dp"
+            android:gravity="center"/>
 
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

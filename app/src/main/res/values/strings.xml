@@ -114,7 +114,25 @@
     <!--企业交流-->
     <string name="compSocial">企业交流</string>
     <string name="publish">发布</string>
-
+    <string name="find">发现</string>
+    <string name="homepage">主页</string>
+    <string name="channelChosen">频道精选</string>
+    <string name="channelChosenEn">Select Channel</string>
+    <string name="Chosen">精选</string>
+    <string name="ChosenEn">Select</string>
+    <string name="projectCommunication">项目交流</string>
+    <string name="ActivityCommunication">活动交流</string>
+    <string name="CultureCommunication">文化交流</string>
+    <string name="CoopCommunication">合作交流</string>
+    <string name="projectCommunicationTitle">企业项目交流</string>
+    <string name="ActivityCommunicationTitle">企业活动交流</string>
+    <string name="CultureCommunicationTitle">企业文化交流</string>
+    <string name="CoopCommunicationTitle">企业合作交流</string>
+    <string name="addFacus">+关注</string>
+    <string name="Facused">已关注</string>
+    <string name="MyFacus">我关注的</string>
+    <string name="MyFacusEn">focus on</string>
+    <string name="AllFacus">全部 ></string>
     <!--我的-->
     <string name="order">订单</string>
     <string name="facus">关注</string>
@@ -154,4 +172,7 @@
     <string name="personerWallet">个人钱包</string>
     <string name="companyWallet">公司钱包</string>
     <string name="exchange">汇率换算</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

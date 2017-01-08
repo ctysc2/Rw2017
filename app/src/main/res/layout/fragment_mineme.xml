@@ -62,10 +62,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_focus"
                 android:layout_width="55dp"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="70dp"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_focus"
@@ -90,6 +91,7 @@
                 android:layout_width="55dp"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_company"
@@ -111,6 +113,7 @@
                     android:layout_height="20dp" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_fabu"
                 android:layout_width="55dp"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"

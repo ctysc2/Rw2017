@@ -5,7 +5,7 @@
     android:id="@+id/activity_extra_work"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.home.rw.mvp.ui.activitys.work.ExtraWorkActivity"
+    tools:context="com.home.rw.mvp.ui.activitys.work.WipedActivity"
     android:background="@color/bac_color_EFEFF4">
 
     <include layout="@layout/common_toolbar"
@@ -139,6 +139,7 @@
                         android:id="@+id/ll_wiped_container"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
+                        android:layout_marginRight="10dp"
                         android:layout_toRightOf="@+id/tv_access"
                         android:gravity="center_vertical"
                         android:visibility="gone"

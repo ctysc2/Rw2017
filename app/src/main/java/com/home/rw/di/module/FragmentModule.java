@@ -3,6 +3,7 @@ package com.home.rw.di.module;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 
 import com.home.rw.di.scope.ContextLife;
@@ -28,6 +29,12 @@ public class FragmentModule {
     @Provides
     @PerFragment
     public Activity provideActivity() {
+        return mFragment.getActivity();
+    }
+
+    @Provides
+    @PerFragment
+    public FragmentActivity provideFragmentActivity() {
         return mFragment.getActivity();
     }
 

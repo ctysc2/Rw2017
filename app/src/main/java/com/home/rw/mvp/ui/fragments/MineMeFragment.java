@@ -26,6 +26,8 @@ import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
 import com.home.rw.mvp.ui.activitys.mineme.SettingActivity;
 import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
+import com.home.rw.mvp.ui.activitys.social.CommListActivity;
+import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.UriUtils;
 import com.home.rw.widget.GenderTakerPopWindow;
@@ -138,6 +140,8 @@ public class MineMeFragment extends BaseFragment {
               R.id.rl_changePsw,
               R.id.rightText,
               R.id.rl_gender,
+              R.id.ll_focus,
+              R.id.ll_fabu,
               R.id.ib_wallet})
     public void OnClick(View v){
         switch (v.getId()){
@@ -163,6 +167,14 @@ public class MineMeFragment extends BaseFragment {
                 break;
             case R.id.ib_wallet:
                 startActivity(new Intent(mActivity, WalletActivity.class));
+                break;
+            case R.id.ll_focus:
+                startActivity(new Intent(mActivity, FocusListActivity.class));
+                break;
+            case R.id.ll_fabu:
+                Intent intent = new Intent(mActivity, CommListActivity.class);
+                intent.putExtra("startType","Mine");
+                startActivity(intent);
                 break;
             default:
                 break;

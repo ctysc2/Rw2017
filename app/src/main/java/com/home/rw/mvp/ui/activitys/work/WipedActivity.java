@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,6 +34,7 @@ import com.home.rw.R;
 import com.home.rw.common.Const;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.FrescoUtils;
 import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.UriUtils;
 import com.home.rw.widget.PicTakerPopWindow;
@@ -56,6 +58,9 @@ public class WipedActivity extends BaseActivity {
             getAbsolutePath()+"/"+"RwCache";
     private  String headerPathTemp;
 
+    private final int COMPRESS_WIDTH = 200;
+
+    private final int COMPRESS_HEIGH = 120;
     //图库插件指定类型
     ArrayList<PhotoModel> photos = new ArrayList<>();
     //图库
@@ -304,32 +309,32 @@ public class WipedActivity extends BaseActivity {
         mUpdatewiped.setVisibility(View.GONE);
 
         photos.add(new PhotoModel("http://img1.gamersky.com/image2016/11/20161114zd_337_39/gamersky_01small_02_20161114165972E.jpg"));
-        photos.add(new PhotoModel("http://img1.gamersky.com/image2016/11/20161114zd_337_39/gamersky_01small_02_20161114165972E.jpg"));
-        photos.add(new PhotoModel("http://img1.gamersky.com/image2016/11/20161114zd_337_39/gamersky_01small_02_20161114165972E.jpg"));
+        photos.add(new PhotoModel("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=9963e0334e90f60310bd9415587bd87e/ac345982b2b7d0a21f15689fcfef76094a369ad7.jpg"));
+        photos.add(new PhotoModel("http://img1.cache.netease.com/game/starcraft2/news/201601/62.jpg"));
 
         if (photos.size() == 3){
             mWiped1.setVisibility(View.VISIBLE);
             mWiped2.setVisibility(View.VISIBLE);
             mWiped3.setVisibility(View.VISIBLE);
 
-            mWiped1.setImageURI(photos.get(0).getOriginalPath());
-            mWiped2.setImageURI(photos.get(1).getOriginalPath());
-            mWiped3.setImageURI(photos.get(2).getOriginalPath());
+            FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+            FrescoUtils.load(Uri.parse(photos.get(1).getOriginalPath()),mWiped2,200,120);
+            FrescoUtils.load(Uri.parse(photos.get(2).getOriginalPath()),mWiped3,200,120);
 
         }else if(photos.size() == 2){
             mWiped1.setVisibility(View.VISIBLE);
             mWiped2.setVisibility(View.VISIBLE);
             mWiped3.setVisibility(View.GONE);
 
-            mWiped1.setImageURI(photos.get(0).getOriginalPath());
-            mWiped2.setImageURI(photos.get(1).getOriginalPath());
+            FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+            FrescoUtils.load(Uri.parse(photos.get(1).getOriginalPath()),mWiped2,200,120);
 
         }else if(photos.size() == 1){
             mWiped1.setVisibility(View.VISIBLE);
             mWiped2.setVisibility(View.INVISIBLE);
             mWiped3.setVisibility(View.GONE);
 
-            mWiped1.setImageURI(photos.get(0).getOriginalPath());
+            FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
 
         }else{
             mWiped1.setVisibility(View.GONE);
@@ -490,10 +495,10 @@ public class WipedActivity extends BaseActivity {
                         cursor.moveToFirst();
                         headerPathTemp = cursor.getString(0);
                         cursor.close();
-                        mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
+                        FrescoUtils.load(Uri.fromFile(new File(headerPathTemp)),mPhoto,200,120);
                     }else{
                         headerPathTemp= UriUtils.getPath(this, originalUri);
-                        mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
+                        FrescoUtils.load(Uri.fromFile(new File(headerPathTemp)),mPhoto,200,120);
                     }
                 }
                 break;
@@ -501,7 +506,7 @@ public class WipedActivity extends BaseActivity {
             case RESULT_PICK_FROM_CAMERA_NORMAL:
 
                 if (resultCode == RESULT_OK ) {
-                    mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
+                    FrescoUtils.load(Uri.fromFile(new File(headerPathTemp)),mPhoto,200,120);
 
                 }
                 break;
@@ -536,14 +541,14 @@ public class WipedActivity extends BaseActivity {
                             mWiped2.setVisibility(View.VISIBLE);
                             mWiped3.setVisibility(View.VISIBLE);
                             if(isPhotoDeleteable){
-                                mWiped1.setImageURI(Uri.fromFile(new File(photos.get(0).getOriginalPath())));
-                                mWiped2.setImageURI(Uri.fromFile(new File(photos.get(1).getOriginalPath())));
-                                mWiped3.setImageURI(Uri.fromFile(new File(photos.get(2).getOriginalPath())));
+                                FrescoUtils.load(Uri.fromFile(new File(photos.get(0).getOriginalPath())),mWiped1,200,120);
+                                FrescoUtils.load(Uri.fromFile(new File(photos.get(1).getOriginalPath())),mWiped2,200,120);
+                                FrescoUtils.load(Uri.fromFile(new File(photos.get(2).getOriginalPath())),mWiped3,200,120);
 
                             }else{
-                                mWiped1.setImageURI(photos.get(0).getOriginalPath());
-                                mWiped2.setImageURI(photos.get(1).getOriginalPath());
-                                mWiped3.setImageURI(photos.get(2).getOriginalPath());
+                                FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+                                FrescoUtils.load(Uri.parse(photos.get(1).getOriginalPath()),mWiped2,200,120);
+                                FrescoUtils.load(Uri.parse(photos.get(2).getOriginalPath()),mWiped3,200,120);
                             }
 
                         }else if(photos.size() == 2){
@@ -552,11 +557,11 @@ public class WipedActivity extends BaseActivity {
                             mWiped3.setVisibility(View.GONE);
 
                             if(isPhotoDeleteable){
-                                mWiped1.setImageURI(Uri.fromFile(new File(photos.get(0).getOriginalPath())));
-                                mWiped2.setImageURI(Uri.fromFile(new File(photos.get(1).getOriginalPath())));
+                                FrescoUtils.load(Uri.fromFile(new File(photos.get(0).getOriginalPath())),mWiped1,200,120);
+                                FrescoUtils.load(Uri.fromFile(new File(photos.get(1).getOriginalPath())),mWiped2,200,120);
                             }else{
-                                mWiped1.setImageURI(photos.get(0).getOriginalPath());
-                                mWiped2.setImageURI(photos.get(1).getOriginalPath());
+                                FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+                                FrescoUtils.load(Uri.parse(photos.get(1).getOriginalPath()),mWiped2,200,120);
                             }
                         }else if(photos.size() == 1){
                             mWiped1.setVisibility(View.VISIBLE);
@@ -564,9 +569,9 @@ public class WipedActivity extends BaseActivity {
                             mWiped3.setVisibility(View.GONE);
 
                             if(isPhotoDeleteable){
-                                mWiped1.setImageURI(Uri.fromFile(new File(photos.get(0).getOriginalPath())));
+                                FrescoUtils.load(Uri.fromFile(new File(photos.get(0).getOriginalPath())),mWiped1,200,120);
                            }else{
-                                mWiped1.setImageURI(photos.get(0).getOriginalPath());
+                                FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
                            }
                         }else{
                             mRightArrow.setVisibility(View.VISIBLE);
@@ -595,24 +600,25 @@ public class WipedActivity extends BaseActivity {
                         mWiped1.setVisibility(View.VISIBLE);
                         mWiped2.setVisibility(View.VISIBLE);
                         mWiped3.setVisibility(View.VISIBLE);
-                        mWiped1.setImageURI(Uri.fromFile(new File(photos.get(0).getOriginalPath())));
-                        mWiped2.setImageURI(Uri.fromFile(new File(photos.get(1).getOriginalPath())));
-                        mWiped3.setImageURI(Uri.fromFile(new File(photos.get(2).getOriginalPath())));
+                        FrescoUtils.load(Uri.fromFile(new File(photos.get(0).getOriginalPath())),mWiped1,200,120);
+                        FrescoUtils.load(Uri.fromFile(new File(photos.get(1).getOriginalPath())),mWiped2,200,120);
+                        FrescoUtils.load(Uri.fromFile(new File(photos.get(2).getOriginalPath())),mWiped3,200,120);
+//
 
                     }else if(photos.size() == 2){
                         mWiped1.setVisibility(View.VISIBLE);
                         mWiped2.setVisibility(View.VISIBLE);
                         mWiped3.setVisibility(View.GONE);
 
-                        mWiped1.setImageURI(Uri.fromFile(new File(photos.get(0).getOriginalPath())));
-                        mWiped2.setImageURI(Uri.fromFile(new File(photos.get(1).getOriginalPath())));
+                        FrescoUtils.load(Uri.fromFile(new File(photos.get(0).getOriginalPath())),mWiped1,200,120);
+                        FrescoUtils.load(Uri.fromFile(new File(photos.get(1).getOriginalPath())),mWiped2,200,120);
 
                     }else if(photos.size() == 1){
                         mWiped1.setVisibility(View.VISIBLE);
                         mWiped2.setVisibility(View.INVISIBLE);
                         mWiped3.setVisibility(View.GONE);
 
-                        mWiped1.setImageURI(Uri.fromFile(new File(photos.get(0).getOriginalPath())));
+                        FrescoUtils.load(Uri.fromFile(new File(photos.get(0).getOriginalPath())),mWiped1,200,120);
 
                     }else{
                         mRightArrow.setVisibility(View.VISIBLE);
@@ -666,5 +672,22 @@ public class WipedActivity extends BaseActivity {
         intent.putExtra("delete",isPhotoDeleteable);
         intent.putExtras(bundle);
         this.startActivityForResult(intent, Const.PHOTO_PREVIEW);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Log.i("Wiped","onDestroy");
+        clearCache();
+        super.onDestroy();
+    }
+
+    private void clearCache(){
+        FrescoUtils.clearCache();
+        FrescoUtils.clearImgMemory(mWiped1);
+        FrescoUtils.clearImgMemory(mWiped2);
+        FrescoUtils.clearImgMemory(mWiped3);
+        FrescoUtils.clearImgMemory(mPhoto);
+
     }
 }

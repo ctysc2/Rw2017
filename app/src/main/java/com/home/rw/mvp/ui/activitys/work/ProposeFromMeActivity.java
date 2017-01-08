@@ -166,7 +166,7 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
 
 
             mTvRight.setTextColor(Color.parseColor("#000000"));
-            mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_LEFT,10));
+            mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_RIGHT,10));
 
 
         }

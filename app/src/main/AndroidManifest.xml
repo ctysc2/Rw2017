@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="android.permission.SET_WALLPAPER" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!-- <uses-permission android:name="android.permission.SET_WALLPAPER" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
@@ -19,6 +19,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -55,7 +56,10 @@
         <activity android:name=".mvp.ui.activitys.mineme.ChangePassWord" />
         <activity android:name=".mvp.ui.activitys.mineme.PublishedActivity" />
         <activity android:name=".mvp.ui.activitys.mineme.OrderActivity" />
-        <activity android:name=".mvp.ui.activitys.mineme.WalletActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.mineme.WalletActivity" />
+        <activity android:name=".mvp.ui.activitys.social.CommListActivity" />
+        <activity android:name=".mvp.ui.activitys.social.CommDetailActivity" />
+        <activity android:name=".mvp.ui.activitys.social.FocusListActivity"></activity>
     </application>
 
 </manifest>

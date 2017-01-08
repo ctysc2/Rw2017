@@ -19,6 +19,7 @@ import com.home.rw.di.component.FragmentComponent;
 import com.home.rw.di.module.FragmentModule;
 import com.home.rw.mvp.presenter.base.BasePresenter;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.FrescoUtils;
 import com.home.rw.utils.RxBus;
 
 import javax.inject.Inject;
@@ -77,7 +78,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         if (mPresenter != null) {
             mPresenter.onDestroy();
         }
-
+        FrescoUtils.clearCache();
         RxBus.cancelSubscription(mSubscription);
     }
 

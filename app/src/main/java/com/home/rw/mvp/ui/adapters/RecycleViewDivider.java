@@ -24,6 +24,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
+    public static final int COMMON = -1;
     public static final int APPROVEMENT_LIST_CELL = 0;
 
     private Drawable mDivider;
@@ -53,7 +54,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent) {
 
         if (mOrientation == VERTICAL_LIST) {
-            //drawVertical(c, parent);
+            drawVertical(c, parent);
         } else {
             drawHorizontal(c, parent);
         }
@@ -113,6 +114,8 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         Log.i("cty","drawVerticalCommon");
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
+            if(i == childCount-1)
+                break;
             final View child = parent.getChildAt(i);
             RecyclerView v = new RecyclerView(parent.getContext());
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child

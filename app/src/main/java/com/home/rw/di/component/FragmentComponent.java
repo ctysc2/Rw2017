@@ -3,7 +3,9 @@ package com.home.rw.di.component;
 
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 
 import com.home.rw.di.module.FragmentModule;
@@ -19,6 +21,9 @@ import com.home.rw.mvp.ui.fragments.mine.CompanyWalletFragment;
 import com.home.rw.mvp.ui.fragments.mine.LastMonthOrderFragment;
 import com.home.rw.mvp.ui.fragments.mine.LastWeekOrderFragment;
 import com.home.rw.mvp.ui.fragments.mine.PersonerWalletFragment;
+import com.home.rw.mvp.ui.fragments.social.FindFragment;
+import com.home.rw.mvp.ui.fragments.social.FocusFragment;
+import com.home.rw.mvp.ui.fragments.social.HomePageFragment;
 import com.home.rw.mvp.ui.fragments.work.ApproveByMeAfterFragment;
 import com.home.rw.mvp.ui.fragments.work.ApproveByMeBeforeFragment;
 import com.home.rw.mvp.ui.fragments.work.ProposeFromMeApprovingFragment;
@@ -39,6 +44,8 @@ public interface FragmentComponent {
     Context getApplicationContext();
 
     Activity getActivity();
+
+    FragmentActivity getFragmentActivity();
 
     void inject(IncrementFragment incrementFragment);
     void inject(MessageFragment messageFragment);
@@ -62,5 +69,9 @@ public interface FragmentComponent {
     void inject(PersonerWalletFragment personerWalletFragment);
     void inject(CompanyWalletFragment companyWalletFragment);
 
+    //social
+    void inject(HomePageFragment homePageFragment);
+    void inject(FindFragment findFragment);
+    void inject(FocusFragment focusFragment);
 
 }

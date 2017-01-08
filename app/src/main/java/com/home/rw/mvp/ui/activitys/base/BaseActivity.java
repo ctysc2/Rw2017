@@ -22,6 +22,7 @@ import com.home.rw.di.component.DaggerActivityComponent;
 import com.home.rw.di.module.ActivityModule;
 import com.home.rw.mvp.presenter.base.BasePresenter;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.FrescoUtils;
 import com.home.rw.utils.RxBus;
 
 import java.lang.reflect.Field;
@@ -89,7 +90,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         super.onDestroy();
         if(mPresenter!=null)
             mPresenter.onDestroy();
+        FrescoUtils.clearCache();
         RxBus.cancelSubscription(mSubscription);
+
 
     }
     public void setStatusBarTranslucent(){
@@ -133,4 +136,5 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             e.printStackTrace();
         }
     }
+
 }

@@ -1,30 +1,29 @@
-package com.home.rw.mvp.ui.fragments;
+package com.home.rw.mvp.ui.fragments.social;
+
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
-import com.home.rw.mvp.entity.CarouselResponseEntity;
+import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovementActivity;
 import com.home.rw.mvp.ui.activitys.work.CardActivity;
 import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
-import com.home.rw.mvp.ui.activitys.work.DailyLogActivity$$ViewBinder;
-import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.DimenUtil;
-import com.home.rw.utils.SystemTool;
 import com.home.rw.widget.AutoScrollViewPager;
 
 import java.util.ArrayList;
@@ -34,20 +33,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by cty on 2016/12/13.
- */
+public class FindFragment extends BaseFragment {
 
-public class WorkFragment extends BaseFragment {
 
-    @BindView(R.id.back)
-    ImageButton mBack;
-
-    @BindView(R.id.midText)
-    TextView midText;
-
-    @BindView(R.id.rightText)
-    TextView rightText;
+    @Inject
+    Activity mActivity;
 
     @BindView(R.id.AutoScrollViewPager)
     AutoScrollViewPager autoScrollViewPager;
@@ -55,22 +45,55 @@ public class WorkFragment extends BaseFragment {
     @BindView(R.id.viewPagerIndicator)
     LinearLayout viewPagerIndicator;
 
-
-    @Inject
-    Activity mActivity;
-
     //indicate
     private ArrayList<View> mScrollImageViews = new ArrayList<>();
 
-    //轮播图数据源
-    private ArrayList<CarouselResponseEntity.DataEntity> mScrollImgDataList = new ArrayList<>();
-
     //轮播图测试数据源
     private String[] testData = {
+            "http://img9.cache.hxsd.com/game/2012/01/17/647054_1326796795_20.jpg",
             "http://img3.12349.net/13a4/12349.net_3y0kllulrxl.jpg",
             "http://shouyouph.onlyzhu.com/uploadfile/2013/0617/20130617032023116.jpg",
             "http://i0.wp.com/gearnuke.com/wp-content/uploads/2014/02/starcraft2_logo_cinematic.jpg?resize=798%2C350"
     };
+
+    @OnClick({R.id.ll_proj,R.id.ll_activity,R.id.ll_culture,R.id.ll_coop})
+    public void onClick(View v){
+        Intent intent;
+        switch (v.getId()){
+
+            case R.id.ll_proj:
+                intent = new Intent(mActivity, CommListActivity.class);
+                intent.putExtra("startType","Proj");
+                startActivity(intent);
+                break;
+            case R.id.ll_activity:
+                intent = new Intent(mActivity, CommListActivity.class);
+                intent.putExtra("startType","Activity");
+                startActivity(intent);
+                break;
+            case R.id.ll_culture:
+                intent = new Intent(mActivity, CommListActivity.class);
+                intent.putExtra("startType","Culture");
+                startActivity(intent);
+                break;
+            case R.id.ll_coop:
+                intent = new Intent(mActivity, CommListActivity.class);
+                intent.putExtra("startType","Coop");
+                startActivity(intent);
+                break;
+            default:
+                break;
+
+
+        }
+
+
+    }
+    @Inject
+    public FindFragment() {
+        // Required empty public constructor
+    }
+
 
     @Override
     public void initInjector() {
@@ -79,16 +102,13 @@ public class WorkFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        midText.setText(R.string.compWork);
         initAutoScrollViewPager();
-
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_work;
+        return R.layout.fragment_find;
     }
-
 
     @Override
     public void onResume() {
@@ -112,46 +132,13 @@ public class WorkFragment extends BaseFragment {
     @Override
     public void onDestroyView()
     {
-        if (viewPagerIndicator != null)
-            viewPagerIndicator.removeAllViews();
-        if (mScrollImageViews != null)
-            mScrollImageViews.clear();
+//        if (viewPagerIndicator != null)
+//            viewPagerIndicator.removeAllViews();
+//        if (mScrollImageViews != null)
+//            mScrollImageViews.clear();
         super.onDestroyView();
     }
 
-    @OnClick({R.id.ll_signin,R.id.ll_dairy,R.id.ll_approve,R.id.ll_check,R.id.ll_roll})
-    public void onClick(View v){
-        Intent intent;
-        switch (v.getId()){
-
-            case R.id.ll_signin:
-                intent = new Intent(mActivity, SignInActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ll_dairy:
-                intent = new Intent(mActivity, DailyLogActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ll_approve:
-                intent = new Intent(mActivity, ApprovementActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ll_check:
-                intent = new Intent(mActivity, CardActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ll_roll:
-                intent = new Intent(mActivity, SendRollActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
-
-
-        }
-
-
-    }
     /**
      * 初始化轮播图控件
      */
@@ -202,8 +189,8 @@ public class WorkFragment extends BaseFragment {
         for (int i = 0; i < size; i++)
         {
             View iv = new View(getActivity());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)DimenUtil.dp2px(7), ViewGroup.LayoutParams.MATCH_PARENT);
-            params.rightMargin = (int)DimenUtil.dp2px(10);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) DimenUtil.dp2px(5), ViewGroup.LayoutParams.MATCH_PARENT);
+            params.rightMargin = (int)DimenUtil.dp2px(7);
             if (i != 0)
             {
                 iv.setBackgroundResource(R.drawable.shape_carousel_indigcate);
@@ -260,7 +247,6 @@ public class WorkFragment extends BaseFragment {
             //imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageURI(testData[position]);
             container.addView(imageView);
-            Log.i("lunbo","instantiateItem");
             imageView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
