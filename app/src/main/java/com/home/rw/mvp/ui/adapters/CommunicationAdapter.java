@@ -32,13 +32,19 @@ public class CommunicationAdapter extends RecyclerView.Adapter<CommunicationAdap
     private ArrayList<CommunicationEntity.DataEntity> dataSource;
     private Context context;
     private LayoutInflater inflater;
+    private String entryType = "common";
     private OnItemClickListener mListener;
     private final int COMPRESS_WIDTH = 200;
-
     private final int COMPRESS_HEIGH = 120;
     public CommunicationAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, Context context){
         this.dataSource = dataSource;
         this.context = context;
+        inflater = LayoutInflater.from(context);
+    }
+    public CommunicationAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, String type, Context context){
+        this.dataSource = dataSource;
+        this.context = context;
+        this.entryType = type;
         inflater = LayoutInflater.from(context);
     }
     @Override
@@ -86,7 +92,7 @@ public class CommunicationAdapter extends RecyclerView.Adapter<CommunicationAdap
             holder.mZan.setEnabled(false);
 
         }
-        if(entity.getName().equals("钉宫理惠")){
+        if(entity.getName().equals("钉宫理惠")||((entryType!=null)&&(entryType.equals("other")))){
             holder.mFacus.setVisibility(View.GONE);
         }else{
             holder.mFacus.setVisibility(View.VISIBLE);

@@ -16,6 +16,7 @@ import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
+import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
 import com.home.rw.mvp.ui.adapters.FacusListAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewDivider;
@@ -113,7 +114,7 @@ public class FocusFragment extends BaseFragment {
         child1.setContent("卡洛斯·特维斯（Carlos Tévez），1984年2月5日出生于阿根廷首都布宜诺斯艾利斯，阿根廷籍足球运动员，场上司职前锋，也可以胜任攻击型中场。特维斯现效力于上海绿地申花足球俱乐部[1]  。\n" +
                 "作为博卡青年青训营的产品，年少成名的特维斯曾经效力过南美、欧洲等多家俱乐部。同时，作为阿根廷国家队的11号，特维斯参加了2006、2010两届世界杯和2004、2007、2011三届美洲杯，此外他还代表阿根廷国奥队参加2004年雅典奥运会，帮助球队夺冠并且以8个进球荣获那届比赛最佳射手。2011/12赛季，在一系列转会风波后他最终选择留守曼城，和国家队队友塞尔吉奥·阿圭罗一起征战英超。2016年12月，正式加盟上海绿地申花，征战中超比赛");
         child1.setZaned(false);
-        child1.setFacused(false);
+        child1.setFacused(true);
         child1.setTitle("特维斯加盟上海申花");
         ArrayList<String> img1 = new ArrayList<>();
         img1.add("http://fwimage.cnfanews.com/founder_xiangyu/websiteimg/2016/20161223/20034130/18562782_980x1200_292.jpg.jpg");
@@ -127,7 +128,7 @@ public class FocusFragment extends BaseFragment {
         child3.setZanNum(55);
         child3.setTitle("新垣结衣gakki舞这个标题一定要很长很长的");
         child3.setZaned(true);
-        child3.setFacused(false);
+        child3.setFacused(true);
         child3.setHeader("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fcf279a7dc0735fa85fd46ebff3864d6/8644ebf81a4c510f8e1339a66859252dd52aa5b3.jpg");
         child3.setContent("新垣结衣（Aragaki Yui），1988年6月11日出生于冲绳县那霸市。日本演员、歌手、模特。毕业于日出高中[1]  。\n" +
                 "2001年，参加《nicola》模特比赛并获得最优秀奖。2005年，首次出演了电视连续剧《龙樱》[2]  。2006年，出演了电视连续剧《我的老板，我的英雄》，并出版第一本写真集《水漾青春》。2007年从日出高等学校毕业后专注于演艺圈发展，同年出演电视剧《父女七日变》，发表个人首张音乐专辑《そら》（《天空》）。2007年，因主演电影《恋空》而知名度增加，并接连获得多个电影新人奖项。2010年，与生田斗真主演电影《花水木》[3]  。2012年，与堺雅人主演电视剧《Legal High》[4]  。2013年，与堺雅人主演的《Legal High SP》在日本播出[5]  。2014年，与向井理、绫野刚主演电视剧《S最后的警官》[6]  ；同年主演电影《黎明的沙耶》[7]  。2015年2月28日，主演的电影《唇上之歌》上映[8-9]  。8月29日，参演的电影《剧场版 S-最后的警官-》上映[10]  。10月10日，主演的电视剧《掟上今日子的备忘录》在日本首播[11]  。2016年，主演10月开播的新剧《逃避虽可耻但很有用》");
@@ -162,9 +163,6 @@ public class FocusFragment extends BaseFragment {
         datasource2.add(child3);
         datasource2.add(child4);
         datasource2.add(child5);
-        datasource2.add(child4);
-        datasource2.add(child4);
-        datasource2.add(child4);
 
         //内容列表
         mAdapterComm = new CommunicationAdapter(datasource2,mActivity);
@@ -193,7 +191,9 @@ public class FocusFragment extends BaseFragment {
         mAdapterFacus.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                Intent intent = new Intent(mActivity,OthersDetailActivity.class);
+                intent.putExtra("data",datasource1.get(position));
+                startActivity(intent);
             }
         });
         mRvList.setHasFixedSize(true);

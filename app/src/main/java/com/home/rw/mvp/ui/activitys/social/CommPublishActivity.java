@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.common.Const;
+import com.home.rw.listener.AlertDialogListener;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.FrescoUtils;
 import com.photoselector.model.PhotoModel;
 import com.photoselector.ui.PhotoPreviewActivity;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CommPublishActivity extends BaseActivity {
+public class CommPublishActivity extends BaseActivity implements AlertDialogListener {
 
     ArrayList<PhotoModel> photos = new ArrayList<>();
 
@@ -58,7 +60,8 @@ public class CommPublishActivity extends BaseActivity {
     public void OnClick(View v){
         switch (v.getId()){
             case R.id.back:
-                finish();
+                mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
                 break;
             case R.id.iv_taked_picture1:
                 selectedPosition = 0;
@@ -174,5 +177,32 @@ public class CommPublishActivity extends BaseActivity {
                 break;
         }
 
+    }
+    @Override
+    public void onConFirm() {
+        mAlertDialog.dismiss();
+        finish();
+    }
+
+    @Override
+    public void onCancel() {
+        mAlertDialog.dismiss();
+
+    }
+    @Override
+    public void onBackPressed() {
+
+
+        showOrDismissDialog();
+
+    }
+    private void showOrDismissDialog(){
+
+        if((mAlertDialog != null) && (mAlertDialog.isShowing())){
+            mAlertDialog.dismiss();
+        }else{
+            mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+            mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+        }
     }
 }

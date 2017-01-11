@@ -2,6 +2,7 @@ package com.home.rw.mvp.entity;
 
 import com.home.rw.mvp.entity.base.BaseEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +21,7 @@ public class FacusListEntity extends BaseEntity {
         this.data = data;
     }
 
-    public static class DataEntity{
+    public static class DataEntity implements Serializable{
         String header;
         String name;
         int num;

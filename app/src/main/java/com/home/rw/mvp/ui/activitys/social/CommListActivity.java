@@ -42,6 +42,7 @@ public class CommListActivity extends BaseActivity {
     private final int DETAIL = 1;
 
     private int requestPos = 0;
+
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
 
@@ -67,6 +68,7 @@ public class CommListActivity extends BaseActivity {
         switch (v.getId()){
             case R.id.back:
                 finish();
+                break;
             default:
                 break;
 
@@ -136,8 +138,7 @@ public class CommListActivity extends BaseActivity {
         child2.setZaned(true);
         child2.setFacused(false);
         child2.setHeader("http://img1.gamersky.com/image2016/07/20160726_308_whx_9/gamersky_03small_06_20167261458325.jpg");
-        child2.setContent("钉宫理惠，1979年5月30日出生于大阪府，成长于熊本县熊本市，日本女性声优、歌手，所属事务所为I'm Enterprise。\n" +
-                "代表作品有《钢之炼金术师》阿尔冯斯·艾尔利克、《灼眼的夏娜》夏娜、《龙与虎》逢坂大河、《旋风管家！》三千院凪、《零之使魔》露易丝、《银魂》神乐、《妖精的尾巴》哈比等。");
+        child2.setContent("钉宫理惠，1979年5月30日出生于大阪府，成长于熊本县熊本市，日本女性声优、歌手，所属事务所为I'm Enterprise");
         ArrayList<String> img2 = new ArrayList<>();
         img2.add("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=3a527841eddde711f3df4ba4c686a57e/a50f4bfbfbedab64ec7f8584ff36afc379311e61.jpg");
         img2.add("https://imgsa.baidu.com/baike/crop%3D0%2C18%2C790%2C521%3Bc0%3Dbaike92%2C5%2C5%2C92%2C30/sign=514f2b9dba1c8701c2f9e8a61a4fb21e/63d9f2d3572c11dfd6d02a5a6a2762d0f703c242.jpg");

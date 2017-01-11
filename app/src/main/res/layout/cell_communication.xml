@@ -85,7 +85,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:lineSpacingExtra="3dp"
-        android:lines="6"
+        android:maxLines="8"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:ellipsize="end"

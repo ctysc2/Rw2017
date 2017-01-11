@@ -34,17 +34,7 @@ public class MessageFragment extends BaseFragment {
     @Inject
     Activity mActivity;
 
-    @OnClick({R.id.back})
-    public void OnClick(View v){
 
-        switch (v.getId()){
-            case R.id.back:
-                break;
-            default:
-                break;
-        }
-
-    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -116,6 +116,9 @@ public class FocusListActivity extends BaseActivity {
         mAdapterFacus.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Intent intent = new Intent(FocusListActivity.this,OthersDetailActivity.class);
+                intent.putExtra("data",datasource.get(position));
+                startActivity(intent);
 
             }
         });

@@ -21,6 +21,7 @@ import com.home.rw.di.component.ActivityComponent;
 import com.home.rw.di.component.DaggerActivityComponent;
 import com.home.rw.di.module.ActivityModule;
 import com.home.rw.mvp.presenter.base.BasePresenter;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.FrescoUtils;
 import com.home.rw.utils.RxBus;
@@ -37,6 +38,8 @@ import rx.Subscription;
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
 
     protected T mPresenter;
+
+    protected DialogUtils mAlertDialog;
 
     protected boolean mIsStatusTranslucent;
 
@@ -68,7 +71,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
         setStatusBarTranslucent();
         //setStatusBarDarkMode(true,this);
-
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
     }
     private void initAnnotation() {

@@ -110,7 +110,18 @@
     <string name="sender">发送人</string>
     <!--增值服务-->
     <string name="incrementService">增值服务</string>
-
+    <string name="OfficeAppontment">预约办公室</string>
+    <string name="askForRepaire">报修</string>
+    <string name="alwaysUsed">常用</string>
+    <string name="print">打印</string>
+    <string name="consumeMateria">耗材</string>
+    <string name="clear">清洁</string>
+    <string name="express">快递</string>
+    <string name="rentcar">租车</string>
+    <string name="writeMateria">办公文具</string>
+    <string name="incrementAdd">添加</string>
+    <string name="expect">敬请期待</string>
+    <string name="waitexpect">敬请期待...</string>
     <!--企业交流-->
     <string name="compSocial">企业交流</string>
     <string name="publish">发布</string>
@@ -133,6 +144,16 @@
     <string name="MyFacus">我关注的</string>
     <string name="MyFacusEn">focus on</string>
     <string name="AllFacus">全部 ></string>
+    <string name="FacusNum">关注的人</string>
+    <string name="cancleFacus">取消关注</string>
+    <string name="commDetail">详情</string>
+    <string name="commDetailHint">请输入详情(必填)</string>
+    <string name="compIntroduction">公司介绍</string>
+    <string name="compIntroductionEn">Company introduction</string>
+
+    <string name="compDynamic">公司动态</string>
+    <string name="compDynamicEn">Company dynamic</string>
+
     <!--我的-->
     <string name="order">订单</string>
     <string name="facus">关注</string>
@@ -173,6 +194,14 @@
     <string name="companyWallet">公司钱包</string>
     <string name="exchange">汇率换算</string>
 
+    <!--dialog-->
+    <string name="dialogTitle">提示</string>
+    <string name="dialogCancle">取消</string>
+    <string name="dialogConfirm">确认</string>
+    <string name="deleteHint1">确认删除\"%1$s\"?</string>
+    <string name="editExitHint1">退出页面内容讲不会被保存</string>
+    <string name="editExitHint2">确认退出?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>
 </resources>

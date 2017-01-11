@@ -32,7 +32,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.home.rw.R;
 import com.home.rw.common.Const;
+import com.home.rw.listener.AlertDialogListener;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.FrescoUtils;
 import com.home.rw.utils.KeyBoardUtils;
@@ -51,12 +53,14 @@ import butterknife.OnClick;
 
 
 
-public class WipedActivity extends BaseActivity {
+public class WipedActivity extends BaseActivity implements AlertDialogListener {
     private ArrayList<View> viewContainer = new ArrayList<>();
 
     private static  final String root = Environment.getExternalStorageDirectory().
             getAbsolutePath()+"/"+"RwCache";
     private  String headerPathTemp;
+
+    private String entryType;
 
     private final int COMPRESS_WIDTH = 200;
 
@@ -146,7 +150,13 @@ public class WipedActivity extends BaseActivity {
     public void onClick(View v){
         switch(v.getId()){
             case R.id.back:
-                finish();
+                if(entryType.equals("edit")){
+                    mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                    mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+
+                }else{
+                    finish();
+                }
                 break;
             case R.id.ll_add:
                 addView();
@@ -200,10 +210,25 @@ public class WipedActivity extends BaseActivity {
         child.findViewById(R.id.rl_del).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTop.removeView(child);
-                viewContainer.remove(child);
-                reCalculatorSumMoney();
-                updateWipedList();
+
+                mAlertDialog = DialogUtils.create(WipedActivity.this,DialogUtils.TYPE_ALERT);
+                mAlertDialog.show(new AlertDialogListener() {
+                    @Override
+                    public void onConFirm() {
+                        mAlertDialog.dismiss();
+                        mTop.removeView(child);
+                        viewContainer.remove(child);
+                        reCalculatorSumMoney();
+                        updateWipedList();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        mAlertDialog.dismiss();
+                    }
+                }, String.format(getString(R.string.deleteHint1), ((TextView)(child.findViewById(R.id.tv_title))).getText()));
+
+
             }
         });
         ((EditText)child.findViewById(R.id.et_wipedmoney)).addTextChangedListener(new TextWatcher() {
@@ -371,7 +396,7 @@ public class WipedActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String entryType;
+
         if((entryType = getIntent().getStringExtra("entryType")) != null){
             if(entryType.equals("edit")){
                 //编辑模式
@@ -689,5 +714,34 @@ public class WipedActivity extends BaseActivity {
         FrescoUtils.clearImgMemory(mWiped3);
         FrescoUtils.clearImgMemory(mPhoto);
 
+    }
+    @Override
+    public void onConFirm() {
+        mAlertDialog.dismiss();
+        finish();
+    }
+
+    @Override
+    public void onCancel() {
+        mAlertDialog.dismiss();
+
+    }
+    @Override
+    public void onBackPressed() {
+
+        showOrDismissDialog();
+    }
+
+    private void showOrDismissDialog(){
+        if(entryType.equals("edit")){
+            if((mAlertDialog != null) && (mAlertDialog.isShowing())){
+                mAlertDialog.dismiss();
+            }else{
+                mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+            }
+            return;
+        }
+        finish();
     }
 }

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bac_color_EFEFF4"
+    android:fitsSystemWindows="false"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="185dp"
+        android:background="@color/widowColor"
+        app:elevation="0dp"
+        android:fitsSystemWindows="false">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="185dp"
+            app:collapsedTitleGravity="center"
+            android:fitsSystemWindows="false"
+            app:contentScrim="@color/colorPrimary"
+            app:statusBarScrim="@color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+                android:id="@+id/top_bac"
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:orientation="vertical"
+                android:fitsSystemWindows="false"
+                android:background="@drawable/bac_usercenter">
+
+                <LinearLayout
+                    android:id="@+id/ll_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_below="@+id/toolbar"
+                    android:paddingTop="35dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/iv_header"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        fresco:actualImageScaleType="centerCrop"
+                        fresco:placeholderImage="@drawable/icon_empty_head"
+                        fresco:placeholderImageScaleType="centerCrop"
+                        fresco:roundAsCircle="true"
+                        fresco:roundingBorderColor="@color/text_color_A2A8EB"
+                        fresco:roundingBorderWidth="3dp"
+                        android:layout_marginLeft="15dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:gravity="center_vertical|left"
+                            android:text="罗密欧啦啦"
+                            android:paddingLeft="5dp"
+                            android:singleLine="true"
+                            android:layout_marginTop="8dp"
+
+                            android:textColor="@color/widowColor"/>
+                        <TextView
+                            android:id="@+id/tv_focus"
+                            android:layout_width="match_parent"
+                            android:layout_height="23dp"
+                            android:layout_marginTop="7dp"
+                            android:gravity="center"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:textColor="@color/text_color_2E53D9"
+                            android:background="@drawable/shape_detail_facus_enable"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_facus"
+                        android:layout_width="55dp"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="120dp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tv_publish"
+                            android:layout_width="45dp"
+                            android:layout_height="20dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/widowColor"
+                            android:layout_marginTop="8dp"
+                            android:text="120"
+                            android:background="@drawable/shape_focus_bac"
+                            android:gravity="center"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="7dp"
+                            android:text="@string/FacusNum"
+                            android:gravity="center"
+                            android:textSize="13sp"
+                            android:textColor="@color/widowColor"
+                            android:layout_height="20dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_mid"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@color/bac_color_3B56B4"
+                    android:layout_below="@+id/appBarLayout">
+                    <TextView
+                        android:id="@+id/compName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/widowColor"
+                        android:text="若为置业有限公司"
+                        android:gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="16sp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_next"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:orientation="vertical"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_toolbar"
+                android:layout_height="64dp"
+                app:contentInsetLeft="0dp"
+                app:layout_collapseMode="pin"
+                android:paddingTop="20dp"
+                app:contentInsetStart="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/back"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerInside"
+                        android:background="@color/transparent"/>
+
+                    <TextView
+                        android:id="@+id/midText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:textSize="19sp"
+                        android:textColor="@color/widowColor" />
+
+                    <TextView
+                        android:id="@+id/rightText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/widowColor"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignBottom="@+id/midText"
+                        android:textSize="15sp"
+                        android:gravity="center" />
+                    <TextView
+                        android:id="@+id/rightTextFacus"
+                        android:layout_width="65dp"
+                        android:visibility="gone"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="25dp"
+                        android:gravity="center"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:background="@color/bac_color_EFEFF4"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_height="match_parent" />
+
+
+</android.support.design.widget.CoordinatorLayout>

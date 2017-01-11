@@ -30,8 +30,10 @@ import com.facebook.imagepipeline.core.ImagePipeline;
 import com.home.rw.R;
 import com.home.rw.common.Const;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.listener.AlertDialogListener;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.utils.DateUtils;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.UriUtils;
 import com.home.rw.widget.PicTakerPopWindow;
@@ -46,7 +48,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GetOutActivity extends BaseActivity {
+public class GetOutActivity extends BaseActivity implements AlertDialogListener {
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -120,6 +122,8 @@ public class GetOutActivity extends BaseActivity {
     //时间选择器
     private TimePickerView pvTime;
 
+    private String entryType;
+
     @OnClick({R.id.back,
             R.id.rl_startTime,
             R.id.rl_endTime,
@@ -129,7 +133,13 @@ public class GetOutActivity extends BaseActivity {
     public void onClick(View v){
         switch(v.getId()){
             case R.id.back:
-                finish();
+                if(entryType.equals("edit")){
+                    mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                    mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+
+                }else{
+                    finish();
+                }
                 break;
             case R.id.rl_startTime:
                 TimePickerNum = START_TIME;
@@ -254,7 +264,7 @@ public class GetOutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String entryType;
+
         if((entryType = getIntent().getStringExtra("entryType")) != null){
             if(entryType.equals("edit")){
                 //编辑模式
@@ -328,8 +338,22 @@ public class GetOutActivity extends BaseActivity {
             return;
         }
 
+        showOrDismissDialog();
+    }
+
+    private void showOrDismissDialog(){
+        if(entryType.equals("edit")){
+            if((mAlertDialog != null) && (mAlertDialog.isShowing())){
+                mAlertDialog.dismiss();
+            }else{
+                mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+            }
+            return;
+        }
         finish();
     }
+
     //选择图片过程中创建临时文件
     private File createTempFile(){
 
@@ -442,4 +466,15 @@ public class GetOutActivity extends BaseActivity {
         this.startActivityForResult(intent, Const.PHOTO_PREVIEW);
     }
 
+    @Override
+    public void onConFirm() {
+        mAlertDialog.dismiss();
+        finish();
+    }
+
+    @Override
+    public void onCancel() {
+        mAlertDialog.dismiss();
+
+    }
 }

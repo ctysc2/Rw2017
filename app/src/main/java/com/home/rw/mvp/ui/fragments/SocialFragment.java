@@ -1,6 +1,7 @@
 package com.home.rw.mvp.ui.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
+import com.home.rw.mvp.ui.activitys.social.CommPublishActivity;
 import com.home.rw.mvp.ui.adapters.FragmentAdapter;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.mvp.ui.fragments.social.FindFragment;
@@ -102,6 +104,7 @@ public class SocialFragment extends BaseFragment implements ViewPager.OnPageChan
                 break;
             case R.id.rightText:
                 //发布
+                startActivity(new Intent(mActivity, CommPublishActivity.class));
                 break;
             default:
                 break;

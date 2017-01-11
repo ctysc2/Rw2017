@@ -40,7 +40,7 @@ public class CommDetailActivity extends BaseActivity {
 
     private int selectedPosition = 0;
 
-    private String entryType;
+    private String entryType = "Common";
     @BindView(R.id.back)
     ImageButton mback;
 
@@ -159,13 +159,23 @@ public class CommDetailActivity extends BaseActivity {
     public void initViews() {
         data = (CommunicationEntity.DataEntity)getIntent().getSerializableExtra("commData");
         entryType = getIntent().getStringExtra("entryType");
+
         if(data.getName().equals("钉宫理惠")){
             rightTextFacus.setVisibility(View.GONE);
             mFeedBack.setVisibility(View.GONE);
         }else{
             rightTextFacus.setVisibility(View.VISIBLE);
         }
+        if((entryType!=null) && (entryType.equals("Other"))){
+            rightTextFacus.setVisibility(View.GONE);
+        }
 
+        if((entryType!=null) && (entryType.equals("HomePage"))){
+            rightTextFacus.setVisibility(View.GONE);
+            mZan.setVisibility(View.GONE);
+            mFeedBack.setVisibility(View.GONE);
+            mNum.setVisibility(View.GONE);
+        }
         midText.setText(data.getName());
         mback.setImageResource(R.drawable.btn_back);
         rightText.setVisibility(View.GONE);
@@ -187,6 +197,7 @@ public class CommDetailActivity extends BaseActivity {
         if(data.isZaned()){
             mZan.setImageResource(R.drawable.icon_zaned);
             mZan.setEnabled(false);
+
         }
         switch (data.getImgs().size()){
             case 0:

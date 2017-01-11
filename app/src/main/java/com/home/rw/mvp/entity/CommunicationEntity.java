@@ -25,6 +25,7 @@ public class CommunicationEntity extends BaseEntity {
         private static final long serialVersionUID = 1L;
 
         ArrayList<String> imgs = new ArrayList<>();
+        int type;
         String header;
         String name;
         String title;
@@ -33,6 +34,10 @@ public class CommunicationEntity extends BaseEntity {
         int zanNum;
         boolean isZaned;
         boolean isFacused;
+
+        public long getType() {
+            return type;
+        }
 
         public long getTime() {
             return time;
@@ -104,6 +109,10 @@ public class CommunicationEntity extends BaseEntity {
 
         public void setTime(long time) {
             this.time = time;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
     }
 }

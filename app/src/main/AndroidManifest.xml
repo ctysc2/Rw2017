@@ -59,7 +59,13 @@
         <activity android:name=".mvp.ui.activitys.mineme.WalletActivity" />
         <activity android:name=".mvp.ui.activitys.social.CommListActivity" />
         <activity android:name=".mvp.ui.activitys.social.CommDetailActivity" />
-        <activity android:name=".mvp.ui.activitys.social.FocusListActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.social.FocusListActivity" />
+        <activity android:name=".mvp.ui.activitys.social.OthersDetailActivity" />
+        <activity android:name=".mvp.ui.activitys.social.CommPublishActivity" />
+        <activity
+            android:name=".mvp.ui.activitys.increment.MeetingAppointmentListActivity"
+            android:label="@string/title_activity_meeting_appointment_list" />
+        <activity android:name=".mvp.ui.activitys.increment.TempActivity"></activity>
     </application>
 
 </manifest>
