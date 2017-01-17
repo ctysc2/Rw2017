@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.home.rw.R;
+import com.home.rw.application.App;
+import com.home.rw.greendao.entity.UserInfo;
+import com.home.rw.greendao.gen.UserInfoDao;
+import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.listener.AnimationEndListener;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.presenter.impl.LoginPresenterImpl;
@@ -21,6 +25,9 @@ import com.home.rw.mvp.view.LoginView;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.SystemTool;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -45,9 +52,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bt_login:
-                //mLoginPresenterImpl.beforeRequest();
+                mLoginPresenterImpl.beforeRequest();
                 //mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
-                startActivity(new Intent(this,MainActivity.class));
+                mLoginPresenterImpl.processLogin("oa_e","1234");
+                // startActivity(new Intent(this,MainActivity.class));
                 break;
             default:
                 break;
@@ -82,8 +90,28 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Override
     public void loginCompleted(LoginEntity data) {
         Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+        containLoginData(data);
         startActivity(new Intent(this,MainActivity.class));
         finish();
+    }
+    //保存登录信息
+    private void containLoginData(LoginEntity data) {
+
+        long id = data.getData().getId();
+        String name = data.getData().getUsername();
+        String nickname = data.getData().getNickname();
+        String avatar = data.getData().getAvatar();
+        String session = data.getData().getSessionId();
+
+        App.ID = (int)id;
+        App.sessionID = session;
+
+        Map<String,String> map = new HashMap<>();
+        map.put(UserInfoDaoHelper.USERNAME,name);
+        map.put(UserInfoDaoHelper.NICKNAME,nickname);
+        map.put(UserInfoDaoHelper.HEADURL,avatar);
+        UserInfoDaoHelper.getInstance().updateUserInfo(id,map);
+
     }
 
     @Override

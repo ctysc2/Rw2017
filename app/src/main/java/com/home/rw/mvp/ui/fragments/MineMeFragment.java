@@ -21,7 +21,12 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
+import com.home.rw.application.App;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.AvatarPresenterImpl;
+import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
 import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
 import com.home.rw.mvp.ui.activitys.mineme.SettingActivity;
@@ -29,13 +34,18 @@ import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.AvatarView;
+import com.home.rw.mvp.view.LoginView;
+import com.home.rw.mvp.view.UploadView;
 import com.home.rw.utils.UriUtils;
 import com.home.rw.widget.GenderTakerPopWindow;
 import com.home.rw.widget.PicTakerPopWindow;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -47,7 +57,7 @@ import butterknife.OnClick;
  * Created by cty on 2016/12/13.
  */
 
-public class MineMeFragment extends BaseFragment {
+public class MineMeFragment extends BaseFragment implements UploadView,AvatarView {
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
@@ -69,11 +79,19 @@ public class MineMeFragment extends BaseFragment {
     @BindView(R.id.tv_gender)
     TextView mtvGender;
 
+    @BindView(R.id.tv_username)
+    TextView mUserName;
 
     @Inject
     Activity mActivity;
 
-    //选择投降
+    @Inject
+    UploadPresenterImpl mUploadPresenterImpl;
+
+    @Inject
+    AvatarPresenterImpl mAvatarPresenterImpl;
+
+    //选择头像
     PicTakerPopWindow menuWindow;
 
     //选择性别
@@ -130,7 +148,6 @@ public class MineMeFragment extends BaseFragment {
                     mtvGender.setText(getString(R.string.female));
                     break;
                 case R.id.btn_cancel:
-                    UserInfoDaoHelper.getInstance().getDataByUser("15502145237",UserInfoDaoHelper.HEADURL);
                     break;
             }
         }
@@ -147,11 +164,6 @@ public class MineMeFragment extends BaseFragment {
         switch (v.getId()){
             case R.id.iv_header:
                 showHeaderSelectPopWin();
-//                Map<String,String> map = new HashMap<>();
-//                map.put(UserInfoDaoHelper.NICKNAME,"cty");
-//                map.put(UserInfoDaoHelper.HEADURL,"www.baidu.com");
-//                map.put("hahah","sb");
-//                UserInfoDaoHelper.getInstance().updateUserInfo("15502145237",map);
                 break;
             case R.id.rl_gender:
                 showGenderSelectPopWin();
@@ -192,8 +204,8 @@ public class MineMeFragment extends BaseFragment {
         rightText.setText(R.string.order);
         mSetting.setImageResource(R.drawable.btn_setting);
         initCache();
-        mHeaderView.setImageURI("http://img5.imgtn.bdimg.com/it/u=116895778,83897167&fm=21&gp=0.jpg");
-
+        mUploadPresenterImpl.attachView(this);
+        mAvatarPresenterImpl.attachView(this);
     }
 
     @Override
@@ -206,7 +218,7 @@ public class MineMeFragment extends BaseFragment {
 
         Date date = new Date();
 
-        headerPathTemp = root+"/"+date.getTime()+".jpg";
+        headerPathTemp = root+"/"+date.getTime()+".png";
 
         return new File(headerPathTemp);
 
@@ -278,7 +290,11 @@ public class MineMeFragment extends BaseFragment {
                 if (resultCode == mActivity.RESULT_OK && data != null) {
                     Log.i("info","CROP_A_PICTURE2");
                    mHeaderView.setImageURI(Uri.fromFile(new File(headerPathTemp)));
-
+                    //上传头像
+                    List<String> files = new ArrayList<>();
+                    files.add(headerPathTemp);
+                    mUploadPresenterImpl.beforeRequest();
+                    mUploadPresenterImpl.processUpload(files);
                 }
                 break;
                 }
@@ -306,7 +322,53 @@ public class MineMeFragment extends BaseFragment {
             intent.putExtra("return-data", false);
             intent.putExtra("noFaceDetection", true);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
             startActivityForResult(intent, CROP_A_PICTURE);
         }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if(hidden){
+            Log.i("cty","Mineme onHiddenChanged 隐藏");
+        }else{
+            Log.i("cty","Mineme onHiddenChanged 显示");
+            //用户名
+            mUserName.setText(UserInfoDaoHelper.getInstance().getDataByUser(App.ID,UserInfoDaoHelper.USERNAME));
+            //昵称
+            UserInfoDaoHelper.getInstance().getDataByUser(App.ID,UserInfoDaoHelper.NICKNAME);
+            //头像
+            mHeaderView.setImageURI(UserInfoDaoHelper.getInstance().getDataByUser(App.ID,UserInfoDaoHelper.HEADURL));
+
+        }
+        super.onHiddenChanged(hidden);
+    }
+
+    @Override
+    public void uploadComplete(UploadEntity data) {
+        if(data.getCode().equals("ok")){
+            if (data.getData().size()>0)
+                mAvatarPresenterImpl.updateAvatar(data.getData().get(0));
+        }
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        Log.i("Retrofit","error:"+msg);
+
+    }
+
+    @Override
+    public void updateAvatarCompleted(BaseEntity data) {
+
+    }
 }

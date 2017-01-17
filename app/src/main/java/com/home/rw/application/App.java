@@ -25,6 +25,10 @@ public class App extends MultiDexApplication {
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
+    //当前登录用户的ID
+    public static int ID;
+    //当前登录用户的sessionID
+    public static String sessionID;
     @Override
     public void onCreate() {
         super.onCreate();

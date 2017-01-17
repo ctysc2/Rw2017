@@ -8,6 +8,8 @@ import com.home.rw.application.App;
 import com.home.rw.common.ApiConstants;
 import com.home.rw.common.HostType;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
 import com.home.rw.utils.SystemTool;
 import com.socks.library.KLog;
 
@@ -15,14 +17,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -30,6 +36,8 @@ import okio.BufferedSource;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Part;
+import retrofit2.http.Url;
 import rx.Observable;
 
 import static okhttp3.internal.Util.UTF_8;
@@ -83,8 +91,9 @@ public class RetrofitManager {
                             .writeTimeout(6, TimeUnit.SECONDS)
                             .retryOnConnectionFailure(true)
                             //.addInterceptor(mRewriteCacheControlInterceptor)
-                            .addNetworkInterceptor(mRewriteCacheControlInterceptor)
-                            .addInterceptor(mLoggingInterceptor).build();
+                            .addInterceptor(mLoggingInterceptor)
+                            .addNetworkInterceptor(mRewriteCacheControlInterceptor).build();
+
                 }
             }
         }
@@ -107,8 +116,29 @@ public class RetrofitManager {
             }
             //request = request.newBuilder().addHeader("Cookie","123").build();
             //KLog.i("Retrofit","request.headers:"+request.headers());
+            Response originalResponse;
 
-            Response originalResponse = chain.proceed(request);
+            if(App.sessionID!=null && !App.sessionID.equals("")){
+                //添加公共参数
+                HttpUrl.Builder authorizedUrlBuilder = request.url()
+                        .newBuilder()
+                        .scheme(request.url().scheme())
+                        .host(request.url().host())
+                        .addQueryParameter("jsid", App.sessionID);
+
+                // 新的请求
+                Request newRequest = request.newBuilder()
+                        .method(request.method(), request.body())
+                        .url(authorizedUrlBuilder.build())
+                        .build();
+                Log.i("Retrofit","request url:"+newRequest.url().toString());
+
+                originalResponse = chain.proceed(newRequest);
+            }else{
+
+                originalResponse = chain.proceed(request);
+            }
+
 
             if (SystemTool.isNetworkAvailable()) {
                 //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
@@ -170,15 +200,31 @@ public class RetrofitManager {
     }
 
     /**
-     * example：Rw登录接口测试
+     * example：Rw登录接口
      *
      * @param phone ：手机号
      * @param password ：密码
      */
-
-
     public Observable<LoginEntity> login(String phone, String password) {
         return mRWService.login(phone,password);
+    }
+
+
+    /**
+     * example：文件上传
+     * @param body ：文件集合body
+     */
+    public Observable<UploadEntity> upload(MultipartBody body) {
+        return mRWService.upload(body);
+    }
+
+    /**
+     * example：文件上传
+     * @param map ：文件名/用户id
+     */
+    public Observable<BaseEntity> updateAvatar(
+            Map<String,Object> map){
+        return mRWService.updateAvatar(map);
     }
 
 }

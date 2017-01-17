@@ -91,11 +91,21 @@ public class WorkFragment extends BaseFragment {
 
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        if(hidden){
+            if (autoScrollViewPager!=null) {
+                autoScrollViewPager.stopAutoScroll();
+            }
+        }else{
+            if (autoScrollViewPager!=null) {
+                autoScrollViewPager.startAutoScroll();
+            }
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        if (autoScrollViewPager!=null) {
-            autoScrollViewPager.startAutoScroll();
-        }
 
     }
 
@@ -103,10 +113,6 @@ public class WorkFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (autoScrollViewPager!=null) {
-            autoScrollViewPager.stopAutoScroll();
-        }
-
     }
 
     @Override
@@ -158,8 +164,6 @@ public class WorkFragment extends BaseFragment {
     private void initAutoScrollViewPager()
     {
         autoScrollViewPager.setAdapter(mPagerAdapter);
-
-
         autoScrollViewPager.setScrollFactgor(10); // 控制滑动速度
         autoScrollViewPager.setOffscreenPageLimit(6);
         autoScrollViewPager.startAutoScroll(3000);

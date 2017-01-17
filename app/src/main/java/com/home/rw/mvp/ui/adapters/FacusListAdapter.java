@@ -16,6 +16,7 @@ import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.FacusListEntity;
+import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.home.rw.utils.FrescoUtils;
 
 import java.util.ArrayList;
@@ -27,9 +28,8 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/8.
  */
 
-public class FacusListAdapter extends RecyclerView.Adapter<FacusListAdapter.FacusHolder> {
+public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.DataEntity> {
 
-    private ArrayList<FacusListEntity.DataEntity> dataSource;
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
@@ -37,21 +37,39 @@ public class FacusListAdapter extends RecyclerView.Adapter<FacusListAdapter.Facu
     private final int COMPRESS_HEIGH = 200;
 
     public FacusListAdapter(ArrayList<FacusListEntity.DataEntity> dataSource, Context context){
+        super(dataSource);
         this.dataSource = dataSource;
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
     @Override
-    public FacusListAdapter.FacusHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cell_facus_list, parent, false);
-        FacusHolder holder = new FacusHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder  holder = null;
+        View view = null;
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick((int)v.getTag());
-            }
-        });
+        switch (viewType){
+            case TYPE_FOOTER:
+                view = inflater.inflate(R.layout.layout_footer_loadmore2, parent, false);
+                holder = new FooterViewHolder(view);
+                break;
+            case TYPE_HEADER:
+                holder = new HeaderViewHolder(mHeaderView);
+                break;
+            case TYPE_ITEM:
+                view = inflater.inflate(R.layout.cell_facus_list, parent, false);
+                holder = new FacusHolder(view);
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick((int)v.getTag());
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+
         return holder;
     }
     //设置item监听事件
@@ -61,18 +79,35 @@ public class FacusListAdapter extends RecyclerView.Adapter<FacusListAdapter.Facu
     }
 
     @Override
-    public void onBindViewHolder(final FacusHolder holder, final int position) {
-        FacusListEntity.DataEntity entity = dataSource.get(position);
-        holder.itemView.setTag(position);
-        FrescoUtils.load(Uri.parse(entity.getHeader()),holder.mHeader,COMPRESS_WIDTH,COMPRESS_HEIGH);
-        holder.mName.setText(entity.getName());
-        holder.mNum.setText(""+entity.getNum());
+    public int getItemViewType(int position) {
+        if (mIsShowFooter && isFooterPosition(position)) {
+            return TYPE_FOOTER;
+        } else if (mIsShowHeader && isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_ITEM;
+        }
     }
 
     @Override
-    public int getItemCount() {
-        return dataSource.size();
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder,  int position) {
+
+        if (holder instanceof FacusHolder) {
+            if(mIsShowHeader)
+                position = position -1;
+
+            final int mPosition = position;
+            final FacusHolder mHolder = (FacusHolder)holder;
+
+            FacusListEntity.DataEntity entity = dataSource.get(mPosition);
+            holder.itemView.setTag(position);
+            FrescoUtils.load(Uri.parse(entity.getHeader()),mHolder.mHeader,COMPRESS_WIDTH,COMPRESS_HEIGH);
+            mHolder.mName.setText(entity.getName());
+            mHolder.mNum.setText(""+entity.getNum());
+        }
+
     }
+
 
 
     class FacusHolder extends RecyclerView.ViewHolder {

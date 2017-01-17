@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.fragments.social;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,11 +26,15 @@ import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,6 +61,9 @@ public class FocusFragment extends BaseFragment {
     @BindView(R.id.rv_content)
     RecyclerView mRvContent;
 
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout mRefresh;
+
     @Inject
     public FocusFragment(){
 
@@ -81,6 +89,33 @@ public class FocusFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
+
+        mRefresh.setColorSchemeResources(R.color.colorPrimary);
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Observable.timer(2, TimeUnit.SECONDS).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                                mRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+
+                            }
+                        });
+            }
+        });
+
         FacusListEntity.DataEntity entity1 = new FacusListEntity.DataEntity();
         entity1.setHeader("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=a31bf4b58fd6277ffd1f3a6a49517455/b90e7bec54e736d10b34ec0693504fc2d562699c.jpg");
         entity1.setName("藤原龙也");

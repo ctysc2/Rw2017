@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,14 @@ import com.home.rw.mvp.ui.adapters.ApprovementListAdapter;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by cty on 2016/12/20.
@@ -35,6 +41,11 @@ import butterknife.BindView;
 public class ProposeFromMeUnPassedFragment extends BaseFragment {
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
+
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout mRefresh;
+
+    private boolean mIsLoadingMore;
 
     private ApprovementListAdapter mAdapter;
 
@@ -52,6 +63,31 @@ public class ProposeFromMeUnPassedFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
+        mRefresh.setColorSchemeResources(R.color.colorPrimary);
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Observable.timer(1, TimeUnit.SECONDS).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                                mRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+
+                            }
+                        });
+            }
+        });
         initRecycleView();
     }
 
@@ -163,6 +199,56 @@ public class ProposeFromMeUnPassedFragment extends BaseFragment {
 
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setAdapter(mAdapter);
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
+                int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
+                        .findLastVisibleItemPosition();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+
+                if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition >= totalItemCount - 1) {
+                    Log.i("mRecycleView","end");
+                    mAdapter.showFooter();
+                    mIsLoadingMore = true;
+                    mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
+                    Observable.timer(2, TimeUnit.SECONDS).
+                            observeOn(AndroidSchedulers.mainThread()).
+                            subscribe(new Observer<Long>() {
+                                @Override
+                                public void onCompleted() {
+                                    mAdapter.hideFooter();
+                                    mIsLoadingMore = false;
+                                    ApprovementListEntity.DataEntity child3 = new ApprovementListEntity.DataEntity();
+                                    child3.setName("xigua");
+                                    child3.setAppType(3);
+
+                                    ArrayList<ApprovementListEntity.DataEntity> temp  = new ArrayList<>();
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    mAdapter.addMore(temp);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+                            });
+                }
+            }
+
+        });
     }
 }

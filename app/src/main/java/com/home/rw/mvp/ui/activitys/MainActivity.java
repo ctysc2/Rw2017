@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.activitys;
 
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.socks.library.KLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,6 +53,8 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.ll_work)
     LinearLayout mLlWork;
+
+    private List<Fragment> mFragmentList = new ArrayList<>();
 
     private ArrayList<View> tabArray = new ArrayList<>();
 

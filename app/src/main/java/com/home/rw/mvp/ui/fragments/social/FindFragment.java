@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,13 +26,18 @@ import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.widget.AutoScrollViewPager;
+import com.home.rw.widget.SwipeMenuLayout;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class FindFragment extends BaseFragment {
 
@@ -45,6 +51,8 @@ public class FindFragment extends BaseFragment {
     @BindView(R.id.viewPagerIndicator)
     LinearLayout viewPagerIndicator;
 
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout mRefresh;
     //indicate
     private ArrayList<View> mScrollImageViews = new ArrayList<>();
 
@@ -102,6 +110,33 @@ public class FindFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
+        
+        mRefresh.setColorSchemeResources(R.color.colorPrimary);
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Observable.timer(2, TimeUnit.SECONDS).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                                mRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+
+                            }
+                        });
+            }
+        });
+
         initAutoScrollViewPager();
     }
 
@@ -111,22 +146,16 @@ public class FindFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (autoScrollViewPager!=null) {
-            autoScrollViewPager.startAutoScroll();
+    public void onHiddenChanged(boolean hidden) {
+        if(hidden){
+            if (autoScrollViewPager!=null) {
+                autoScrollViewPager.stopAutoScroll();
+            }
+        }else{
+            if (autoScrollViewPager!=null) {
+                autoScrollViewPager.startAutoScroll();
+            }
         }
-
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (autoScrollViewPager!=null) {
-            autoScrollViewPager.stopAutoScroll();
-        }
-
     }
 
     @Override

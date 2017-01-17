@@ -3,6 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bac_color_EFEFF4">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -56,4 +60,5 @@
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

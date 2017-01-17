@@ -3,6 +3,7 @@ package com.home.rw.mvp.ui.activitys.work;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.RollMeEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.adapters.ApprovementListAdapter;
@@ -25,11 +27,17 @@ import com.home.rw.mvp.ui.adapters.RecycleViewSperate;
 import com.home.rw.mvp.ui.adapters.RollMelistAdapter;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class RollMeActivity extends BaseActivity {
+
+    private boolean mIsLoadingMore;
 
     private RollMelistAdapter mAdapter;
 
@@ -45,6 +53,9 @@ public class RollMeActivity extends BaseActivity {
 
     @BindView(R.id.iv_top)
     ImageView mTop;
+
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout mRefresh;
 
 
     @OnClick({
@@ -81,6 +92,31 @@ public class RollMeActivity extends BaseActivity {
         midText.setText(R.string.rollme);
         mback.setImageResource(R.drawable.btn_back);
         initRecycleView();
+        mRefresh.setColorSchemeResources(R.color.colorPrimary);
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Observable.timer(1, TimeUnit.SECONDS).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                                mRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+
+                            }
+                        });
+            }
+        });
     }
 
     private void initRecycleView() {
@@ -121,6 +157,8 @@ public class RollMeActivity extends BaseActivity {
         dataSource.add(entity1);
         dataSource.add(entity2);
         dataSource.add(entity3);
+        dataSource.add(entity2);
+        dataSource.add(entity3);
         dataSource.add(entity4);
 
 
@@ -139,6 +177,64 @@ public class RollMeActivity extends BaseActivity {
         mRecycleView.addItemDecoration(new RecycleViewSperate());
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setAdapter(mAdapter);
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
+                int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
+                        .findLastVisibleItemPosition();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+
+                if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition >= totalItemCount - 1) {
+                    Log.i("mRecycleView","end");
+                    mAdapter.showFooter();
+                    mIsLoadingMore = true;
+                    mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
+                    Observable.timer(2, TimeUnit.SECONDS).
+                            observeOn(AndroidSchedulers.mainThread()).
+                            subscribe(new Observer<Long>() {
+                                @Override
+                                public void onCompleted() {
+                                    mAdapter.hideFooter();
+                                    mIsLoadingMore = false;
+
+                                    RollMeEntity.DataEntity entity3 = new RollMeEntity.DataEntity();
+                                    entity3.setSender("小钱");
+                                    entity3.setSendTime("2017-01-02 16:34");
+                                    entity3.setDeadLineTime("2017-11-02 15:34");
+                                    entity3.setContent("钱赞企是星际争霸2的一个职业的虫族选手，人称NO总，以凶猛的爆蟑螂莽死对手而闻名\n" +
+                                            " \n" +
+                                            "他的ZVT战术“庐山升龙霸”，使用1攻1防提速的蟑螂海针对人族10分半多的时候的真空期进行猛攻，成功莽死了不少职业选手，猛的要死\n" +
+                                            " \n" +
+                                            "于是，广大水友间就有了这么一种说法：\n" +
+                                            "大喊“我叫钱赞企！”的话蟑螂就可以加两攻……");
+                                    ArrayList<RollMeEntity.DataEntity> temp  = new ArrayList<>();
+                                    temp.add(entity3);
+                                    temp.add(entity3);
+                                    temp.add(entity3);
+                                    temp.add(entity3);
+                                    temp.add(entity3);
+                                    mAdapter.addMore(temp);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+                            });
+                }
+            }
+
+        });
 
     }
 

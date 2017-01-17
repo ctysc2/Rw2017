@@ -1,11 +1,13 @@
 package com.home.rw.mvp.ui.activitys.social;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,11 +29,17 @@ import com.home.rw.utils.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class CommListActivity extends BaseActivity {
+
+    private boolean mIsLoadingMore;
 
     private String mStartType = "";
 
@@ -42,6 +50,9 @@ public class CommListActivity extends BaseActivity {
     private final int DETAIL = 1;
 
     private int requestPos = 0;
+
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout mRefresh;
 
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
@@ -101,6 +112,32 @@ public class CommListActivity extends BaseActivity {
         }
 
         mback.setImageResource(R.drawable.btn_back);
+
+        mRefresh.setColorSchemeResources(R.color.colorPrimary);
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Observable.timer(1, TimeUnit.SECONDS).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                                mRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+
+                            }
+                        });
+            }
+        });
     }
 
     @Override
@@ -197,6 +234,12 @@ public class CommListActivity extends BaseActivity {
         dataSource.add(child1);
         dataSource.add(child2);
         dataSource.add(child3);
+        dataSource.add(child2);
+        dataSource.add(child3);
+        dataSource.add(child4);
+        dataSource.add(child3);
+        dataSource.add(child2);
+        dataSource.add(child3);
         dataSource.add(child4);
         dataSource.add(child5);
 
@@ -218,7 +261,67 @@ public class CommListActivity extends BaseActivity {
         mRecycleView.addItemDecoration(new RecycleViewSperate());
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setAdapter(mAdapter);
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
+                int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
+                        .findLastVisibleItemPosition();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+
+                if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition >= totalItemCount - 1) {
+                    Log.i("mRecycleView","end");
+                    mAdapter.showFooter();
+                    mIsLoadingMore = true;
+                    mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
+                    Observable.timer(2, TimeUnit.SECONDS).
+                            observeOn(AndroidSchedulers.mainThread()).
+                            subscribe(new Observer<Long>() {
+                                @Override
+                                public void onCompleted() {
+                                    mAdapter.hideFooter();
+                                    mIsLoadingMore = false;
+                                    CommunicationEntity.DataEntity child3 = new CommunicationEntity.DataEntity();
+                                    child3.setName("新垣结衣");
+                                    child3.setZanNum(55);
+                                    child3.setTitle("新垣结衣gakki舞这个标题一定要很长很长的");
+                                    child3.setZaned(true);
+                                    child3.setFacused(false);
+                                    child3.setHeader("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fcf279a7dc0735fa85fd46ebff3864d6/8644ebf81a4c510f8e1339a66859252dd52aa5b3.jpg");
+                                    child3.setContent("新垣结衣（Aragaki Yui），1988年6月11日出生于冲绳县那霸市。日本演员、歌手、模特。毕业于日出高中[1]  。\n" +
+                                            "2001年，参加《nicola》模特比赛并获得最优秀奖。2005年，首次出演了电视连续剧《龙樱》[2]  。2006年，出演了电视连续剧《我的老板，我的英雄》，并出版第一本写真集《水漾青春》。2007年从日出高等学校毕业后专注于演艺圈发展，同年出演电视剧《父女七日变》，发表个人首张音乐专辑《そら》（《天空》）。2007年，因主演电影《恋空》而知名度增加，并接连获得多个电影新人奖项。2010年，与生田斗真主演电影《花水木》[3]  。2012年，与堺雅人主演电视剧《Legal High》[4]  。2013年，与堺雅人主演的《Legal High SP》在日本播出[5]  。2014年，与向井理、绫野刚主演电视剧《S最后的警官》[6]  ；同年主演电影《黎明的沙耶》[7]  。2015年2月28日，主演的电影《唇上之歌》上映[8-9]  。8月29日，参演的电影《剧场版 S-最后的警官-》上映[10]  。10月10日，主演的电视剧《掟上今日子的备忘录》在日本首播[11]  。2016年，主演10月开播的新剧《逃避虽可耻但很有用》");
+                                    ArrayList<String> img3 = new ArrayList<>();
+                                    img3.add("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=ec1ccc4ebe12c8fca0fefe9f9d6af920/f603918fa0ec08facfaaadc95eee3d6d55fbda32.jpg");
+                                    img3.add("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=e874ea57a1ec08fa320d1bf538875608/e1fe9925bc315c602bdf25078cb1cb134854778b.jpg");
+                                    child3.setImgs(img3);
+
+                                    ArrayList<CommunicationEntity.DataEntity> temp  = new ArrayList<>();
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    temp.add(child3);
+                                    mAdapter.addMore(temp);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+                            });
+                }
+            }
+
+        });
 
     }
 

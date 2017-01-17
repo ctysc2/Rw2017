@@ -14,7 +14,15 @@
     <string name="messageTitle">商务中心</string>
     <string name="more">更多</string>
     <string name="addPhone">添加电话</string>
+    <string name="showDetail">查看资料</string>
+    <string name="modifiComment">修改备注</string>
 
+    <string name="shangWu">商务电话</string>
+    <string name="haoYou">我的好友</string>
+    <string name="zhiDi">置地公告</string>
+    <string name="gongSi">公司公告</string>
+    <string name="qiYe">企业通讯录</string>
+    <string name="changYong">常用联系人</string>
     <!--办公-->
     <string name="compWork">企业办公</string>
     <string name="intelligentMobileWork">智能移动办公</string>
@@ -201,6 +209,7 @@
     <string name="deleteHint1">确认删除\"%1$s\"?</string>
     <string name="editExitHint1">退出页面内容讲不会被保存</string>
     <string name="editExitHint2">确认退出?</string>
+    <string name="loadMore">正在加载...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>

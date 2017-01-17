@@ -16,6 +16,7 @@ import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,51 +28,83 @@ import butterknife.ButterKnife;
  * Created by cty on 2016/12/20.
  */
 
-public class ReceivedLogListAdapter extends RecyclerView.Adapter<ReceivedLogListAdapter.LogViewHolder> {
-    private ArrayList<LogEntity.DataEntity> dataSource;
+public class ReceivedLogListAdapter extends BaseRecyclerViewAdapter<LogEntity.DataEntity> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
     public ReceivedLogListAdapter(ArrayList<LogEntity.DataEntity> dataSource, Context context){
-        this.dataSource = dataSource;
+        super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
     @Override
-    public LogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cell_log, parent, false);
-        LogViewHolder holder = new LogViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder  holder = null;
+        View view = null;
+        switch (viewType){
+            case TYPE_FOOTER:
+                view = inflater.inflate(R.layout.layout_footer_load_more, parent, false);
+                holder = new FooterViewHolder(view);
+                break;
+            case TYPE_HEADER:
+                holder = new HeaderViewHolder(mHeaderView);
+                break;
+            case TYPE_ITEM:
+                view = inflater.inflate(R.layout.cell_log, parent, false);
+                holder = new LogViewHolder(view);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick((int)v.getTag());
-            }
-        });
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick((int)v.getTag());
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+
         return holder;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        if (mIsShowFooter && isFooterPosition(position)) {
+            return TYPE_FOOTER;
+        } else if (mIsShowHeader && isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_ITEM;
+        }
     }
     //设置item监听事件
     public void setOnItemClickListener(OnItemClickListener mListener){
 
         this.mListener = mListener;
     }
+
     @Override
-    public void onBindViewHolder(LogViewHolder holder, int position) {
-        LogEntity.DataEntity entity = dataSource.get(position);
-        holder.itemView.setTag(position);
-        holder.mHeader.setImageURI(entity.getHeadUrl());
-        holder.mName.setText(entity.getName());
-        holder.mDate.setText(entity.getDate());
-        holder.mContent.setText(entity.getContent());
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        if(holder instanceof LogViewHolder){
+
+            if(mIsShowHeader)
+                position = position -1;
+
+            final int mPosition = position;
+            LogViewHolder mHolder = (LogViewHolder)holder;
+            LogEntity.DataEntity entity = dataSource.get(mPosition);
+            mHolder.itemView.setTag(mPosition);
+            mHolder.mHeader.setImageURI(entity.getHeadUrl());
+            mHolder.mName.setText(entity.getName());
+            mHolder.mDate.setText(entity.getDate());
+            mHolder.mContent.setText(entity.getContent());
+
+        }
+
 
     }
 
-
-    @Override
-    public int getItemCount() {
-        return dataSource.size();
-    }
 
     class LogViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_header)

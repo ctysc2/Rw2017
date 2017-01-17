@@ -7,12 +7,17 @@
     tools:context="com.home.rw.mvp.ui.activitys.social.CommListActivity">
     <include layout="@layout/common_toolbar"
         />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_refresh"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:background="@color/bac_color_EFEFF4"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

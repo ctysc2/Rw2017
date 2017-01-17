@@ -3,6 +3,7 @@ package com.home.rw.mvp.ui.activitys.social;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CommDetailActivity extends BaseActivity {
+
 
     private CommunicationEntity.DataEntity data;
 

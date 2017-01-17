@@ -5,9 +5,9 @@ package com.home.rw.common;
  */
 public class ApiConstants {
 
-        public static String VERSIONCODE="v2.2";
-
         public static String BASE_URL = "http://www.jskyme.cn:8080/rw/api/";
+
+    public static String USER = BASE_URL+"user/";
 
 
         //获取接口类型
@@ -18,6 +18,12 @@ public class ApiConstants {
             switch (hostType) {
                 case HostType.LOGIN:
                     host = BASE_URL;
+                    break;
+                case HostType.UPLOAD:
+                    host = BASE_URL;
+                    break;
+                case HostType.AVATAR:
+                    host = USER;
                     break;
                 default:
                     host = "";

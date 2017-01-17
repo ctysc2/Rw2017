@@ -3,6 +3,10 @@ package com.home.rw.utils;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
+import com.home.rw.R;
+
+import java.util.Random;
+
 import static android.R.attr.topLeftRadius;
 
 /**
@@ -46,6 +50,33 @@ public class DrawableUtils {
 
         }
         return gd;
+
+    }
+
+    public static int getRandomBackgroundResource(){
+
+        int d = 0;
+        int random = new Random().nextInt(5);
+            switch (random){
+                case 0:
+                    d = R.drawable.shape_circle_blue;
+                    break;
+                case 1:
+                    d = R.drawable.shape_circle_red;
+                    break;
+                case 2:
+                    d = R.drawable.shape_circle_green;
+                    break;
+                case 3:
+                    d = R.drawable.shape_circle_yellow;
+                    break;
+                case 4:
+                    d = R.drawable.shape_circle_purple;
+                    break;
+
+            }
+
+        return d;
 
     }
 }

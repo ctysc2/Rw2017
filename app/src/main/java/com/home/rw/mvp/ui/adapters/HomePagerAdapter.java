@@ -3,6 +3,8 @@ package com.home.rw.mvp.ui.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.home.rw.utils.FrescoUtils;
 
 import java.util.ArrayList;
@@ -26,8 +29,8 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/10.
  */
 
-public class HomePagerAdapter extends RecyclerView.Adapter<HomePagerAdapter.HomePageViewHolder>{
-    private ArrayList<CommunicationEntity.DataEntity> dataSource;
+public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntity.DataEntity> {
+    //private ArrayList<CommunicationEntity.DataEntity> dataSource;
     private Context context;
     private LayoutInflater inflater;
     private String entryType = "common";
@@ -35,27 +38,43 @@ public class HomePagerAdapter extends RecyclerView.Adapter<HomePagerAdapter.Home
     private final int COMPRESS_WIDTH = 200;
     private final int COMPRESS_HEIGH = 120;
     public HomePagerAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, Context context){
-        this.dataSource = dataSource;
+        super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
+
     }
     public HomePagerAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, String type, Context context){
-        this.dataSource = dataSource;
+        super(dataSource);
         this.context = context;
         this.entryType = type;
         inflater = LayoutInflater.from(context);
     }
     @Override
-    public HomePagerAdapter.HomePageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cell_homepage, parent, false);
-        HomePagerAdapter.HomePageViewHolder holder = new HomePagerAdapter.HomePageViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder  holder = null;
+        View view = null;
+        switch (viewType){
+            case TYPE_FOOTER:
+                view = inflater.inflate(R.layout.layout_footer_load_more, parent, false);
+                holder = new FooterViewHolder(view);
+                break;
+            case TYPE_HEADER:
+                holder = new HeaderViewHolder(mHeaderView);
+                break;
+            case TYPE_ITEM:
+                view = inflater.inflate(R.layout.cell_homepage, parent, false);
+                holder = new HomePagerAdapter.HomePageViewHolder(view);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick((int)v.getTag());
+                    }
+                });
+                break;
+            default:
+                break;
+        }
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick((int)v.getTag());
-            }
-        });
         return holder;
     }
     //设置item监听事件
@@ -65,68 +84,85 @@ public class HomePagerAdapter extends RecyclerView.Adapter<HomePagerAdapter.Home
     }
 
     @Override
-    public void onBindViewHolder(final HomePagerAdapter.HomePageViewHolder holder, final int position) {
-
-        final CommunicationEntity.DataEntity entity = dataSource.get(position);
-
-        holder.itemView.setTag(position);
-
-        if(entity.getType() == 0){
-            holder.mCompType.setText(context.getString(R.string.compIntroduction));
-            holder.mCompTypeEn.setText(context.getString(R.string.compIntroductionEn));
-            holder.mTitle.setText(entity.getTitle());
-            holder.mContent1.setVisibility(View.VISIBLE);
-            holder.mContent1.setText(entity.getContent());
-            holder.mContent2.setVisibility(View.GONE);
-        }else{
-            holder.mCompType.setText(context.getString(R.string.compDynamic));
-            holder.mCompTypeEn.setText(context.getString(R.string.compDynamicEn));
-            holder.mTitle.setText(entity.getTitle());
-            holder.mContent1.setVisibility(View.GONE);
-            holder.mContent2.setVisibility(View.VISIBLE);
-            holder.mContent2.setText(entity.getContent());
+    public int getItemViewType(int position) {
+        if (mIsShowFooter && isFooterPosition(position)) {
+            return TYPE_FOOTER;
+        } else if (mIsShowHeader && isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_ITEM;
         }
-
-        switch (entity.getImgs().size()){
-            case 0:
-                holder.mContainer.setVisibility(View.GONE);
-                break;
-            case 1:
-                holder.mContainer.setVisibility(View.VISIBLE);
-                holder.mPic1.setVisibility(View.VISIBLE);
-                holder.mPic2.setVisibility(View.INVISIBLE);
-                holder.mPic3.setVisibility(View.GONE);
-                FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),holder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                break;
-            case 2:
-                holder.mContainer.setVisibility(View.VISIBLE);
-                holder.mPic1.setVisibility(View.VISIBLE);
-                holder.mPic2.setVisibility(View.VISIBLE);
-                holder.mPic3.setVisibility(View.GONE);
-                FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),holder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                FrescoUtils.load(Uri.parse(entity.getImgs().get(1)),holder.mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                break;
-            case 3:
-                holder.mContainer.setVisibility(View.VISIBLE);
-                holder.mPic1.setVisibility(View.VISIBLE);
-                holder.mPic2.setVisibility(View.VISIBLE);
-                holder.mPic3.setVisibility(View.VISIBLE);
-                FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),holder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                FrescoUtils.load(Uri.parse(entity.getImgs().get(1)),holder.mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                FrescoUtils.load(Uri.parse(entity.getImgs().get(2)),holder.mPic3,COMPRESS_WIDTH,COMPRESS_HEIGH);
-
-                break;
-            default:
-                break;
-
-        }
-
-
     }
 
     @Override
-    public int getItemCount() {
-        return dataSource.size();
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,  int position) {
+
+        if(holder instanceof HomePageViewHolder){
+            if(mIsShowHeader)
+                 position = position -1;
+
+            final int mPosition = position;
+
+            final HomePageViewHolder mHolder = (HomePageViewHolder)holder;
+            final CommunicationEntity.DataEntity entity = dataSource.get(mPosition);
+
+            holder.itemView.setTag(mPosition);
+
+            if(entity.getType() == 0){
+                mHolder.mCompType.setText(context.getString(R.string.compIntroduction));
+                mHolder.mCompTypeEn.setText(context.getString(R.string.compIntroductionEn));
+                mHolder.mTitle.setText(entity.getTitle());
+                mHolder.mContent1.setVisibility(View.VISIBLE);
+                mHolder.mContent1.setText(entity.getContent());
+                mHolder.mContent2.setVisibility(View.GONE);
+            }else{
+                mHolder.mCompType.setText(context.getString(R.string.compDynamic));
+                mHolder.mCompTypeEn.setText(context.getString(R.string.compDynamicEn));
+                mHolder.mTitle.setText(entity.getTitle());
+                mHolder.mContent1.setVisibility(View.GONE);
+                mHolder.mContent2.setVisibility(View.VISIBLE);
+                mHolder.mContent2.setText(entity.getContent());
+            }
+
+            switch (entity.getImgs().size()){
+                case 0:
+                    mHolder.mContainer.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    mHolder.mContainer.setVisibility(View.VISIBLE);
+                    mHolder.mPic1.setVisibility(View.VISIBLE);
+                    mHolder.mPic2.setVisibility(View.INVISIBLE);
+                    mHolder.mPic3.setVisibility(View.GONE);
+                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),mHolder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    break;
+                case 2:
+                    mHolder.mContainer.setVisibility(View.VISIBLE);
+                    mHolder.mPic1.setVisibility(View.VISIBLE);
+                    mHolder.mPic2.setVisibility(View.VISIBLE);
+                    mHolder.mPic3.setVisibility(View.GONE);
+                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),mHolder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    FrescoUtils.load(Uri.parse(entity.getImgs().get(1)),mHolder.mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    break;
+                case 3:
+                    mHolder.mContainer.setVisibility(View.VISIBLE);
+                    mHolder.mPic1.setVisibility(View.VISIBLE);
+                    mHolder.mPic2.setVisibility(View.VISIBLE);
+                    mHolder.mPic3.setVisibility(View.VISIBLE);
+                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),mHolder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    FrescoUtils.load(Uri.parse(entity.getImgs().get(1)),mHolder.mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    FrescoUtils.load(Uri.parse(entity.getImgs().get(2)),mHolder.mPic3,COMPRESS_WIDTH,COMPRESS_HEIGH);
+
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
+
+
+
+
     }
 
 

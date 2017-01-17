@@ -1,11 +1,13 @@
 package com.home.rw.mvp.ui.activitys.social;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,17 +22,24 @@ import com.home.rw.mvp.ui.adapters.FacusListAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewDivider;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class FocusListActivity extends BaseActivity {
+
+    private boolean mIsLoadingMore;
 
     private ArrayList<FacusListEntity.DataEntity> datasource = new ArrayList<>();
 
     private FacusListAdapter mAdapterFacus;
 
-
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout mRefresh;
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -71,6 +80,31 @@ public class FocusListActivity extends BaseActivity {
         midText.setText(R.string.MyFacus);
         mback.setImageResource(R.drawable.btn_back);
         initRecycleView();
+        mRefresh.setColorSchemeResources(R.color.colorPrimary);
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Observable.timer(1, TimeUnit.SECONDS).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                                mRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+
+                            }
+                        });
+            }
+        });
     }
 
     private void initRecycleView() {
@@ -108,6 +142,20 @@ public class FocusListActivity extends BaseActivity {
         datasource.add(entity2);
         datasource.add(entity3);
         datasource.add(entity4);
+        datasource.add(entity2);
+        datasource.add(entity3);
+        datasource.add(entity5);
+        datasource.add(entity6);
+        datasource.add(entity2);
+        datasource.add(entity3);
+        datasource.add(entity4);
+        datasource.add(entity5);
+        datasource.add(entity4);
+        datasource.add(entity5);
+        datasource.add(entity5);
+        datasource.add(entity2);
+        datasource.add(entity3);
+        datasource.add(entity4);
         datasource.add(entity5);
         datasource.add(entity6);
         //关注的人列表
@@ -128,7 +176,66 @@ public class FocusListActivity extends BaseActivity {
         mRecycleView.addItemDecoration(new RecycleViewDivider(this,RecycleViewDivider.VERTICAL_LIST,RecycleViewDivider.COMMON));
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setAdapter(mAdapterFacus);
-        mRecycleView.setNestedScrollingEnabled(false);
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
+                int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
+                        .findLastVisibleItemPosition();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+
+                if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition >= totalItemCount - 1) {
+                    Log.i("mRecycleView","end");
+                    mAdapterFacus.showFooter();
+                    mIsLoadingMore = true;
+                    mRecycleView.scrollToPosition(mAdapterFacus.getItemCount() - 1);
+                    Observable.timer(2, TimeUnit.SECONDS).
+                            observeOn(AndroidSchedulers.mainThread()).
+                            subscribe(new Observer<Long>() {
+                                @Override
+                                public void onCompleted() {
+                                    mAdapterFacus.hideFooter();
+                                    mIsLoadingMore = false;
+                                    FacusListEntity.DataEntity entity5 = new FacusListEntity.DataEntity();
+                                    entity5.setHeader("http://b.hiphotos.baidu.com/baike/w%3D268%3Bg%3D0/sign=22dd700b0123dd542173a06ee932d4e3/562c11dfa9ec8a138ae95b8fff03918fa1ecc0ea.jpg");
+                                    entity5.setName("小田切让");
+                                    entity5.setNum(420);
+
+                                    ArrayList<FacusListEntity.DataEntity> temp  = new ArrayList<>();
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    temp.add(entity5);
+                                    mAdapterFacus.addMore(temp);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+                            });
+                }
+            }
+
+        });
     }
 
     @Override

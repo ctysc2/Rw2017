@@ -7,12 +7,16 @@
     tools:context="com.home.rw.mvp.ui.activitys.work.RollMeActivity">
     <include layout="@layout/common_toolbar"
         />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_refresh"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bac_color_EFEFF4"
-        android:layout_below="@id/toolbar">
+        android:background="@color/bac_color_EFEFF4">
     </android.support.v7.widget.RecyclerView>
     <ImageView
         android:id="@+id/iv_top"
@@ -23,4 +27,5 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
         android:layout_alignParentRight="true"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

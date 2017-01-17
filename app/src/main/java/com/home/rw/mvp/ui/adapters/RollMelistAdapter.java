@@ -14,9 +14,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.RollMeEntity;
+import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,28 +30,47 @@ import butterknife.ButterKnife;
  * Created by cty on 2016/12/20.
  */
 
-public class RollMelistAdapter extends RecyclerView.Adapter<RollMelistAdapter.RollViewHolder> {
-    private ArrayList<RollMeEntity.DataEntity> dataSource;
+public class RollMelistAdapter extends BaseRecyclerViewAdapter<RollMeEntity.DataEntity> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
     public RollMelistAdapter(ArrayList<RollMeEntity.DataEntity> dataSource, Context context){
+        super(dataSource);
         this.dataSource = dataSource;
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
     @Override
-    public RollViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cell_rollme, parent, false);
-        RollViewHolder holder = new RollViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick((int)v.getTag());
-            }
-        });
+        RecyclerView.ViewHolder  holder = null;
+        View view = null;
+
+        switch (viewType){
+            case TYPE_FOOTER:
+                view = inflater.inflate(R.layout.layout_footer_load_more, parent, false);
+                holder = new FooterViewHolder(view);
+                break;
+            case TYPE_HEADER:
+                holder = new HeaderViewHolder(mHeaderView);
+                break;
+            case TYPE_ITEM:
+                view = inflater.inflate(R.layout.cell_rollme, parent, false);
+                holder = new RollViewHolder(view);
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick((int)v.getTag());
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+
+
         return holder;
     }
     //设置item监听事件
@@ -58,32 +79,48 @@ public class RollMelistAdapter extends RecyclerView.Adapter<RollMelistAdapter.Ro
         this.mListener = mListener;
     }
     @Override
-    public void onBindViewHolder(final RollViewHolder holder, int position) {
-        final RollMeEntity.DataEntity entity = dataSource.get(position);
-        holder.itemView.setTag(position);
-        holder.mSender.setText(entity.getSender());
-        holder.mTime.setText(entity.getSendTime());
-        holder.mDeadLine.setText(entity.getDeadLineTime());
-        holder.mContent.setText(entity.getContent());
-        holder.mContent.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
-        holder.mLine.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
-        holder.mRlexpand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isExpand = !entity.isExpand();
-                entity.setExpand(isExpand);
-                holder.mContent.setVisibility(isExpand?View.VISIBLE:View.GONE);
-                holder.mLine.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
-                holder.mIVexpand.setImageResource(isExpand?R.drawable.icon_up:R.drawable.icon_down);
-            }
-        });
+    public void onBindViewHolder( RecyclerView.ViewHolder holder, int position) {
+
+        if (holder instanceof RollViewHolder) {
+
+            if(mIsShowHeader)
+                position = position -1;
+
+            final int mPosition = position;
+            final RollViewHolder mHolder = (RollViewHolder)holder;
+
+            final RollMeEntity.DataEntity entity = dataSource.get(mPosition);
+            mHolder.itemView.setTag(position);
+            mHolder.mSender.setText(entity.getSender());
+            mHolder.mTime.setText(entity.getSendTime());
+            mHolder.mDeadLine.setText(entity.getDeadLineTime());
+            mHolder.mContent.setText(entity.getContent());
+            mHolder.mContent.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
+            mHolder.mLine.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
+            mHolder.mRlexpand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean isExpand = !entity.isExpand();
+                    entity.setExpand(isExpand);
+                    mHolder.mContent.setVisibility(isExpand?View.VISIBLE:View.GONE);
+                    mHolder.mLine.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
+                    mHolder.mIVexpand.setImageResource(isExpand?R.drawable.icon_up:R.drawable.icon_down);
+                }
+            });
+        }
+
 
     }
 
-
     @Override
-    public int getItemCount() {
-        return dataSource.size();
+    public int getItemViewType(int position) {
+        if (mIsShowFooter && isFooterPosition(position)) {
+            return TYPE_FOOTER;
+        } else if (mIsShowHeader && isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_ITEM;
+        }
     }
 
     class RollViewHolder extends RecyclerView.ViewHolder {

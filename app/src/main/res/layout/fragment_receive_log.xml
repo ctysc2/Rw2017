@@ -2,18 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/rv_list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@+id/sperate"
-    android:background="@color/bac_color_EFEFF4">
-</android.support.v7.widget.RecyclerView>
-    <View
-        android:id="@+id/sperate"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_refresh"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/bac_color_EFEFF4"
-        android:layout_alignParentBottom="true"/>
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/sperate"
+            android:background="@color/bac_color_EFEFF4">
+        </android.support.v7.widget.RecyclerView>
+            <View
+                android:id="@+id/sperate"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/bac_color_EFEFF4"
+                android:layout_alignParentBottom="true"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
