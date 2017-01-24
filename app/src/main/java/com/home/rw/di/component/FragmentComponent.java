@@ -16,6 +16,8 @@ import com.home.rw.mvp.ui.fragments.MessageFragment;
 import com.home.rw.mvp.ui.fragments.MineMeFragment;
 import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
+import com.home.rw.mvp.ui.fragments.message.CompanyReadedNotice;
+import com.home.rw.mvp.ui.fragments.message.CompanyUnReadedNotice;
 import com.home.rw.mvp.ui.fragments.mine.AllOrderFragment;
 import com.home.rw.mvp.ui.fragments.mine.CompanyWalletFragment;
 import com.home.rw.mvp.ui.fragments.mine.LastMonthOrderFragment;
@@ -52,6 +54,9 @@ public interface FragmentComponent {
     void inject(MineMeFragment mineMeFragment);
     void inject(SocialFragment socialFragment);
     void inject(WorkFragment workFragment);
+    //message
+    void inject(CompanyReadedNotice readedNotice);
+    void inject(CompanyUnReadedNotice unreadedNotice);
 
     //work
     void inject(ProposeFromMePassedFragment passedFragment);

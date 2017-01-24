@@ -37,7 +37,6 @@ public class SignListActivity extends BaseActivity {
 
     private ArrayList<SignEntity.DataEntity> dataSource  = new ArrayList<>();
 
-    //http://p1.qhimg.com/dmsmty/350_200_/t01cf5a5108bd50b4fc.jpg
 
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
@@ -161,7 +160,7 @@ public class SignListActivity extends BaseActivity {
                 RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
                 int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
-                        .findLastVisibleItemPosition();
+                        .findLastCompletelyVisibleItemPosition();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
 

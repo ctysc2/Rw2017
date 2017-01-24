@@ -52,10 +52,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bt_login:
-                mLoginPresenterImpl.beforeRequest();
+               // mLoginPresenterImpl.beforeRequest();
                 //mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
-                mLoginPresenterImpl.processLogin("oa_e","1234");
-                // startActivity(new Intent(this,MainActivity.class));
+                //mLoginPresenterImpl.processLogin("oa_e","1234");
+                 startActivity(new Intent(this,MainActivity.class));
                 break;
             default:
                 break;

@@ -9,6 +9,7 @@ import com.home.rw.di.scope.ContextLife;
 import com.home.rw.di.scope.PerActivity;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
+import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
 import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovedByMeActivity;
@@ -49,6 +50,7 @@ public interface ActivityComponent {
     void inject(DailyLogActivity dailyLogActivity);
     void inject(OrderActivity orderActivity);
     void inject(WalletActivity walletActivity);
+    void inject(CompanyNoticeActivity companyNoticeActivity);
 
 
 }

@@ -18,6 +18,7 @@ import com.home.rw.di.component.DaggerFragmentComponent;
 import com.home.rw.di.component.FragmentComponent;
 import com.home.rw.di.module.FragmentModule;
 import com.home.rw.mvp.presenter.base.BasePresenter;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.FrescoUtils;
 import com.home.rw.utils.RxBus;
@@ -38,7 +39,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     protected FragmentComponent mFragmentComponent;
     protected T mPresenter;
-
+    protected DialogUtils mAlertDialog;
     private View mFragmentView;
 
     public abstract void initInjector();

@@ -16,8 +16,18 @@ import android.widget.TextView;
 
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
+import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.entity.MessegeMainEntity;
+import com.home.rw.mvp.ui.activitys.increment.MeetingAppointmentListActivity;
+import com.home.rw.mvp.ui.activitys.increment.TempActivity;
+import com.home.rw.mvp.ui.activitys.message.BusinessPhoneActivity;
+import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
+import com.home.rw.mvp.ui.activitys.message.LandMarkNotice;
+import com.home.rw.mvp.ui.activitys.message.MessageMoreActivity;
+import com.home.rw.mvp.ui.activitys.message.ModifiRemarkActivity;
 import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
+import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
 import com.home.rw.mvp.ui.adapters.HomePagerAdapter;
 import com.home.rw.mvp.ui.adapters.MessegeMainAdapter;
@@ -33,6 +43,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by cty on 2016/12/13.
  */
@@ -40,6 +52,10 @@ import butterknife.OnClick;
 public class MessageFragment extends BaseFragment {
 
     private MessegeMainAdapter mAdapter;
+
+    private int mSelectedPosition;
+
+    private final int TYPE_REMARK = 0;
 
     @BindView(R.id.back)
     ImageButton mScan;
@@ -57,6 +73,24 @@ public class MessageFragment extends BaseFragment {
     RecyclerView mRecycleView;
 
     ArrayList<MessegeMainEntity.DataEntity> dataSource = new ArrayList<>();
+
+    @OnClick({R.id.rightText,
+
+
+    })
+    public void OnClick(View v){
+        Intent intent;
+        switch (v.getId()){
+            case R.id.rightText:
+                intent = new Intent(mActivity, MessageMoreActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +128,7 @@ public class MessageFragment extends BaseFragment {
         ArrayList<MessegeMainEntity.DataEntity> subData = new ArrayList<>();
 
         MessegeMainEntity.DataEntity child1 = new MessegeMainEntity.DataEntity(
-                "0",
+                -1,
                 0,
                 "商务电话",
                 "最近通话:小李",
@@ -103,7 +137,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity child2 = new MessegeMainEntity.DataEntity(
-                "0",
+                -2,
                 0,
                 "我的好友",
                 "最近通话:小陈",
@@ -112,7 +146,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity child3 = new MessegeMainEntity.DataEntity(
-                "0",
+                -3,
                 0,
                 "置地公告",
                 null,
@@ -121,7 +155,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity child4 = new MessegeMainEntity.DataEntity(
-                "0",
+                -4,
                 0,
                 "公司公告",
                 null,
@@ -130,7 +164,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity child5 = new MessegeMainEntity.DataEntity(
-                "0",
+                -5,
                 0,
                 "企业通讯录",
                 null,
@@ -139,7 +173,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity child6 = new MessegeMainEntity.DataEntity(
-                "0",
+                -6,
                 0,
                 "常用联系人",
                 null,
@@ -150,7 +184,7 @@ public class MessageFragment extends BaseFragment {
 
 
         MessegeMainEntity.DataEntity subchild1 = new MessegeMainEntity.DataEntity(
-                "0",
+                1,
                 0,
                 "张依旧",
                 "13736239384",
@@ -159,7 +193,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity subchild2 = new MessegeMainEntity.DataEntity(
-                "0",
+                2,
                 0,
                 "陈无人",
                 "13947589484",
@@ -168,7 +202,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity subchild3 = new MessegeMainEntity.DataEntity(
-                "0",
+                3,
                 0,
                 "导师",
                 "15543245867",
@@ -203,11 +237,35 @@ public class MessageFragment extends BaseFragment {
         saveSetions();
 
         mAdapter = new MessegeMainAdapter(dataSource,mActivity);
+        mAdapter.setOnRemarkClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                mSelectedPosition = position;
+                Intent intent = new Intent(mActivity, ModifiRemarkActivity.class);
+                intent.putExtra("name",dataSource.get(position).getTitle());
+                startActivityForResult(intent,TYPE_REMARK);
+            }
+        });
+
+        mAdapter.setOnDetailClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                mSelectedPosition = position;
+                FacusListEntity.DataEntity entity = new FacusListEntity.DataEntity();
+                entity.setName(dataSource.get(position).getTitle());
+                entity.setHeader("http://imgsrc.baidu.com/baike/pic/item/bd315c6034a85edf6b717e174b540923dd547501.jpg");
+                entity.setNum(120);
+                Intent intent = new Intent(mActivity, OthersDetailActivity.class);
+                intent.putExtra("data",entity);
+                startActivity(intent);
+            }
+        });
 
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 MessegeMainEntity.DataEntity entity = dataSource.get(position);
+                mSelectedPosition = position;
                 if(entity.getChilds()!=null){
                     if(entity.isExpanded()){
                         dataSource.removeAll(entity.getChilds());
@@ -217,6 +275,25 @@ public class MessageFragment extends BaseFragment {
                       entity.setExpanded(true);
                     }
                    mAdapter.notifyDataSetChanged();
+                }else {
+                    switch (entity.getId()){
+                        case -1:
+                            startActivity(new Intent(mActivity, BusinessPhoneActivity.class));
+                            break;
+                        case -2:
+                            break;
+                        case -3:
+                            startActivity(new Intent(mActivity, LandMarkNotice.class));
+                            break;
+                        case -4:
+                            startActivity(new Intent(mActivity, CompanyNoticeActivity.class));
+                            break;
+                        case -5:
+                            break;
+                        default:
+                            break;
+
+                    }
                 }
             }
         });
@@ -226,24 +303,6 @@ public class MessageFragment extends BaseFragment {
                 LinearLayoutManager.VERTICAL, false));
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setAdapter(mAdapter);
-        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-
-                int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
-                        .findLastVisibleItemPosition();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-
-                if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItemPosition >= totalItemCount - 1) {
-                    Log.i("mRecycleView","end");
-                }
-            }
-
-        });
     }
 
     @Override
@@ -265,6 +324,20 @@ public class MessageFragment extends BaseFragment {
             }
 
 
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case TYPE_REMARK:
+                if(resultCode == RESULT_OK){
+                    String name = data.getStringExtra("name");
+                    dataSource.get(mSelectedPosition).setTitle(name);
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
+            default:
+                break;
         }
     }
 }

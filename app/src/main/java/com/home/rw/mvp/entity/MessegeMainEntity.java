@@ -17,15 +17,16 @@ public class MessegeMainEntity extends BaseEntity{
     }
 
     public static class DataEntity{
-        String id;
+        int id;
         int type = 0;
         String title;
         String subTitle;
+        String avatar;
         String date;
         boolean isExpanded;
         public ArrayList<DataEntity> childs;
 
-        public DataEntity(String id,int type,String title,String subTitle,String date,ArrayList<DataEntity> childs,boolean isExpanded){
+        public DataEntity(int id,int type,String title,String subTitle,String date,ArrayList<DataEntity> childs,boolean isExpanded){
             this.id = id;
             this.title = title;
             this.type = type;
@@ -33,6 +34,10 @@ public class MessegeMainEntity extends BaseEntity{
             this.date = date;
             this.childs = childs;
             this.isExpanded = isExpanded;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
         }
 
         public void setChilds(ArrayList<DataEntity> childs) {
@@ -43,7 +48,7 @@ public class MessegeMainEntity extends BaseEntity{
             this.date = date;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -63,7 +68,7 @@ public class MessegeMainEntity extends BaseEntity{
             return date;
         }
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
@@ -89,6 +94,10 @@ public class MessegeMainEntity extends BaseEntity{
 
         public boolean isExpanded() {
             return isExpanded;
+        }
+
+        public String getAvatar() {
+            return avatar;
         }
     }
 

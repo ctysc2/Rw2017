@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.FacusListEntity;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by cty on 2017/1/15.
@@ -32,11 +34,23 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final static int TYPE_MAIN  = 0;
     private final static int TYPE_SUB   = 1;
     private OnItemClickListener mListener;
+    private OnItemClickListener mRemark;
+    private OnItemClickListener mDetail;
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<MessegeMainEntity.DataEntity> dataSource;
     private Map<String,Integer> headMap = new HashMap<>();
 
+    //设置详情监听事件
+    public void setOnDetailClickListener(OnItemClickListener mListener){
+
+        this.mDetail = mListener;
+    }
+    //设置修改备注监听事件
+    public void setOnRemarkClickListener(OnItemClickListener mListener){
+
+        this.mRemark = mListener;
+    }
     //设置item监听事件
     public void setOnItemClickListener(OnItemClickListener mListener){
 
@@ -64,8 +78,14 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (viewType){
             case TYPE_MAIN:
-                 view = inflater.inflate(R.layout.cell_messege_common_list, parent, false);
-                 holder = new MainViewHolder(view);
+                view = inflater.inflate(R.layout.cell_messege_common_list, parent, false);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick((int)v.getTag());
+                    }
+                });
+                holder = new MainViewHolder(view);
                 break;
             case TYPE_SUB:
                 view = inflater.inflate(R.layout.cell_swipe_delete_item_2, parent, false);
@@ -73,24 +93,19 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
         }
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onItemClick((int)v.getTag());
-            }
-        });
+
 
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        holder.itemView.setTag(position);
+
 
         final MessegeMainEntity.DataEntity entity = dataSource.get(position);
 
         if (holder instanceof MainViewHolder) {
-
+            holder.itemView.setTag(position);
             ((MainViewHolder)holder).mHeader.setImageResource(headMap.get(entity.getTitle()));
             ((MainViewHolder)holder).mtitle.setText(entity.getTitle());
             if(entity.getSubTitle()!=null){
@@ -136,6 +151,12 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((SubViewHolder)holder).mHeader.setText(entity.getTitle().substring(0,1));
             ((SubViewHolder)holder).mtitle.setText(entity.getTitle());
             ((SubViewHolder)holder).mSubTitle.setText(entity.getSubTitle());
+            ((SubViewHolder)holder).mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onItemClick(position);
+                }
+            });
 
             if(position == dataSource.size()-1)
                 ((SubViewHolder)holder).mSperate.setVisibility(View.GONE);
@@ -146,6 +167,7 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     //查看详细
+                    mDetail.onItemClick(position);
                 }
             });
 
@@ -153,6 +175,7 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     //修改备注
+                    mRemark.onItemClick(position);
                 }
             });
         }
@@ -209,6 +232,9 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.tv_header)
         TextView mHeader;
 
+        @BindView(R.id.iv_header)
+        SimpleDraweeView mHeader2;
+
         @BindView(R.id.tv_line1)
         TextView mtitle;
 
@@ -222,8 +248,11 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Button mButtonLeft;
 
         @BindView(R.id.btnRight)
-
         Button mButtonRight;
+
+        @BindView(R.id.rl_container)
+        RelativeLayout mContainer;
+
 
         public SubViewHolder(View view) {
             super(view);

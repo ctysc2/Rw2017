@@ -23,6 +23,18 @@
     <string name="gongSi">公司公告</string>
     <string name="qiYe">企业通讯录</string>
     <string name="changYong">常用联系人</string>
+    <string name="readAll">阅读全文</string>
+    <string name="unReaded">未读</string>
+    <string name="Readed">已读</string>
+    <string name="gonggao">公告</string>
+    <string name="modifiremark">修改备注</string>
+    <string name="remarkName">备注名</string>
+    <string name="completed">完成</string>
+    <string name="friendVerifi">好友验证</string>
+    <string name="friendVerifiHint">您需要发送验证申请,等对方通过</string>
+    <string name="unLimited">无限量</string>
+    <string name="speechCall">语音通话</string>
+    <string name="phoneMeeting">电话会议</string>
     <!--办公-->
     <string name="compWork">企业办公</string>
     <string name="intelligentMobileWork">智能移动办公</string>
@@ -207,8 +219,10 @@
     <string name="dialogCancle">取消</string>
     <string name="dialogConfirm">确认</string>
     <string name="deleteHint1">确认删除\"%1$s\"?</string>
-    <string name="editExitHint1">退出页面内容讲不会被保存</string>
+    <string name="editExitHint1">退出页面内容将不会被保存</string>
     <string name="editExitHint2">确认退出?</string>
+    <string name="noticedelHint1">是否删除这条公告?</string>
+
     <string name="loadMore">正在加载...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

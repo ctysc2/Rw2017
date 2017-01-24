@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.home.rw.widget.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    app:ios="false"
+    app:leftSwipe="true"
+    app:swipeEnable="true">
+    <RelativeLayout
+        android:id="@+id/rl_continer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_layoutbac">
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@+id/tv_header">
+            <TextView
+                android:id="@+id/tv_line1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:text="开始工作啦"
+                />
+            <TextView
+                android:id="@+id/tv_line2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_919191"
+                android:textSize="12sp"
+                android:layout_marginTop="3dp"
+                android:text="2016.09.14"
+                />
+        </LinearLayout>
+        <View
+            android:id="@+id/sperate"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bac_color_EFEFF4"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/ll_text"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_del"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="@color/text_color_F46C61">
+        <ImageView
+            android:id="@+id/btnDel"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:text="@string/showDetail"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_del_wiped"/>
+    </RelativeLayout>
+
+
+
+</com.home.rw.widget.SwipeMenuLayout>

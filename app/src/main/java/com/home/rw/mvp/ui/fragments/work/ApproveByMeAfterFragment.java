@@ -190,7 +190,7 @@ public class ApproveByMeAfterFragment extends BaseFragment {
                 RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
                 int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
-                        .findLastVisibleItemPosition();
+                        .findLastCompletelyVisibleItemPosition();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
 

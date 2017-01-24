@@ -10,9 +10,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
+import com.home.rw.listener.AlertDialogListener;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.utils.CacheUtils;
 import com.home.rw.utils.DateUtils;
+import com.home.rw.utils.DialogUtils;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -20,7 +22,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements AlertDialogListener {
 
     private boolean clean_flag = false;
 
@@ -47,7 +49,9 @@ public class SettingActivity extends BaseActivity {
             case R.id.rl_verson:
                 break;
             case R.id.rl_cache:
-                clear_cache();
+                mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+                //clear_cache();
                 break;
             case R.id.rl_feedback:
                 startActivity(new Intent(this,FeedBackActivity.class));
@@ -112,6 +116,18 @@ public class SettingActivity extends BaseActivity {
                 Log.e("clean cache", e.getMessage());
             }
         }
+
+    }
+
+    @Override
+    public void onConFirm() {
+        mAlertDialog.dismiss();
+        clear_cache();
+    }
+
+    @Override
+    public void onCancel() {
+        mAlertDialog.dismiss();
 
     }
 }

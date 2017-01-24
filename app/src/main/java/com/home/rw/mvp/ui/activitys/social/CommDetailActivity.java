@@ -43,6 +43,7 @@ public class CommDetailActivity extends BaseActivity {
     private int selectedPosition = 0;
 
     private String entryType = "Common";
+
     @BindView(R.id.back)
     ImageButton mback;
 

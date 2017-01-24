@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_message_more"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bac_color_EFEFF4"
+    tools:context="com.home.rw.mvp.ui.activitys.message.MessageMoreActivity">
+    <include layout="@layout/common_toolbar"
+        />
+    <RelativeLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_qunliao"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/icon_more_qunliao"/>
+    <ImageView
+        android:id="@+id/iv_addfriend"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="30dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/icon_more_addfriend"/>
+    <ImageView
+        android:id="@+id/iv_shangwu"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/iv_qunliao"
+        android:src="@drawable/icon_more_shangwu"/>
+    <ImageView
+        android:id="@+id/iv_roll"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/iv_addfriend"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/icon_more_ruo"/>
+
+    </RelativeLayout>
+</RelativeLayout>

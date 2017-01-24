@@ -38,7 +38,6 @@ public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.Da
 
     public FacusListAdapter(ArrayList<FacusListEntity.DataEntity> dataSource, Context context){
         super(dataSource);
-        this.dataSource = dataSource;
         this.context = context;
         inflater = LayoutInflater.from(context);
     }

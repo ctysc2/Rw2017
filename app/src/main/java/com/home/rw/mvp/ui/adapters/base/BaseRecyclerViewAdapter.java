@@ -112,20 +112,38 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerVie
         return 0 == position;
     }
     public void add(int position, T item) {
+
+        if(position>=dataSource.size())
+            return;
+
         dataSource.add(position, item);
+
+        if(mIsShowHeader)
+            position = position +1;
+
+
         notifyItemInserted(position);
+        notifyItemRangeChanged(position,getItemCount()-position);
     }
 
     public void addMore(List<T> data) {
-        int startPosition = getItemCount();
         dataSource.addAll(data);
-        //notifyItemRangeInserted(startPosition, getItemCount());
         notifyDataSetChanged();
     }
 
     public void delete(int position) {
+        if(position>=dataSource.size())
+            return;
+
         dataSource.remove(position);
+
+        if(mIsShowHeader)
+            position = position +1;
+
+
+
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position,getItemCount()-position);
     }
 
     public List<T> getList() {

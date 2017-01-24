@@ -65,7 +65,15 @@
         <activity
             android:name=".mvp.ui.activitys.increment.MeetingAppointmentListActivity"
             android:label="@string/title_activity_meeting_appointment_list" />
-        <activity android:name=".mvp.ui.activitys.increment.TempActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.increment.TempActivity" />
+        <activity android:name=".mvp.ui.activitys.message.MessageMoreActivity" />
+        <activity android:name=".mvp.ui.activitys.message.LandMarkNotice" />
+        <activity android:name=".mvp.ui.activitys.message.LandMarkDetail" />
+        <activity android:name=".mvp.ui.activitys.message.CompanyNoticeActivity" />
+        <activity android:name=".mvp.ui.activitys.message.CompanyNoticeDetailActivity" />
+        <activity android:name=".mvp.ui.activitys.message.ModifiRemarkActivity" />
+        <activity android:name=".mvp.ui.activitys.message.FriendVerifiActivity" />
+        <activity android:name=".mvp.ui.activitys.message.BusinessPhoneActivity"></activity>
     </application>
 
 </manifest>
