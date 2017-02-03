@@ -1,12 +1,19 @@
 package com.home.rw.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.IBinder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by cty on 2016/12/13.
@@ -66,4 +73,5 @@ public class KeyBoardUtils {
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
+
 }

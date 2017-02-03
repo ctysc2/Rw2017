@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,6 +75,7 @@ public class ModifiRemarkActivity extends BaseActivity {
         mName = getIntent().getStringExtra("name");
         mEt1.setText(mName);
         mEt1.setSelection(mEt1.length());
+        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override

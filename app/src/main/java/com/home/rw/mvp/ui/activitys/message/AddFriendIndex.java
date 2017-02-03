@@ -9,58 +9,54 @@ import android.widget.TextView;
 
 import com.home.rw.R;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
-import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MessageMoreActivity extends BaseActivity {
+import static com.home.rw.common.Const.TYPE_ADD;
+import static com.home.rw.common.Const.TYPE_NORMAL;
+
+public class AddFriendIndex extends BaseActivity {
 
     @BindView(R.id.back)
-    ImageButton mback;
+    ImageButton mBack;
 
     @BindView(R.id.midText)
     TextView midText;
 
-
-
     @OnClick({R.id.back,
-            R.id.iv_qunliao,
-            R.id.iv_shangwu,
-            R.id.iv_addfriend,
-            R.id.iv_roll,
+            R.id.ll_contact,
+            R.id.ll_org,
+            R.id.ll_myteam,
 
     })
-    public void onClick(View v){
+    public void OnClick(View v){
         Intent intent;
-        switch(v.getId()){
+        switch (v.getId()){
             case R.id.back:
                 finish();
                 break;
-            case R.id.iv_qunliao:
-                intent = new Intent(this, GroupChatActivity.class);
+            case R.id.ll_contact:
+                break;
+            case R.id.ll_org:
+                intent = new Intent(this,OriganizationActivity.class);
+                intent.putExtra("type",TYPE_ADD);
                 startActivity(intent);
                 break;
-            case R.id.iv_shangwu:
-                intent = new Intent(this, BusinessPhoneActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.iv_addfriend:
-                intent = new Intent(this, AddFriendIndex.class);
-                startActivity(intent);
-                break;
-            case R.id.iv_roll:
-                intent = new Intent(this, SendRollActivity.class);
+            case R.id.ll_myteam:
+                intent = new Intent(this,MyTeamActivity.class);
+                intent.putExtra("type",TYPE_ADD);
                 startActivity(intent);
                 break;
             default:
                 break;
         }
+
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_message_more;
+        return R.layout.activity_add_friend_index;
     }
 
     @Override
@@ -70,8 +66,8 @@ public class MessageMoreActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        midText.setText(R.string.more);
-        mback.setImageResource(R.drawable.btn_back);
+        midText.setText(getString(R.string.addFriend));
+        mBack.setImageResource(R.drawable.btn_back);
     }
 
     @Override

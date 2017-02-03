@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,16 +17,22 @@ import android.widget.TextView;
 
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
+import com.home.rw.mvp.entity.BusinessMeetingPhoneEntity;
+import com.home.rw.mvp.entity.CallListEntity;
 import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.entity.MessegeMainEntity;
 import com.home.rw.mvp.ui.activitys.increment.MeetingAppointmentListActivity;
 import com.home.rw.mvp.ui.activitys.increment.TempActivity;
+import com.home.rw.mvp.ui.activitys.message.AddFriendIndex;
 import com.home.rw.mvp.ui.activitys.message.BusinessPhoneActivity;
 import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
 import com.home.rw.mvp.ui.activitys.message.LandMarkNotice;
 import com.home.rw.mvp.ui.activitys.message.MessageMoreActivity;
 import com.home.rw.mvp.ui.activitys.message.ModifiRemarkActivity;
+import com.home.rw.mvp.ui.activitys.message.MyFriendActivity;
+import com.home.rw.mvp.ui.activitys.message.OriganizationActivity;
+import com.home.rw.mvp.ui.activitys.message.PreviewCallActivity;
 import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
@@ -44,6 +51,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
+import static com.home.rw.common.Const.TYPE_ADD;
+import static com.home.rw.common.Const.TYPE_NORMAL;
 
 /**
  * Created by cty on 2016/12/13.
@@ -276,11 +285,13 @@ public class MessageFragment extends BaseFragment {
                     }
                    mAdapter.notifyDataSetChanged();
                 }else {
+                    Intent intent;
                     switch (entity.getId()){
                         case -1:
                             startActivity(new Intent(mActivity, BusinessPhoneActivity.class));
                             break;
                         case -2:
+                            startActivity(new Intent(mActivity, MyFriendActivity.class));
                             break;
                         case -3:
                             startActivity(new Intent(mActivity, LandMarkNotice.class));
@@ -289,8 +300,17 @@ public class MessageFragment extends BaseFragment {
                             startActivity(new Intent(mActivity, CompanyNoticeActivity.class));
                             break;
                         case -5:
+                            intent = new Intent(mActivity, OriganizationActivity.class);
+                            intent.putExtra("type",TYPE_NORMAL);
+                            startActivity(intent);
                             break;
                         default:
+                            CallListEntity.DataEntity data = new CallListEntity.DataEntity();
+                            data.setName(entity.getTitle());
+                            data.setAvatar(entity.getAvatar());
+                            intent = new Intent(mActivity,PreviewCallActivity.class);
+                            intent.putExtra("data",data);
+                            startActivity(intent);
                             break;
 
                     }

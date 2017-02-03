@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/search"
+    android:layout_width="match_parent"
+    android:background="@color/widowColor"
+    android:layout_height="50dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/shape_search_bac2"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icon_search"/>
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_marginLeft="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:text="搜索联系人直接发起商务电话"
+            android:textColor="@color/bac_color_B3B3B3"/>
+    </LinearLayout>
+</RelativeLayout>

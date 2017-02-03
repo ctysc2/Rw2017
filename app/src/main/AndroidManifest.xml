@@ -73,7 +73,16 @@
         <activity android:name=".mvp.ui.activitys.message.CompanyNoticeDetailActivity" />
         <activity android:name=".mvp.ui.activitys.message.ModifiRemarkActivity" />
         <activity android:name=".mvp.ui.activitys.message.FriendVerifiActivity" />
-        <activity android:name=".mvp.ui.activitys.message.BusinessPhoneActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.message.BusinessPhoneActivity" />
+        <activity android:name=".mvp.ui.activitys.message.PreviewCallActivity" />
+        <activity android:name=".mvp.ui.activitys.message.OriganizationActivity" />
+        <activity android:name=".mvp.ui.activitys.message.MyTeamActivity" />
+        <activity android:name=".mvp.ui.activitys.message.AddFriendIndex" />
+        <activity android:name=".mvp.ui.activitys.message.MyFriendActivity" />
+        <activity android:name=".mvp.ui.activitys.message.MyNewFriendActivity" />
+        <activity android:name=".mvp.ui.activitys.message.GroupChatActivity" />
+        <activity android:name=".mvp.ui.activitys.message.GroupChatSelectActivity" />
+        <activity android:name=".mvp.ui.activitys.message.GroupChatNamedActivity"></activity>
     </application>
 
 </manifest>

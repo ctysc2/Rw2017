@@ -4,6 +4,7 @@ import com.home.rw.mvp.entity.base.BaseEntity;
 import com.home.rw.mvp.ui.adapters.BusinessMeetingAdapter;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,7 @@ public class BusinessMeetingPhoneEntity extends BaseEntity {
         return data;
     }
 
-    public static class DataEntity{
+    public static class DataEntity implements Serializable{
         int id;
         String avatar;
         String title;

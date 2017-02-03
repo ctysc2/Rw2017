@@ -35,6 +35,25 @@
     <string name="unLimited">无限量</string>
     <string name="speechCall">语音通话</string>
     <string name="phoneMeeting">电话会议</string>
+    <string name="netCall">网络电话</string>
+    <string name="normalCall">普通电话</string>
+    <string name="inviteNum">可邀请%1$d人</string>
+    <string name="organization">组织架构</string>
+    <string name="orgNum">(%1$d人)</string>
+    <string name="myTeam">我的团队</string>
+    <string name="addFriend">添加好友</string>
+    <string name="phoneContact">手机通讯录</string>
+    <string name="newFriend">新的好友</string>
+    <string name="add">添加</string>
+    <string name="added">已添加</string>
+    <string name="receive">接受</string>
+    <string name="received">已接受</string>
+    <string name="addFriendHint">请求添加你好友</string>
+    <string name="groupChat">群聊</string>
+    <string name="createGroupChat">创建群聊</string>
+    <string name="createGroupChatName">创建群名字</string>
+    <string name="confirm">确定</string>
+    <string name="nextStep">下一步</string>
     <!--办公-->
     <string name="compWork">企业办公</string>
     <string name="intelligentMobileWork">智能移动办公</string>
@@ -43,7 +62,6 @@
     <string name="approveLabel">审批</string>
     <string name="cardLabel">考勤打卡</string>
     <string name="rollLabel">若一下</string>
-
     <string name="approvebyme">待我审批</string>
     <string name="fromme">我发起的</string>
     <string name="getout">外出</string>
@@ -224,7 +242,13 @@
     <string name="noticedelHint1">是否删除这条公告?</string>
 
     <string name="loadMore">正在加载...</string>
+
+    <!--Toast-->
+    <string name="canNotAddMoreCallMember">最多添加7名会议人员</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>
+
+
 </resources>
