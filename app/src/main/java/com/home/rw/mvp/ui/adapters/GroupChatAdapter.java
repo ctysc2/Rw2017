@@ -71,7 +71,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         GroupChatEntity.DataEntity entity = dataSource.get(position);
         mHolder.itemView.setTag(position);
         mHolder.mHeader.setText(entity.getName().substring(0,1));
-        mHolder.mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+        mHolder.mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getName()));
         mHolder.mTitle.setText(entity.getName()+String.format(context.getString(R.string.orgNum),entity.getNum()));
 
         if(position == dataSource.size()-1){

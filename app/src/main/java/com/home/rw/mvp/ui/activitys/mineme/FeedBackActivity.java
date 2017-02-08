@@ -3,6 +3,7 @@ package com.home.rw.mvp.ui.activitys.mineme;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class FeedBackActivity extends BaseActivity {
     public void initViews() {
         midText.setText(R.string.FeedBack);
         mback.setImageResource(R.drawable.btn_back);
+        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override

@@ -10,6 +10,16 @@
     <string name="increment">增值服务</string>
     <string name="social">社区</string>
     <string name="mine">我的</string>
+    <!--开锁-->
+    <string name="openDoor">芝麻开门</string>
+    <string name="help">帮助</string>
+    <string name="tempKey">临时钥匙</string>
+    <string name="sendTempKey">发送临时钥匙</string>
+    <string name="ruoweizhiye">若为置业</string>
+    <string name="tempReason">事由</string>
+    <string name="sendMsg">发送短信</string>
+    <string name="multiInput">多行输入</string>
+    <string name="doorOpened">门开了,欢迎光临</string>
     <!--消息-->
     <string name="messageTitle">商务中心</string>
     <string name="more">更多</string>
@@ -54,6 +64,11 @@
     <string name="createGroupChatName">创建群名字</string>
     <string name="confirm">确定</string>
     <string name="nextStep">下一步</string>
+    <string name="meetintSelectHint1">请选择1-7人进行通话</string>
+    <string name="choosen">已选择</string>
+    <string name="containNum">确定(%1$d/7)</string>
+    <string name="numCantOverHint">已达到人数上限</string>
+    <string name="phoneContacts">手机通讯录</string>
     <!--办公-->
     <string name="compWork">企业办公</string>
     <string name="intelligentMobileWork">智能移动办公</string>

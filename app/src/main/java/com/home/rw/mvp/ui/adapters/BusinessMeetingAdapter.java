@@ -95,7 +95,7 @@ public class BusinessMeetingAdapter extends BaseRecyclerViewAdapter<BusinessMeet
                 ((BusinessViewHolder) holder).mHeaderText.setVisibility(View.VISIBLE);
                 ((BusinessViewHolder) holder).mHeader.setVisibility(View.INVISIBLE);
                 ((BusinessViewHolder) holder).mHeaderText.setText(entity.getTitle().substring(0,1));
-                ((BusinessViewHolder) holder).mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+                ((BusinessViewHolder) holder).mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             }
 
             if(mPosition == dataSource.size()-1)

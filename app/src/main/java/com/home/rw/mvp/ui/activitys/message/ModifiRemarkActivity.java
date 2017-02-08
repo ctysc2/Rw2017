@@ -1,10 +1,13 @@
 package com.home.rw.mvp.ui.activitys.message;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import com.home.rw.R;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.utils.KeyBoardUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,5 +86,13 @@ public class ModifiRemarkActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View v = getCurrentFocus();
+        new KeyBoardUtils(event,im,v).hideKeyBoardIfNecessary();
+        return super.dispatchTouchEvent(event);
     }
 }

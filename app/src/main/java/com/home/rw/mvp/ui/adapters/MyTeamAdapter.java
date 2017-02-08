@@ -16,6 +16,7 @@ import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.MyTeamEntity;
 import com.home.rw.mvp.entity.OrgEntity;
 import com.home.rw.mvp.entity.ReceiveFriendEntity;
+import com.home.rw.mvp.entity.SelectEntity;
 import com.home.rw.utils.DrawableUtils;
 
 import java.util.ArrayList;
@@ -66,7 +67,14 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             view = inflater.inflate(R.layout.cell_friend_add, parent, false);
             holder = new MyTeamAdapter.MyTeamAddViewHolder(view);
         }else{
-
+            view = inflater.inflate(R.layout.cell_chat_select, parent, false);
+            holder = new MyTeamAdapter.MyTeamSelectViewHolder(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onItemClick((int)v.getTag());
+                }
+            });
         }
 
         return holder;
@@ -88,7 +96,7 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 mHolder.mHeaderText.setVisibility(View.VISIBLE);
                 mHolder.mHeader.setVisibility(View.INVISIBLE);
                 mHolder.mHeaderText.setText(entity.getTitle().substring(0,1));
-                mHolder.mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+                mHolder.mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             }
             if((position == dataSource.size()-1)||
                     dataSource.get(position+1).getId()<=0)
@@ -103,7 +111,7 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
-                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             } else {
                 mHolder.mIvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setVisibility(View.INVISIBLE);
@@ -131,7 +139,31 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
         }else{
+            MyTeamSelectViewHolder mHolder = (MyTeamSelectViewHolder)holder;
+            mHolder.itemView.setTag(position);
+            mHolder.mTitle.setText(entity.getTitle());
 
+            if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
+                mHolder.mIvHeader.setVisibility(View.INVISIBLE);
+                mHolder.mTvHeader.setVisibility(View.VISIBLE);
+                mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
+            } else {
+                mHolder.mIvHeader.setVisibility(View.VISIBLE);
+                mHolder.mTvHeader.setVisibility(View.INVISIBLE);
+                mHolder.mIvHeader.setImageURI(entity.getAvatar());
+            }
+
+            if(entity.isSelected()){
+                mHolder.mSelect.setSelected(true);
+            }else{
+                mHolder.mSelect.setSelected(false);
+            }
+            if(position == dataSource.size()-1){
+                mHolder.mSperate.setVisibility(View.GONE);
+            }else{
+                mHolder.mSperate.setVisibility(View.VISIBLE);
+            }
         }
 
     }
@@ -186,6 +218,29 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         View mSperate;
 
         public MyTeamAddViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+    class MyTeamSelectViewHolder extends RecyclerView.ViewHolder {
+
+
+        @BindView(R.id.iv_select)
+        ImageView mSelect;
+
+        @BindView(R.id.iv_header)
+        SimpleDraweeView mIvHeader;
+
+        @BindView(R.id.tv_header)
+        TextView mTvHeader;
+
+        @BindView(R.id.tv_title)
+        TextView mTitle;
+
+        @BindView(R.id.sperate)
+        View mSperate;
+
+        public MyTeamSelectViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

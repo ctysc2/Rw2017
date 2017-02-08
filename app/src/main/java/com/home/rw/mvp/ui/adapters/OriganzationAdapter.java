@@ -81,7 +81,14 @@ public class OriganzationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     view = inflater.inflate(R.layout.cell_friend_add, parent, false);
                     holder = new OriganzationAdapter.OrgAddViewHolder(view);
                 }else{
-
+                    view = inflater.inflate(R.layout.cell_chat_select, parent, false);
+                    holder = new OrgSelectViewHolder(view);
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mListener.onItemClick((int)v.getTag());
+                        }
+                    });
                 }
 
                 break;
@@ -125,7 +132,7 @@ public class OriganzationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mHolder.mHeaderText.setVisibility(View.VISIBLE);
                 mHolder.mHeader.setVisibility(View.INVISIBLE);
                 mHolder.mHeaderText.setText(entity.getTitle().substring(0,1));
-                mHolder.mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+                mHolder.mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             }
             if((position == dataSource.size()-1)||
                 dataSource.get(position+1).getId()<=0)
@@ -140,7 +147,7 @@ public class OriganzationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
-                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             } else {
                 mHolder.mIvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setVisibility(View.INVISIBLE);
@@ -167,7 +174,31 @@ public class OriganzationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mHolder.mSperate.setVisibility(View.VISIBLE);
             }
         }else{
+            OrgSelectViewHolder mHolder = (OrgSelectViewHolder)holder;
+            mHolder.itemView.setTag(position);
+            mHolder.mTitle.setText(entity.getTitle());
 
+            if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
+                mHolder.mIvHeader.setVisibility(View.INVISIBLE);
+                mHolder.mTvHeader.setVisibility(View.VISIBLE);
+                mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
+            } else {
+                mHolder.mIvHeader.setVisibility(View.VISIBLE);
+                mHolder.mTvHeader.setVisibility(View.INVISIBLE);
+                mHolder.mIvHeader.setImageURI(entity.getAvatar());
+            }
+
+            if(entity.isSelected()){
+                mHolder.mSelect.setSelected(true);
+            }else{
+                mHolder.mSelect.setSelected(false);
+            }
+            if(position == dataSource.size()-1){
+                mHolder.mSperate.setVisibility(View.GONE);
+            }else{
+                mHolder.mSperate.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -256,6 +287,29 @@ public class OriganzationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         View mSperate;
 
         public OrgAddViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+    class OrgSelectViewHolder extends RecyclerView.ViewHolder {
+
+
+        @BindView(R.id.iv_select)
+        ImageView mSelect;
+
+        @BindView(R.id.iv_header)
+        SimpleDraweeView mIvHeader;
+
+        @BindView(R.id.tv_header)
+        TextView mTvHeader;
+
+        @BindView(R.id.tv_title)
+        TextView mTitle;
+
+        @BindView(R.id.sperate)
+        View mSperate;
+
+        public OrgSelectViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

@@ -67,15 +67,13 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         SelectViewHolder mHolder = (SelectViewHolder)holder;
         SelectEntity.DataEntity entity = dataSource.get(position);
         mHolder.itemView.setTag(position);
-        mHolder.mTvHeader.setText(entity.getName().substring(0,1));
-        mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
         mHolder.mTitle.setText(entity.getName());
 
         if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
             mHolder.mIvHeader.setVisibility(View.INVISIBLE);
             mHolder.mTvHeader.setVisibility(View.VISIBLE);
             mHolder.mTvHeader.setText(entity.getName().substring(0,1));
-            mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+            mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getName()));
         } else {
             mHolder.mIvHeader.setVisibility(View.VISIBLE);
             mHolder.mTvHeader.setVisibility(View.INVISIBLE);

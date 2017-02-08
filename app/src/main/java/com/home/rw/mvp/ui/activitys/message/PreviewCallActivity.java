@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CallListEntity;
+import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.adapters.CallListAdatper;
 import com.home.rw.mvp.ui.adapters.SpaceItemDecoration;
@@ -90,6 +91,7 @@ public class PreviewCallActivity extends BaseActivity {
         CallListEntity.DataEntity entity1 = new CallListEntity.DataEntity();
         entity1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=e5082defe4cd7b89fd6132d16e4d29c2/6a600c338744ebf82b43491adbf9d72a6059a7e0.jpg");
         entity1.setName("泽拉图");
+        entity1.setId(999);
         entity1.setEditing(false);
 
         CallListEntity.DataEntity entityAdd = new CallListEntity.DataEntity();
@@ -145,15 +147,10 @@ public class PreviewCallActivity extends BaseActivity {
                                 return;
                             }
                             //编辑状态点击+
-                            CallListEntity.DataEntity entity1 = new CallListEntity.DataEntity();
-                            entity1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=e5082defe4cd7b89fd6132d16e4d29c2/6a600c338744ebf82b43491adbf9d72a6059a7e0.jpg");
-                            entity1.setName("泽拉图");
-                            entity1.setEditing(false);
+                            Intent intent = new Intent(PreviewCallActivity.this,MeetingSelectActivity.class);
+                            intent.putExtra("selectedData",previewData());
+                            startActivity(intent);
 
-                            ArrayList<CallListEntity.DataEntity> data = new ArrayList<CallListEntity.DataEntity>();
-                            data.add(entity1);
-                            data.add(entity1);
-                            mAdapter.addMore(dataSource.size()-2,data);
                         }
                     }
                     minviteableNum = String.format(getString(R.string.inviteNum),10-dataSource.size());
@@ -179,18 +176,10 @@ public class PreviewCallActivity extends BaseActivity {
                             return;
                         }
                         //正常状态点击+
-                        CallListEntity.DataEntity entity1 = new CallListEntity.DataEntity();
-                        entity1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=e5082defe4cd7b89fd6132d16e4d29c2/6a600c338744ebf82b43491adbf9d72a6059a7e0.jpg");
-                        entity1.setName("泽拉图");
-                        entity1.setEditing(false);
-
-                        ArrayList<CallListEntity.DataEntity> data = new ArrayList<CallListEntity.DataEntity>();
-                        data.add(entity1);
-                        data.add(entity1);
-                        mAdapter.addMore(dataSource.size()-2,data);
-                        minviteableNum = String.format(getString(R.string.inviteNum),10-dataSource.size());
-                        dataSource.get(dataSource.size()-2).setName(minviteableNum);
-                    }
+                        Intent intent = new Intent(PreviewCallActivity.this,MeetingSelectActivity.class);
+                        intent.putExtra("selectedData",previewData());
+                        startActivity(intent);
+                   }
                     return;
                 }
 
@@ -203,5 +192,51 @@ public class PreviewCallActivity extends BaseActivity {
         mRecycleView.setHasFixedSize(true);
         mRecycleView.setAdapter(mAdapter);
 
+    }
+    private ArrayList<MeetingSelectTempEntity> previewData(){
+        if(dataSource.size()<=3)
+                return null;
+
+        ArrayList<MeetingSelectTempEntity> newData = new ArrayList<>();
+
+        for(int i = 1;i<dataSource.size()-2;i++){
+            MeetingSelectTempEntity data = new MeetingSelectTempEntity();
+            data.setId(dataSource.get(i).getId());
+            data.setAvatar(dataSource.get(i).getAvatar());
+            data.setName(dataSource.get(i).getName());
+
+            newData.add(data);
+        }
+        return newData;
+
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ArrayList<MeetingSelectTempEntity> data = (ArrayList<MeetingSelectTempEntity>)(intent.getSerializableExtra("newdata"));
+
+        if((data == null)||
+            data.size() == 0)
+            return;
+
+        ArrayList<CallListEntity.DataEntity> newData = new ArrayList<CallListEntity.DataEntity>();
+
+        while(dataSource.size()>3){
+            dataSource.remove(1);
+        }
+        for(int i = 0;i<data.size();i++){
+            CallListEntity.DataEntity entity = new CallListEntity.DataEntity();
+            entity.setName(data.get(i).getName());
+            entity.setId(data.get(i).getId());
+            entity.setAvatar(data.get(i).getAvatar());
+            newData.add(entity);
+        }
+        if(newData!=null &&
+                newData.size() != 0)
+            dataSource.addAll(dataSource.size()-2,newData);
+
+        mAdapter.notifyDataSetChanged();
+        minviteableNum = String.format(getString(R.string.inviteNum),10-dataSource.size());
+        dataSource.get(dataSource.size()-2).setName(minviteableNum);
     }
 }

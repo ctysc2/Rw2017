@@ -24,6 +24,7 @@ import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.entity.MessegeMainEntity;
 import com.home.rw.mvp.ui.activitys.increment.MeetingAppointmentListActivity;
 import com.home.rw.mvp.ui.activitys.increment.TempActivity;
+import com.home.rw.mvp.ui.activitys.lock.LockMainActivity;
 import com.home.rw.mvp.ui.activitys.message.AddFriendIndex;
 import com.home.rw.mvp.ui.activitys.message.BusinessPhoneActivity;
 import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
@@ -84,8 +85,7 @@ public class MessageFragment extends BaseFragment {
     ArrayList<MessegeMainEntity.DataEntity> dataSource = new ArrayList<>();
 
     @OnClick({R.id.rightText,
-
-
+            R.id.back,
     })
     public void OnClick(View v){
         Intent intent;
@@ -94,7 +94,10 @@ public class MessageFragment extends BaseFragment {
                 intent = new Intent(mActivity, MessageMoreActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.back:
+                intent = new Intent(mActivity,LockMainActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -193,7 +196,7 @@ public class MessageFragment extends BaseFragment {
 
 
         MessegeMainEntity.DataEntity subchild1 = new MessegeMainEntity.DataEntity(
-                1,
+                101,
                 0,
                 "张依旧",
                 "13736239384",
@@ -202,7 +205,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity subchild2 = new MessegeMainEntity.DataEntity(
-                2,
+                102,
                 0,
                 "陈无人",
                 "13947589484",
@@ -211,7 +214,7 @@ public class MessageFragment extends BaseFragment {
                 false
         );
         MessegeMainEntity.DataEntity subchild3 = new MessegeMainEntity.DataEntity(
-                3,
+                103,
                 0,
                 "导师",
                 "15543245867",
@@ -308,6 +311,7 @@ public class MessageFragment extends BaseFragment {
                             CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                             data.setName(entity.getTitle());
                             data.setAvatar(entity.getAvatar());
+                            data.setId(entity.getId());
                             intent = new Intent(mActivity,PreviewCallActivity.class);
                             intent.putExtra("data",data);
                             startActivity(intent);

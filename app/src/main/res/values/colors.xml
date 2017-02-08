@@ -112,4 +112,8 @@
 
     <color name="bac_color_1036FF">#1036FF</color>
 
+    <color name="bac_color_f5f5f5">#f5f5f5</color>
+
+    <color name="text_color_6C6C6C">#6C6C6C</color>
+
 </resources>

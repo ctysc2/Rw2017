@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_lock_help"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bac_color_EFEFF4"
+    tools:context="com.home.rw.mvp.ui.activitys.lock.LockHelpActivity">
+    <include layout="@layout/common_toolbar"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/toolbar"
+        android:textColor="@color/text_color_6C6C6C"
+        android:textSize="12sp"
+        android:lineSpacingExtra="4dp"
+        android:text="《会计法》第八条　国家实行统一的会计制度。国家统一的会计制度由国务院财政部门根据本法制定并公布。
+国务院有关部门可以依照本法和国家统一的会计制度制定对会计核算和会计监督有特殊要求的行业实施国家统一的会计制度的具体办法或者补充规定，报国务院财政部门审核批准。
+这是会计法的规定，其他部门制定的标准必须经财政批准。"
+        />
+</RelativeLayout>

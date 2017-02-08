@@ -53,28 +53,23 @@ public class DrawableUtils {
 
     }
 
-    public static int getRandomBackgroundResource(){
+    public static int getRandomBackgroundResource(String name){
 
         int d = 0;
-        int random = new Random().nextInt(5);
-            switch (random){
-                case 0:
-                    d = R.drawable.shape_circle_blue;
-                    break;
-                case 1:
-                    d = R.drawable.shape_circle_red;
-                    break;
-                case 2:
-                    d = R.drawable.shape_circle_green;
-                    break;
-                case 3:
-                    d = R.drawable.shape_circle_yellow;
-                    break;
-                case 4:
-                    d = R.drawable.shape_circle_purple;
-                    break;
-
-            }
+        char lastSpell = name.charAt(name.length()-1);
+        String spell = CharacterParser.getInstance().getSpelling((String.valueOf(lastSpell)));
+        int first = spell.toUpperCase().charAt(0);
+        if(first<70){
+            d = R.drawable.shape_circle_blue;
+        }else if(first<75){
+            d = R.drawable.shape_circle_red;
+        }else if(first < 80){
+            d = R.drawable.shape_circle_green;
+        }else if(first < 85){
+            d = R.drawable.shape_circle_yellow;
+        }else{
+            d = R.drawable.shape_circle_purple;
+        }
 
         return d;
 

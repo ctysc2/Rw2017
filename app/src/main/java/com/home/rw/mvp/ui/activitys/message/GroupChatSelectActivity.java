@@ -162,7 +162,7 @@ public class GroupChatSelectActivity extends BaseActivity {
                     dataSource.get(position).setSelected(true);
                 }
 
-                mAdapter.notifyItemChanged(position);
+                mAdapter.notifyDataSetChanged();
             }
         });
         mRecycleView.setHasFixedSize(true);

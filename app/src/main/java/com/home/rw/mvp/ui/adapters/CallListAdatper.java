@@ -68,7 +68,7 @@ public class CallListAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mHolder.mHeader.setVisibility(View.GONE);
             mHolder.mTextHeader.setVisibility(View.VISIBLE);
             mHolder.mTextHeader.setText(entity.getName().substring(0,1));
-            mHolder.mTextHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+            mHolder.mTextHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getName()));
         }
 
         mHolder.mName.setText(entity.getName());

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/tools"
+    android:gravity="center_vertical"
+    android:background="@color/widowColor"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/catalog"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:background="#ebebeb"
+        android:paddingBottom="5dip"
+        android:paddingLeft="12dip"
+        android:paddingTop="5dip"
+        android:text="A"
+        android:textColor="#999999" />
+    <View
+        android:id="@+id/sperate"
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:layout_marginLeft="50dp"
+        android:background="#ccc" />
+
+    <LinearLayout
+        android:id="@+id/frienditem"
+        android:layout_width="fill_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/selector_layoutbac"
+        android:orientation="horizontal"
+        android:paddingRight="12dp">
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/widowColor"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_header"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/icon_empty_head"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundAsCircle="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/friendname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLength="32"
+            android:textColor="#353535"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

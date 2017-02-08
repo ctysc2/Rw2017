@@ -37,6 +37,9 @@ public class AddFriendIndex extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_contact:
+                intent = new Intent(this,ContactsActivity.class);
+                intent.putExtra("type",TYPE_ADD);
+                startActivity(intent);
                 break;
             case R.id.ll_org:
                 intent = new Intent(this,OriganizationActivity.class);

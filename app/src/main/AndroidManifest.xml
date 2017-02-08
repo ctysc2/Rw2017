@@ -9,6 +9,10 @@
     <!-- <uses-permission android:name="android.permission.SET_WALLPAPER" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.hardware.sensor.accelerometer"/>
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -74,7 +78,9 @@
         <activity android:name=".mvp.ui.activitys.message.ModifiRemarkActivity" />
         <activity android:name=".mvp.ui.activitys.message.FriendVerifiActivity" />
         <activity android:name=".mvp.ui.activitys.message.BusinessPhoneActivity" />
-        <activity android:name=".mvp.ui.activitys.message.PreviewCallActivity" />
+        <activity
+            android:name=".mvp.ui.activitys.message.PreviewCallActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".mvp.ui.activitys.message.OriganizationActivity" />
         <activity android:name=".mvp.ui.activitys.message.MyTeamActivity" />
         <activity android:name=".mvp.ui.activitys.message.AddFriendIndex" />
@@ -82,7 +88,13 @@
         <activity android:name=".mvp.ui.activitys.message.MyNewFriendActivity" />
         <activity android:name=".mvp.ui.activitys.message.GroupChatActivity" />
         <activity android:name=".mvp.ui.activitys.message.GroupChatSelectActivity" />
-        <activity android:name=".mvp.ui.activitys.message.GroupChatNamedActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.message.GroupChatNamedActivity" />
+        <activity android:name=".mvp.ui.activitys.message.SendFriendVerifiAvtivity" />
+        <activity android:name=".mvp.ui.activitys.message.MeetingSelectActivity" />
+        <activity android:name=".mvp.ui.activitys.message.ContactsActivity" />
+        <activity android:name=".mvp.ui.activitys.lock.LockMainActivity" />
+        <activity android:name=".mvp.ui.activitys.lock.LockHelpActivity" />
+        <activity android:name=".mvp.ui.activitys.lock.LockTempKeyActivity"></activity>
     </application>
 
 </manifest>

@@ -85,7 +85,7 @@ public class ReceiveFriendAdapter extends BaseRecyclerViewAdapter<ReceiveFriendE
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
-                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             } else {
                 mHolder.mIvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setVisibility(View.INVISIBLE);

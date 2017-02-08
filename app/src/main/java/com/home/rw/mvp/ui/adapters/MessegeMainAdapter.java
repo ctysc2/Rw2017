@@ -147,7 +147,7 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
         } else if (holder instanceof SubViewHolder){
-            ((SubViewHolder)holder).mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource());
+            ((SubViewHolder)holder).mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             ((SubViewHolder)holder).mHeader.setText(entity.getTitle().substring(0,1));
             ((SubViewHolder)holder).mtitle.setText(entity.getTitle());
             ((SubViewHolder)holder).mSubTitle.setText(entity.getSubTitle());

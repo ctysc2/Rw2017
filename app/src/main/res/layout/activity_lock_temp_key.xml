@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_lock_temp_key"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bac_color_EFEFF4"
+    tools:context="com.home.rw.mvp.ui.activitys.lock.LockTempKeyActivity">
+    <include layout="@layout/common_toolbar"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical|left"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:text="@string/ruoweizhiye"
+        android:textColor="@color/black"
+        android:layout_marginLeft="15dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical|left"
+        android:textSize="15sp"
+        android:text="@string/tempReason"
+        android:textColor="@color/black"
+        android:layout_marginLeft="15dp"/>
+    <EditText
+        android:id="@+id/et_reason"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:hint="@string/multiInput"
+        android:textSize="15sp"
+        android:gravity="left"
+        android:paddingTop="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="@color/text_color_999999"
+        android:background="@drawable/shape_temp_bac"
+        android:textColor="@color/black"
+        android:textCursorDrawable="@drawable/cursor_color"
+        android:layout_height="200dp" />
+
+    <Button
+        android:id="@+id/bt_send"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/sendMsg"
+        android:textSize="18sp"
+        android:background="@drawable/shape_login"
+        android:layout_marginRight="60dp"/>
+</LinearLayout>

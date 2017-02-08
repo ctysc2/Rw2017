@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_meeting_select"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bac_color_EFEFF4"
+    tools:context="com.home.rw.mvp.ui.activitys.message.MeetingSelectActivity">
+    <include layout="@layout/common_toolbar"
+        />
+    <include layout="@layout/common_search2"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_marginTop="1dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+    </android.support.v7.widget.RecyclerView>
+    <include layout="@layout/common_bottom_select_bar"
+        />
+</LinearLayout>

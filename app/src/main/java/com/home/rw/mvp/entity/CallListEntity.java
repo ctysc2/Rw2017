@@ -19,9 +19,18 @@ public class CallListEntity {
     }
 
     public static class DataEntity implements Serializable {
+        int id;
         boolean isEditing;
         String avatar;
         String name;
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
