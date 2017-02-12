@@ -4,6 +4,9 @@ import android.widget.BaseAdapter;
 import android.widget.SectionIndexer;
 
 import com.home.rw.listener.OnItemClickListener;
+import com.home.rw.mvp.entity.ContractAfterEntity;
+
+import java.util.ArrayList;
 
 /**
  * Created by cty on 2017/2/7.
@@ -14,4 +17,7 @@ public abstract class BaseListViewAdapter extends BaseAdapter implements Section
 
     }
 
+    public void setDataSource(ArrayList<ContractAfterEntity> dataSource){
+
+    }
 }

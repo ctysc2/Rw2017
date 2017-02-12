@@ -9,8 +9,6 @@
     tools:context="com.home.rw.mvp.ui.activitys.message.MyTeamActivity">
     <include layout="@layout/common_toolbar"
         />
-    <include layout="@layout/common_search2"
-        />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

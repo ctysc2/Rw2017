@@ -18,6 +18,7 @@ import static com.home.rw.common.Const.TYPE_NORMAL;
 
 public class AddFriendIndex extends BaseActivity {
 
+
     @BindView(R.id.back)
     ImageButton mBack;
 

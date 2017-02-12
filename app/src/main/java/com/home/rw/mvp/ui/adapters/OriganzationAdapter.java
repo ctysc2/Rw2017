@@ -47,6 +47,10 @@ public class OriganzationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         inflater = LayoutInflater.from(context);
         this.entryType = entryType;
     }
+    public void setDataSource(ArrayList<OrgEntity.DataEntity> dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
+    }
     //设置item监听事件
     public void setOnItemClickListener(OnItemClickListener mListener){
 

@@ -42,6 +42,6 @@
             android:layout_marginRight="10dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/icon_delete_psw"
-            android:textColor="@color/black"/>
+          />
     </LinearLayout>
 </LinearLayout>

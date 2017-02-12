@@ -34,6 +34,11 @@ public class BusinessMeetingAdapter extends BaseRecyclerViewAdapter<BusinessMeet
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
+
+    public void setDataSource(List<BusinessMeetingPhoneEntity.DataEntity> dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder  holder = null;

@@ -22,6 +22,7 @@ import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
 import com.home.rw.mvp.entity.OrgEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.MyTeamAdapter;
 import com.home.rw.mvp.ui.adapters.OriganzationAdapter;
 
@@ -29,6 +30,10 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
+import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
+import static com.home.rw.common.Const.TYPE_ADD;
 
 public class MyTeamActivity extends BaseActivity {
 
@@ -39,6 +44,9 @@ public class MyTeamActivity extends BaseActivity {
     private ArrayList<MeetingSelectTempEntity> selectedData;
 
     private String entryType = "";
+
+    private String entry;
+
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
 
@@ -55,7 +63,8 @@ public class MyTeamActivity extends BaseActivity {
     Button mConfirm;
 
     @OnClick({R.id.back,
-            R.id.bt_confirm
+            R.id.bt_confirm,
+            R.id.search,
 
     })
     public void OnClick(View v){
@@ -68,9 +77,21 @@ public class MyTeamActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_confirm:
-                intent = new Intent(this,PreviewCallActivity.class);
+                if(entry.equals("fromMeeting"))
+                    intent = new Intent(this,PreviewCallActivity.class);
+                else
+                    intent = new Intent(this,SendRollActivity.class);
                 intent.putExtra("newdata",selectedData);
                 startActivity(intent);
+                break;
+            case R.id.search:
+                intent = new Intent(this,SearchActivity.class);
+                intent.putExtra("type",entryType.equals(TYPE_ADD)?SEARCH_MYTEAM_ADD:SEARCH_MYTEAM_SELECT);
+                intent.putExtra("data",dataSource);
+                intent.putExtra("entry",entry);
+                intent.putExtra("selectedData",selectedData);
+                startActivityForResult(intent,entryType.equals(TYPE_ADD)?SEARCH_MYTEAM_ADD:SEARCH_MYTEAM_SELECT);
+                overridePendingTransition(R.anim.search_fade_in,R.anim.search_fade_out);
                 break;
             default:
                 break;
@@ -99,9 +120,10 @@ public class MyTeamActivity extends BaseActivity {
         midText.setText(getString(R.string.myTeam));
         mBack.setImageResource(R.drawable.btn_back);
         entryType = getIntent().getStringExtra("type");
+        entry = getIntent().getStringExtra("entry");
 
         switch (entryType){
-            case Const.TYPE_ADD:
+            case TYPE_ADD:
                 initRecycleViewAdd();
                 break;
             case Const.TYPE_NORMAL:
@@ -112,11 +134,18 @@ public class MyTeamActivity extends BaseActivity {
 
                 if((selectedData == null)||
                         selectedData.size() == 0){
-                    mConfirm.setText(String.format(getString(R.string.containNum),0));
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),0));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),0));
+                    }
 
                 }else{
-
-                    mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                    }
                 }
 
                 initRecycleViewSelect();
@@ -238,14 +267,18 @@ public class MyTeamActivity extends BaseActivity {
                     entity.setSelected(false);
                     removeSelect(entity);
                 }else{
-                    if(selectedData != null && selectedData.size() == 7){
+                    if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
                         Toast.makeText(MyTeamActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                         return;
                     }
                     entity.setSelected(true);
                     addSelect(entity);
                 }
-                mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                if(entry.equals("fromMeeting")){
+                    mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                }else{
+                    mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                }
                 mAdapter.notifyDataSetChanged();
 
             }
@@ -319,7 +352,7 @@ public class MyTeamActivity extends BaseActivity {
         dataSource.add(sub6);
         dataSource.add(sub7);
 
-        mAdapter = new MyTeamAdapter(dataSource,this,Const.TYPE_ADD);
+        mAdapter = new MyTeamAdapter(dataSource,this, TYPE_ADD);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -426,6 +459,30 @@ public class MyTeamActivity extends BaseActivity {
                     int position = data.getIntExtra("position",0);
                     dataSource.get(position).setAdded(true);
                     mAdapter.notifyDataSetChanged();
+                }
+                break;
+            case SEARCH_MYTEAM_ADD:
+                dataSource = (ArrayList<MyTeamEntity.DataEntity>)(data.getSerializableExtra("searchDataAfter"));
+                mAdapter.setDataSource(dataSource);
+                break;
+            case SEARCH_MYTEAM_SELECT:
+                selectedData = (ArrayList<MeetingSelectTempEntity>)(data.getSerializableExtra("newData"));
+                checkInitSelect();
+                mAdapter.notifyDataSetChanged();
+                if((selectedData == null)||
+                        selectedData.size() == 0){
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),0));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),0));
+                    }
+
+                }else{
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                    }
                 }
                 break;
             default:

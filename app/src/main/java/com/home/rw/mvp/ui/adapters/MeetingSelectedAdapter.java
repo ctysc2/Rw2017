@@ -40,7 +40,11 @@ public class MeetingSelectedAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         this.mListener = mListener;
     }
+    public void setDataSource(ArrayList<MeetingSelectEntity.DataEntity> dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
 
+    }
     public MeetingSelectedAdapter(ArrayList<MeetingSelectEntity.DataEntity> dataSource,Context context){
         this.context = context;
         inflater = LayoutInflater.from(context);

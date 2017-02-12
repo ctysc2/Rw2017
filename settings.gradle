@@ -1,2 +1,2 @@
-include ':app',':library',':photoSelector',':pickerview'
+include ':app', ':library', ':photoSelector', ':pickerview', ':CallKit', ':CallLib', ':IMKit', ':IMLib'
 

@@ -27,6 +27,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
+import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
+import static com.home.rw.common.Const.SEARCH_RECENT;
+import static com.home.rw.common.Const.TYPE_ADD;
+
 public class BusinessPhoneActivity extends BaseActivity {
 
     private BusinessMeetingAdapter mAdapter;
@@ -44,6 +49,7 @@ public class BusinessPhoneActivity extends BaseActivity {
 
     @OnClick({R.id.back,
             R.id.bt_meeting,
+            R.id.search,
     })
     public void onClick(View v){
         switch(v.getId()){
@@ -53,6 +59,13 @@ public class BusinessPhoneActivity extends BaseActivity {
             case R.id.bt_meeting:
                 Intent intent = new Intent(this,PreviewCallActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.search:
+                intent = new Intent(this,SearchActivity.class);
+                intent.putExtra("type",SEARCH_RECENT);
+                intent.putExtra("data",dataSource);
+                startActivity(intent);
+                overridePendingTransition(R.anim.search_fade_in,R.anim.search_fade_out);
                 break;
             default:
                 break;

@@ -1,10 +1,12 @@
 package com.home.rw.mvp.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by cty on 2017/2/6.
  */
 
-public class ContractAfterEntity {
+public class ContractAfterEntity implements Serializable{
     private int id;
     private String name;
     private String avatar;

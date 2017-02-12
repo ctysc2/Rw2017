@@ -11,8 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.hardware.sensor.accelerometer"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.hardware.sensor.accelerometer" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -52,7 +52,8 @@
         <activity android:name=".mvp.ui.activitys.work.CardActivity" />
         <activity android:name=".mvp.ui.activitys.work.RollMeActivity" />
         <activity android:name=".mvp.ui.activitys.work.DailyLogActivity" />
-        <activity android:name=".mvp.ui.activitys.work.SendRollActivity" />
+        <activity android:name=".mvp.ui.activitys.work.SendRollActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".mvp.ui.activitys.work.WriteLogActivity" />
         <activity android:name=".mvp.ui.activitys.work.ExtraWorkActivity" />
         <activity android:name=".mvp.ui.activitys.mineme.SettingActivity" />
@@ -94,7 +95,8 @@
         <activity android:name=".mvp.ui.activitys.message.ContactsActivity" />
         <activity android:name=".mvp.ui.activitys.lock.LockMainActivity" />
         <activity android:name=".mvp.ui.activitys.lock.LockHelpActivity" />
-        <activity android:name=".mvp.ui.activitys.lock.LockTempKeyActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.lock.LockTempKeyActivity" />
+        <activity android:name=".mvp.ui.activitys.message.SearchActivity"></activity>
     </application>
 
 </manifest>

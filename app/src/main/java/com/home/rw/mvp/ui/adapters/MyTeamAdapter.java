@@ -44,6 +44,10 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         inflater = LayoutInflater.from(context);
         this.entryType = entryType;
     }
+    public void setDataSource(ArrayList<MyTeamEntity.DataEntity> dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
+    }
     //设置item监听事件
     public void setOnItemClickListener(OnItemClickListener mListener){
 

@@ -13,11 +13,16 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.home.rw.R;
 import com.home.rw.listener.AlertDialogListener;
+import com.home.rw.mvp.entity.CallListEntity;
+import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.ui.activitys.message.MeetingSelectActivity;
+import com.home.rw.mvp.ui.activitys.message.PreviewCallActivity;
 import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -40,7 +45,7 @@ public class SendRollActivity extends BaseActivity implements AlertDialogListene
     @BindView(R.id.tv_deadline)
     TextView mDeadLine;
 
-
+    private ArrayList<MeetingSelectTempEntity> selectedData = new ArrayList<>();
     @OnClick({
             R.id.rl_receiver,
             R.id.rl_deadLine,
@@ -49,6 +54,7 @@ public class SendRollActivity extends BaseActivity implements AlertDialogListene
             R.id.back
     })
     public void OnClick(View v){
+        Intent intent;
         switch (v.getId()){
             case R.id.back:
                 mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
@@ -59,12 +65,16 @@ public class SendRollActivity extends BaseActivity implements AlertDialogListene
                 //startActivity(intent);
                 break;
             case R.id.rl_receiver:
+                intent = new Intent(SendRollActivity.this,MeetingSelectActivity.class);
+                intent.putExtra("selectedData",selectedData);
+                intent.putExtra("entry","roll");
+                startActivity(intent);
                 break;
             case R.id.rl_deadLine:
                 pvTime.show();
                 break;
             case R.id.iv_rollme:
-                Intent intent = new Intent(this,RollMeActivity.class);
+                intent = new Intent(this,RollMeActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -147,5 +157,13 @@ public class SendRollActivity extends BaseActivity implements AlertDialogListene
             mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
             mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
         }
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent == null)
+            return;
+        selectedData = (ArrayList<MeetingSelectTempEntity>)(intent.getSerializableExtra("newdata"));
+
     }
 }

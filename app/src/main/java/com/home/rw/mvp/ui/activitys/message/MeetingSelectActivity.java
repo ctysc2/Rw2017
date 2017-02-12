@@ -23,6 +23,7 @@ import com.home.rw.mvp.entity.MessegeMainEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
+import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.MeetingSelectedAdapter;
 import com.home.rw.mvp.ui.adapters.MessegeMainAdapter;
 
@@ -31,6 +32,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
+import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
+import static com.home.rw.common.Const.SEARCH_RECENT_SELECT;
 import static com.home.rw.common.Const.TYPE_ADD;
 import static com.home.rw.common.Const.TYPE_NORMAL;
 
@@ -56,8 +60,11 @@ public class MeetingSelectActivity extends BaseActivity {
 
     private int selectedNum;
 
+    private String entry;
+
     @OnClick({R.id.back,
             R.id.bt_confirm,
+            R.id.search,
 
     })
     public void OnClick(View v){
@@ -67,11 +74,22 @@ public class MeetingSelectActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_confirm:
-                intent = new Intent(this,PreviewCallActivity.class);
+                if(entry.equals("fromMeeting"))
+                    intent = new Intent(this,PreviewCallActivity.class);
+                else
+                    intent = new Intent(this,SendRollActivity.class);
                 intent.putExtra("newdata",selectedData);
                 startActivity(intent);
                 break;
-
+            case R.id.search:
+                intent = new Intent(this,SearchActivity.class);
+                intent.putExtra("selectedData",selectedData);
+                intent.putExtra("type",SEARCH_RECENT_SELECT);
+                intent.putExtra("data",dataSource);
+                intent.putExtra("entry",entry);
+                startActivityForResult(intent,0);
+                overridePendingTransition(R.anim.search_fade_in,R.anim.search_fade_out);
+                break;
             default:
                 break;
         }
@@ -147,18 +165,21 @@ public class MeetingSelectActivity extends BaseActivity {
                             intent = new Intent(MeetingSelectActivity.this,ContactsActivity.class);
                             intent.putExtra("type",Const.TYPE_SELECT);
                             intent.putExtra("selectedData",selectedData);
+                            intent.putExtra("entry",entry);
                             startActivityForResult(intent,0);
                             break;
                         case -2:
                             intent = new Intent(MeetingSelectActivity.this,OriganizationActivity.class);
                             intent.putExtra("type", Const.TYPE_SELECT);
                             intent.putExtra("selectedData",selectedData);
+                            intent.putExtra("entry",entry);
                             startActivityForResult(intent,0);
                             break;
                         case -3:
                             intent = new Intent(MeetingSelectActivity.this,MyTeamActivity.class);
                             intent.putExtra("type", Const.TYPE_SELECT);
                             intent.putExtra("selectedData",selectedData);
+                            intent.putExtra("entry",entry);
                             startActivityForResult(intent,0);
                             break;
                         case -4:
@@ -181,15 +202,18 @@ public class MeetingSelectActivity extends BaseActivity {
                         entity.setSelected(false);
                         removeSelect(entity);
                     }else{
-                        if(selectedData != null && selectedData.size() == 7){
+                        if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
                             Toast.makeText(MeetingSelectActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                             return;
                         }
                         entity.setSelected(true);
                         addSelect(entity);
                     }
-                    mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
-                    mAdapter.notifyDataSetChanged();
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                    }                   mAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -269,15 +293,23 @@ public class MeetingSelectActivity extends BaseActivity {
         mBack.setImageResource(R.drawable.btn_back);
         midText.setText(R.string.meetintSelectHint1);
         selectedData = (ArrayList<MeetingSelectTempEntity>)(getIntent().getSerializableExtra("selectedData"));
-
+        entry = getIntent().getStringExtra("entry");
 
 
         if((selectedData == null)||
             selectedData.size() == 0){
-            mConfirm.setText(String.format(getString(R.string.containNum),0));
+            if(entry.equals("fromMeeting")){
+                mConfirm.setText(String.format(getString(R.string.containNum),0));
+            }else{
+                mConfirm.setText(String.format(getString(R.string.containRollNum),0));
+            }
 
         }else{
-            mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+            if(entry.equals("fromMeeting")){
+                mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+            }else{
+                mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+            }
         }
 
 
@@ -300,13 +332,22 @@ public class MeetingSelectActivity extends BaseActivity {
                     mAdapter.notifyDataSetChanged();
                     if((selectedData == null)||
                             selectedData.size() == 0){
-                        mConfirm.setText(String.format(getString(R.string.containNum),0));
+                        if(entry.equals("fromMeeting")){
+                            mConfirm.setText(String.format(getString(R.string.containNum),0));
+                        }else{
+                            mConfirm.setText(String.format(getString(R.string.containRollNum),0));
+                        }
 
                     }else{
-                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                        if(entry.equals("fromMeeting")){
+                            mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                        }else{
+                            mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                        }
                     }
                 }
                 break;
+
             default:
                 break;
         }

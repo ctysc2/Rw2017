@@ -67,8 +67,16 @@
     <string name="meetintSelectHint1">请选择1-7人进行通话</string>
     <string name="choosen">已选择</string>
     <string name="containNum">确定(%1$d/7)</string>
+    <string name="containRollNum">确定(%1$d)</string>
     <string name="numCantOverHint">已达到人数上限</string>
     <string name="phoneContacts">手机通讯录</string>
+
+    <string name="toastAtLeastOneOp">请选择一位通话对象</string>
+    <string name="toastMeetingAtLeastOneOp">请选择至少一位通话对象</string>
+    <string name="onlyOneOp">只能选择一位通话对象</string>
+    <string name="search">搜索</string>
+    <string name="notFind">没有找到\"%1$s\"</string>
+    <string name="searchCannotEmpty">搜索内容不能为空</string>
     <!--办公-->
     <string name="compWork">企业办公</string>
     <string name="intelligentMobileWork">智能移动办公</string>
@@ -161,6 +169,7 @@
     <string name="writeLog">写日志</string>
 
     <string name="sender">发送人</string>
+
     <!--增值服务-->
     <string name="incrementService">增值服务</string>
     <string name="OfficeAppontment">预约办公室</string>

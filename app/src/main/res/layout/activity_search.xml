@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.home.rw.mvp.ui.activitys.message.SearchActivity">
+    <include layout="@layout/search_toolbar"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:background="@color/bac_color_EFEFF4"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:id="@+id/tv_notFind"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_marginTop="180dp"
+        android:text="@string/notFind"
+        />
+    <include layout="@layout/common_bottom_select_bar"
+        android:visibility="gone"
+        />
+</LinearLayout>

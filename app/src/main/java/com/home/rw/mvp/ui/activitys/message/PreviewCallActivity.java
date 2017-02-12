@@ -47,6 +47,9 @@ public class PreviewCallActivity extends BaseActivity {
 
     @OnClick({R.id.back,
             R.id.leftText,
+            R.id.ll_netCall,
+            R.id.ll_meeting,
+            R.id.ll_normalCall,
 
     })
     public void onClick(View v){
@@ -55,7 +58,11 @@ public class PreviewCallActivity extends BaseActivity {
             case R.id.leftText:
                 finish();
                 break;
-
+            case R.id.ll_netCall:
+            case R.id.ll_meeting:
+            case R.id.ll_normalCall:
+                processCall(v.getId());
+                break;
             default:
                 break;
         }
@@ -83,7 +90,45 @@ public class PreviewCallActivity extends BaseActivity {
         initViews();
         initRecycleView();
     }
+    private void processCall(int id){
+        int callListLength = dataSource.size();
+        if(isEditing == true){
+            for(int i = 0;i<dataSource.size();i++){
+                dataSource.get(i).setEditing(false);
+            }
+            isEditing = false;
+            mAdapter.notifyDataSetChanged();
+        }
+        switch (id){
+            case R.id.ll_netCall:
+                if(callListLength<4){
+                    Toast.makeText(this,getString(R.string.toastAtLeastOneOp),Toast.LENGTH_SHORT).show();
+                }else if(callListLength >4){
+                    Toast.makeText(this,getString(R.string.onlyOneOp),Toast.LENGTH_SHORT).show();
+                }else{
+                }
+                break;
+            case R.id.ll_meeting:
+                if(callListLength<4){
+                    Toast.makeText(this,getString(R.string.toastMeetingAtLeastOneOp),Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.ll_normalCall:
+                if(callListLength<4){
+                    Toast.makeText(this,getString(R.string.toastAtLeastOneOp),Toast.LENGTH_SHORT).show();
+                }else if(callListLength >4){
+                    Toast.makeText(this,getString(R.string.onlyOneOp),Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + "15502145237"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+            default:
+                break;
+        }
 
+    }
     private void initRecycleView() {
 
         receiveData = (CallListEntity.DataEntity)(getIntent().getSerializableExtra("data"));
@@ -92,6 +137,7 @@ public class PreviewCallActivity extends BaseActivity {
         entity1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=e5082defe4cd7b89fd6132d16e4d29c2/6a600c338744ebf82b43491adbf9d72a6059a7e0.jpg");
         entity1.setName("泽拉图");
         entity1.setId(999);
+        entity1.setPhone("13636315569");
         entity1.setEditing(false);
 
         CallListEntity.DataEntity entityAdd = new CallListEntity.DataEntity();
@@ -149,6 +195,7 @@ public class PreviewCallActivity extends BaseActivity {
                             //编辑状态点击+
                             Intent intent = new Intent(PreviewCallActivity.this,MeetingSelectActivity.class);
                             intent.putExtra("selectedData",previewData());
+                            intent.putExtra("entry","fromMeeting");
                             startActivity(intent);
 
                         }
@@ -178,6 +225,7 @@ public class PreviewCallActivity extends BaseActivity {
                         //正常状态点击+
                         Intent intent = new Intent(PreviewCallActivity.this,MeetingSelectActivity.class);
                         intent.putExtra("selectedData",previewData());
+                        intent.putExtra("entry","fromMeeting");
                         startActivity(intent);
                    }
                     return;

@@ -17,6 +17,7 @@ import com.home.rw.mvp.entity.ContractInitialEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseListViewAdapter;
 import com.home.rw.utils.DrawableUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,7 +38,11 @@ public class ContactAdapter extends BaseListViewAdapter {
         this.context = context;
         this.list = list;
     }
-
+    @Override
+    public void setDataSource(ArrayList<ContractAfterEntity> dataSource) {
+        this.list = dataSource;
+        notifyDataSetChanged();
+    }
     //设置item监听事件
     public void setOnItemClickListener(OnItemClickListener mListener){
 

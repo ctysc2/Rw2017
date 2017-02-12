@@ -21,12 +21,22 @@ import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
 import com.home.rw.mvp.entity.OrgEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.OriganzationAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
+import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
+import static com.home.rw.common.Const.SEARCH_ORG_ADD;
+import static com.home.rw.common.Const.SEARCH_ORG_NORMAL;
+import static com.home.rw.common.Const.SEARCH_ORG_SELECT;
+import static com.home.rw.common.Const.TYPE_ADD;
+import static com.home.rw.common.Const.TYPE_NORMAL;
+import static com.home.rw.common.Const.TYPE_SELECT;
 
 public class OriganizationActivity extends BaseActivity {
 
@@ -50,10 +60,13 @@ public class OriganizationActivity extends BaseActivity {
     @BindView(R.id.bt_confirm)
     Button mConfirm;
 
+    private String entry;
+
     private ArrayList<MeetingSelectTempEntity> selectedData;
 
     @OnClick({R.id.back,
-            R.id.bt_confirm
+            R.id.bt_confirm,
+            R.id.search
 
     })
     public void OnClick(View v){
@@ -66,9 +79,36 @@ public class OriganizationActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_confirm:
-                intent = new Intent(this,PreviewCallActivity.class);
+                if(entry.equals("fromMeeting"))
+                    intent = new Intent(this,PreviewCallActivity.class);
+                else
+                    intent = new Intent(this,SendRollActivity.class);
                 intent.putExtra("newdata",selectedData);
                 startActivity(intent);
+                break;
+            case R.id.search:
+                intent = new Intent(this,SearchActivity.class);
+                int type = SEARCH_ORG_ADD;
+                switch (entryType){
+                    case TYPE_ADD:
+                        type = SEARCH_ORG_ADD;
+                        break;
+                    case TYPE_NORMAL:
+                        type = SEARCH_ORG_NORMAL;
+                        break;
+                    case TYPE_SELECT:
+                        type = SEARCH_ORG_SELECT;
+                        intent.putExtra("selectedData",selectedData);
+                        break;
+                    default:
+                        break;
+
+                }
+                intent.putExtra("type",type);
+                intent.putExtra("data",dataSource);
+                intent.putExtra("entry",entry);
+                startActivityForResult(intent,type);
+                overridePendingTransition(R.anim.search_fade_in,R.anim.search_fade_out);
                 break;
             default:
                 break;
@@ -99,11 +139,12 @@ public class OriganizationActivity extends BaseActivity {
         midText.setText(getString(R.string.organization));
         mBack.setImageResource(R.drawable.btn_back);
         entryType = getIntent().getStringExtra("type");
+        entry = getIntent().getStringExtra("entry");
         switch (entryType){
             case Const.TYPE_ADD:
                 initRecycleViewAdd();
                 break;
-            case Const.TYPE_NORMAL:
+            case TYPE_NORMAL:
                 initRecycleViewNormal();
                 break;
             case Const.TYPE_SELECT:
@@ -111,11 +152,18 @@ public class OriganizationActivity extends BaseActivity {
 
                 if((selectedData == null)||
                         selectedData.size() == 0){
-                    mConfirm.setText(String.format(getString(R.string.containNum),0));
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),0));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),0));
+                    }
 
                 }else{
-
-                    mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                    }
                 }
                 initRecycleViewSelect();
                 mBottomBar.setVisibility(View.VISIBLE);
@@ -234,14 +282,18 @@ public class OriganizationActivity extends BaseActivity {
                         entity.setSelected(false);
                         removeSelect(entity);
                     }else{
-                        if(selectedData != null && selectedData.size() == 7){
+                        if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
                             Toast.makeText(OriganizationActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                             return;
                         }
                         entity.setSelected(true);
                         addSelect(entity);
                     }
-                    mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                    }
                     mAdapter.notifyDataSetChanged();
 
                 }else{
@@ -472,7 +524,7 @@ public class OriganizationActivity extends BaseActivity {
         dataSource.add(entity1);
         dataSource.add(entity2);
         dataSource.add(entity3);
-        mAdapter = new OriganzationAdapter(dataSource,this,Const.TYPE_NORMAL);
+        mAdapter = new OriganzationAdapter(dataSource,this, TYPE_NORMAL);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -483,6 +535,7 @@ public class OriganizationActivity extends BaseActivity {
                     data.setAvatar(entity.getAvatar());
                     Intent intent = new Intent(OriganizationActivity.this,PreviewCallActivity.class);
                     intent.putExtra("data",data);
+                    intent.putExtra("entry","fromMeewting");
                     startActivity(intent);
                 }else{
                     if(entity.isExpanded()){
@@ -538,6 +591,24 @@ public class OriganizationActivity extends BaseActivity {
         }
 
     }
+    private void checkAddStatus(ArrayList<OrgEntity.DataEntity> tempDataSource,OrgEntity.DataEntity source){
+
+        for(int i = 0;i<tempDataSource.size();i++){
+
+            OrgEntity.DataEntity tempEntity = tempDataSource.get(i);
+
+            if(tempEntity.getSubData() != null){
+                for(int j = 0;j<tempEntity.getSubData().size();j++){
+                    OrgEntity.DataEntity subTempEntity = tempEntity.getSubData().get(j);
+                    if(source.getId() == subTempEntity.getId()){
+                        source.setAdded(subTempEntity.isAdded());
+                    }
+                }
+            }
+
+
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
@@ -546,6 +617,44 @@ public class OriganizationActivity extends BaseActivity {
                     int position = data.getIntExtra("position",0);
                     dataSource.get(position).setAdded(true);
                     mAdapter.notifyDataSetChanged();
+                }
+                break;
+            case SEARCH_ORG_ADD:
+                ArrayList<OrgEntity.DataEntity> tempDataSource = (ArrayList<OrgEntity.DataEntity>)(data.getSerializableExtra("searchDataAfter"));
+                for(int i = 0;i<dataSource.size();i++){
+
+                   OrgEntity.DataEntity entity = dataSource.get(i);
+                   if(entity.getSubData() !=null){
+
+                       for(int j = 0;j<entity.getSubData().size();j++){
+                           OrgEntity.DataEntity subEntity = entity.getSubData().get(j);
+                           checkAddStatus(tempDataSource,subEntity);
+                       }
+
+                   }
+
+
+                }
+                mAdapter.setDataSource(dataSource);
+                break;
+            case SEARCH_ORG_SELECT:
+                selectedData = (ArrayList<MeetingSelectTempEntity>)(data.getSerializableExtra("newData"));
+                checkInitSelect();
+                mAdapter.notifyDataSetChanged();
+                if((selectedData == null)||
+                        selectedData.size() == 0){
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),0));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),0));
+                    }
+
+                }else{
+                    if(entry.equals("fromMeeting")){
+                        mConfirm.setText(String.format(getString(R.string.containNum),selectedData.size()));
+                    }else{
+                        mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
+                    }
                 }
                 break;
             default:

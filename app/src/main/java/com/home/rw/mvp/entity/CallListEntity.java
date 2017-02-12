@@ -23,7 +23,15 @@ public class CallListEntity {
         boolean isEditing;
         String avatar;
         String name;
+        String phone;
 
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
         public void setId(int id) {
             this.id = id;
         }
