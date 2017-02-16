@@ -3,8 +3,10 @@ package com.home.rw.mvp.ui.activitys;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.home.rw.R;
+import com.home.rw.annotation.BindValues;
 import com.home.rw.application.App;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendao.gen.UserInfoDao;
@@ -25,7 +28,6 @@ import com.home.rw.mvp.view.LoginView;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.SystemTool;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +35,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
 
 public class LoginActivity extends BaseActivity implements LoginView {
     private  DialogUtils mDialog;

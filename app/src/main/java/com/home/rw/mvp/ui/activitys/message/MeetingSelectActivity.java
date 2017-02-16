@@ -202,7 +202,7 @@ public class MeetingSelectActivity extends BaseActivity {
                         entity.setSelected(false);
                         removeSelect(entity);
                     }else{
-                        if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                        if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                             Toast.makeText(MeetingSelectActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -291,10 +291,13 @@ public class MeetingSelectActivity extends BaseActivity {
     public void initViews() {
 
         mBack.setImageResource(R.drawable.btn_back);
-        midText.setText(R.string.meetintSelectHint1);
         selectedData = (ArrayList<MeetingSelectTempEntity>)(getIntent().getSerializableExtra("selectedData"));
         entry = getIntent().getStringExtra("entry");
-
+        if(entry.equals("fromMeeting")){
+            midText.setText(R.string.meetintSelectHint1);
+        }else{
+            midText.setText(R.string.meetintSelectHint2);
+        }
 
         if((selectedData == null)||
             selectedData.size() == 0){

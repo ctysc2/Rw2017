@@ -15,6 +15,8 @@ import com.home.rw.greendao.gen.DaoSession;
 import com.home.rw.utils.CrashHandler;
 import com.squareup.okhttp.OkHttpClient;
 
+import io.rong.imkit.RongIM;
+
 /**
  * Created by cty on 16/10/18.
  */
@@ -43,6 +45,7 @@ public class App extends MultiDexApplication {
                 .setDownsampleEnabled(true)
                 .build();
         Fresco.initialize(this, config);
+        RongIM.init(this);
         setDataBase();
     }
 

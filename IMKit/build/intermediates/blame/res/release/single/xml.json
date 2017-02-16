@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/xml/rc_file_path.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/xml/rc_file_path.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/sealtalk-android-master/IMKit/build/intermediates/res/merged/release/xml/rc_file_path.xml",
+        "source": "/Users/cty/projects/sealtalk-android-master/IMKit/src/main/res/xml/rc_file_path.xml"
+    }
+]

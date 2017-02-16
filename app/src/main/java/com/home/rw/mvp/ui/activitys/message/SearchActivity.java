@@ -281,8 +281,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onItemClick(int position) {
                         Intent intent = new Intent(SearchActivity.this,SendFriendVerifiAvtivity.class);
-                        intent.putExtra("position",position);
-                        startActivityForResult(intent,SEARCH_CONTACT_ADD);
+                        startActivity(intent);
                     }
                 });
                 mAdapter = mContactAdapter;
@@ -317,7 +316,7 @@ public class SearchActivity extends BaseActivity {
                             entity.setSelected(false);
                             removeContactSelect(entity);
                         }else{
-                            if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                            if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                                 Toast.makeText(SearchActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -341,8 +340,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onItemClick(int position) {
                         Intent intent = new Intent(SearchActivity.this,SendFriendVerifiAvtivity.class);
-                        intent.putExtra("position",position);
-                        startActivityForResult(intent,SEARCH_ORG_ADD);
+                        startActivity(intent);
                     }
                 });
 
@@ -378,7 +376,7 @@ public class SearchActivity extends BaseActivity {
                             entity.setSelected(false);
                             removeOrgSelect(entity);
                         }else{
-                            if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                            if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                                 Toast.makeText(SearchActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -420,8 +418,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onItemClick(int position) {
                         Intent intent = new Intent(SearchActivity.this,SendFriendVerifiAvtivity.class);
-                        intent.putExtra("position",position);
-                        startActivityForResult(intent,SEARCH_MYTEAM_ADD);
+                        startActivity(intent);
                     }
                 });
 
@@ -457,7 +454,7 @@ public class SearchActivity extends BaseActivity {
                             entity.setSelected(false);
                             removeTeamSelect(entity);
                         }else{
-                            if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                            if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                                 Toast.makeText(SearchActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -522,7 +519,7 @@ public class SearchActivity extends BaseActivity {
                             entity.setSelected(false);
                             removeMeetingSelect(entity);
                         }else{
-                            if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                            if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                                 Toast.makeText(SearchActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -790,57 +787,8 @@ public class SearchActivity extends BaseActivity {
             }
 
 
-
         }
 
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case SEARCH_MYTEAM_ADD:
-                if(resultCode == RESULT_OK){
-                    int position = data.getIntExtra("position",0);
-                    mTeamFilterData.get(position).setAdded(true);
-                    for(int i = 0;i<mTeamAllData.size();i++){
-                        if(mTeamAllData.get(i).getId() == mTeamFilterData.get(position).getId()){
-                            mTeamAllData.get(i).setAdded(true);
-                        }
-                    }
-                    mTeamAdapter.notifyDataSetChanged();
-                }
-                break;
-            case SEARCH_ORG_ADD:
-                if(resultCode == RESULT_OK){
-                    int position = data.getIntExtra("position",0);
-                    mOrgFilterData.get(position).setAdded(true);
-                    for(int i = 0;i<mOrgAllData.size();i++){
-                        OrgEntity.DataEntity entity = mOrgAllData.get(i);
-                        if(entity.getSubData() != null){
-                            for(int j = 0;j<entity.getSubData().size();j++){
-                                OrgEntity.DataEntity subEntity = entity.getSubData().get(j);
-                                if(subEntity.getId() == mOrgFilterData.get(position).getId()){
-                                    subEntity.setAdded(true);
-                                }
-                            }
-                        }
-                    }
-                    mOrgAdapter.notifyDataSetChanged();
-                }
-                break;
-            case SEARCH_CONTACT_ADD:
-                if(resultCode == RESULT_OK){
-                    int position = data.getIntExtra("position",0);
-                    mContactFilterData.get(position).setAdded(true);
-                    for(int i = 0;i<mContactAllData.size();i++){
-                        if(mContactAllData.get(i).getId() == mContactFilterData.get(position).getId()){
-                            mContactAllData.get(i).setAdded(true);
-                        }
-                    }
-                    mContactAdapter.notifyDataSetChanged();
-                }
-                break;
-            default:
-                break;
-        }
-    }
+
 }

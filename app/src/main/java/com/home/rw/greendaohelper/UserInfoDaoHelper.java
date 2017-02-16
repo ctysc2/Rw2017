@@ -51,7 +51,7 @@ public class UserInfoDaoHelper {
         return user;
     }
     //根据用户名查询用户数据
-    private  UserInfo getUserInfoById(long id){
+    public  UserInfo getUserInfoById(long id){
 
         UserInfo user = dao.queryBuilder().where(UserInfoDao.Properties.Id.eq(id)).build().unique();
 

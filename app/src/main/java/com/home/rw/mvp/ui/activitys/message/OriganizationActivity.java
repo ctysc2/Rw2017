@@ -282,7 +282,7 @@ public class OriganizationActivity extends BaseActivity {
                         entity.setSelected(false);
                         removeSelect(entity);
                     }else{
-                        if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                        if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                             Toast.makeText(OriganizationActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -413,8 +413,7 @@ public class OriganizationActivity extends BaseActivity {
                 OrgEntity.DataEntity entity = dataSource.get(position);
                 if(entity.getSubData() == null){
                     Intent intent = new Intent(OriganizationActivity.this,SendFriendVerifiAvtivity.class);
-                    intent.putExtra("position",position);
-                    startActivityForResult(intent,0);
+                    startActivity(intent);
                 }else{
                     if(entity.isExpanded()){
                         entity.setExpanded(false);
@@ -612,31 +611,6 @@ public class OriganizationActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
-            case 0:
-                if(resultCode == RESULT_OK){
-                    int position = data.getIntExtra("position",0);
-                    dataSource.get(position).setAdded(true);
-                    mAdapter.notifyDataSetChanged();
-                }
-                break;
-            case SEARCH_ORG_ADD:
-                ArrayList<OrgEntity.DataEntity> tempDataSource = (ArrayList<OrgEntity.DataEntity>)(data.getSerializableExtra("searchDataAfter"));
-                for(int i = 0;i<dataSource.size();i++){
-
-                   OrgEntity.DataEntity entity = dataSource.get(i);
-                   if(entity.getSubData() !=null){
-
-                       for(int j = 0;j<entity.getSubData().size();j++){
-                           OrgEntity.DataEntity subEntity = entity.getSubData().get(j);
-                           checkAddStatus(tempDataSource,subEntity);
-                       }
-
-                   }
-
-
-                }
-                mAdapter.setDataSource(dataSource);
-                break;
             case SEARCH_ORG_SELECT:
                 selectedData = (ArrayList<MeetingSelectTempEntity>)(data.getSerializableExtra("newData"));
                 checkInitSelect();

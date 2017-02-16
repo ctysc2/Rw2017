@@ -136,8 +136,7 @@ public class ContactsActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(ContactsActivity.this,SendFriendVerifiAvtivity.class);
-                intent.putExtra("position",position);
-                startActivityForResult(intent,0);
+                startActivity(intent);
             }
         });
         mListView.setAdapter(mAdapter);
@@ -171,7 +170,7 @@ public class ContactsActivity extends BaseActivity {
                     entity.setSelected(false);
                     removeSelect(entity);
                 }else{
-                    if(selectedData != null && selectedData.size() == 7 && entity.equals("fromMeeting")){
+                    if(selectedData != null && selectedData.size() == 7 && entry.equals("fromMeeting")){
                         Toast.makeText(ContactsActivity.this,getString(R.string.numCantOverHint),Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -352,17 +351,6 @@ public class ContactsActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
-            case 0:
-                if(resultCode == RESULT_OK){
-                    int position = data.getIntExtra("position",0);
-                    datasource.get(position).setAdded(true);
-                    mAdapter.notifyDataSetChanged();
-                }
-                break;
-            case SEARCH_CONTACT_ADD:
-                datasource = (ArrayList<ContractAfterEntity>)(data.getSerializableExtra("searchDataAfter"));
-                mAdapter.setDataSource(datasource);
-                break;
             case SEARCH_CONTACT_SELECT:
                 selectedData = (ArrayList<MeetingSelectTempEntity>)(data.getSerializableExtra("newData"));
                 checkInitSelect();

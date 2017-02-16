@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.home.rw.common.Const.PHOTO_SELECT;
+
 public class CommPublishActivity extends BaseActivity implements AlertDialogListener {
 
     ArrayList<PhotoModel> photos = new ArrayList<>();
@@ -113,7 +115,7 @@ public class CommPublishActivity extends BaseActivity implements AlertDialogList
         Intent intent = new Intent(this, PhotoSelectorActivity.class);
         intent.putExtra(PhotoSelectorActivity.KEY_MAX, 3);
         intent.putExtra("photos", photos);
-        this.startActivityForResult(intent, Const.PHOTO_SELECT);
+        this.startActivityForResult(intent, PHOTO_SELECT);
     }
 
     //更新数据源并启动预览画面
@@ -135,7 +137,7 @@ public class CommPublishActivity extends BaseActivity implements AlertDialogList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case Const.PHOTO_PREVIEW:
-            case Const.PHOTO_SELECT:
+            case PHOTO_SELECT:
                 if (data != null && data.getExtras() != null) {
 
                     this.photos = (ArrayList<PhotoModel>) data.getExtras().getSerializable("photos");
@@ -165,13 +167,16 @@ public class CommPublishActivity extends BaseActivity implements AlertDialogList
 
                     }
 
-                }else{
-                    this.photos.clear();
-                    mPic1.setVisibility(View.INVISIBLE);
-                    mPic2.setVisibility(View.INVISIBLE);
-                    mPic3.setVisibility(View.INVISIBLE);
-                    FrescoUtils.clearCache();
                 }
+//                else{
+//                    if(requestCode == PHOTO_SELECT){
+//                        this.photos.clear();
+//                        mPic1.setVisibility(View.INVISIBLE);
+//                        mPic2.setVisibility(View.INVISIBLE);
+//                        mPic3.setVisibility(View.INVISIBLE);
+//                        FrescoUtils.clearCache();
+//                    }
+//                }
                 break;
             default:
                 break;

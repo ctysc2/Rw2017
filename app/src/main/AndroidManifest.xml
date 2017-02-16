@@ -27,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="8w7jv4qb8whhy" />
+        <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
@@ -52,8 +55,9 @@
         <activity android:name=".mvp.ui.activitys.work.CardActivity" />
         <activity android:name=".mvp.ui.activitys.work.RollMeActivity" />
         <activity android:name=".mvp.ui.activitys.work.DailyLogActivity" />
-        <activity android:name=".mvp.ui.activitys.work.SendRollActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".mvp.ui.activitys.work.SendRollActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".mvp.ui.activitys.work.WriteLogActivity" />
         <activity android:name=".mvp.ui.activitys.work.ExtraWorkActivity" />
         <activity android:name=".mvp.ui.activitys.mineme.SettingActivity" />
@@ -96,7 +100,30 @@
         <activity android:name=".mvp.ui.activitys.lock.LockMainActivity" />
         <activity android:name=".mvp.ui.activitys.lock.LockHelpActivity" />
         <activity android:name=".mvp.ui.activitys.lock.LockTempKeyActivity" />
-        <activity android:name=".mvp.ui.activitys.message.SearchActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.message.SearchActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.home.rw.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
+
+        <activity android:name=".mvp.ui.activitys.rongCloud.ConversationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.home.rw"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

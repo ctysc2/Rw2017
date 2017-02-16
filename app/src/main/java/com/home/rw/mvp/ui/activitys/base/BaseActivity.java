@@ -41,7 +41,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     protected DialogUtils mAlertDialog;
 
-    protected boolean mIsStatusTranslucent;
+    protected boolean mIsStatusTranslucent = true;
 
     protected ActivityComponent mActivityComponent;
 
@@ -68,8 +68,20 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         setContentView(layout);
         initInjector();
         ButterKnife.bind(this);
+        if(mIsStatusTranslucent == true){
+            setStatusBarTranslucent();
+        }else{
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setStatusBarTranslucent();
+            if (toolbar != null) {
+                toolbar.setPadding(0, 0, 0, 0);
+                ViewGroup.LayoutParams params = toolbar.getLayoutParams();
+                params.height = (int) DimenUtil.dp2px(44);
+                toolbar.setLayoutParams(params);
+
+            }
+        }
+
         //setStatusBarDarkMode(true,this);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
@@ -110,6 +122,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             // 设置状态栏透明
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
         }
         else{
 
@@ -117,7 +130,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
             if (toolbar != null) {
                 toolbar.setPadding(0, 0, 0, 0);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+                ViewGroup.LayoutParams params = toolbar.getLayoutParams();
                 params.height = (int) DimenUtil.dp2px(44);
                 toolbar.setLayoutParams(params);
 

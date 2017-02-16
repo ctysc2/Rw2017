@@ -37,7 +37,6 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
     @BindView(R.id.iv_del)
     ImageView mDelete;
 
-    private int mPosition;
     @OnClick({R.id.back,
             R.id.iv_del,
             R.id.rightText
@@ -48,9 +47,6 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rightText:
-                Intent intent = new Intent();
-                intent.putExtra("position",mPosition);
-                setResult(RESULT_OK,intent);
                 finish();
                 break;
             case R.id.iv_del:
@@ -73,7 +69,6 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        mPosition = getIntent().getIntExtra("position",0);
         midText.setText(getString(R.string.friendVerifi));
         rightText.setText(getString(R.string.send));
         mback.setImageResource(R.drawable.btn_back);

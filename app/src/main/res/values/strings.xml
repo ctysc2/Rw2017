@@ -65,6 +65,7 @@
     <string name="confirm">确定</string>
     <string name="nextStep">下一步</string>
     <string name="meetintSelectHint1">请选择1-7人进行通话</string>
+    <string name="meetintSelectHint2">请选择接收人</string>
     <string name="choosen">已选择</string>
     <string name="containNum">确定(%1$d/7)</string>
     <string name="containRollNum">确定(%1$d)</string>

@@ -12,6 +12,7 @@ public class UserInfo {
     @Id
     private Long id;
 
+    private String userID;
     private String userName;
     private String nickName;
     private String headUrl;
@@ -39,9 +40,17 @@ public class UserInfo {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 157107060)
-    public UserInfo(Long id, String userName, String nickName, String headUrl) {
+    public String getUserID() {
+        return this.userID;
+    }
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+    @Generated(hash = 1579399695)
+    public UserInfo(Long id, String userID, String userName, String nickName,
+            String headUrl) {
         this.id = id;
+        this.userID = userID;
         this.userName = userName;
         this.nickName = nickName;
         this.headUrl = headUrl;
