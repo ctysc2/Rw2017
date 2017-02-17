@@ -44,24 +44,24 @@
         "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_picsel_preview.xml"
     },
     {
-        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ext_root_menu_item.xml",
-        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_ext_root_menu_item.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_item_public_service_input_menu.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_item_public_service_input_menu.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ext_root_menu_item.xml",
+        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_ext_root_menu_item.xml"
     },
     {
         "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_fr_image.xml",
         "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_fr_image.xml"
     },
     {
-        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_refresh_list_view.xml",
-        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_refresh_list_view.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_input_pager_layout.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_input_pager_layout.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_refresh_list_view.xml",
+        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_refresh_list_view.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ext_voice_input.xml",
@@ -92,12 +92,12 @@
         "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_ac_file_manager.xml"
     },
     {
-        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_wi_file_list_adapter.xml",
-        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_wi_file_list_adapter.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_item_discussion_notification_message.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_item_discussion_notification_message.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_wi_file_list_adapter.xml",
+        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_wi_file_list_adapter.xml"
     },
     {
         "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ext_menu_container.xml",
@@ -128,12 +128,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/layout/rc_voip_call_bottom_incoming_button_layout.xml"
     },
     {
-        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_voip_activity_select_member.xml",
-        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/bundles/debug/res/layout/rc_voip_activity_select_member.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_icon_rt_location_marker.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_icon_rt_location_marker.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_voip_activity_select_member.xml",
+        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/bundles/debug/res/layout/rc_voip_activity_select_member.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_item_group_conversation.xml",
@@ -188,12 +188,12 @@
         "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/layout/rc_item_group_information_notification_message.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_location_preview_activity.xml",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_location_preview_activity.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_voip_activity_select_member.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/layout/rc_voip_activity_select_member.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_location_preview_activity.xml",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_location_preview_activity.xml"
     },
     {
         "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/androidTest/debug/layout/rc_item_information_notification_message.xml",

@@ -27,6 +27,7 @@ import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.view.LoginView;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
+import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.utils.SystemTool;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,9 +107,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
         String avatar = data.getData().getAvatar();
         String session = data.getData().getSessionId();
 
-        App.ID = (int)id;
-        App.sessionID = session;
-
+        PreferenceUtils.setPrefInt(this,"ID",(int)id);
+        PreferenceUtils.setPrefString(this,"sessionID",session);
         Map<String,String> map = new HashMap<>();
         map.put(UserInfoDaoHelper.USERNAME,name);
         map.put(UserInfoDaoHelper.NICKNAME,nickname);

@@ -27,6 +27,7 @@ import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
 import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.GoogleMapUtils;
+import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.utils.TransformUtils;
 import com.socks.library.KLog;
 
@@ -158,7 +159,7 @@ public class MainActivity extends BaseActivity {
         initViews();
 
         GoogleMapUtils.getInstance().initGoogleMap(this);
-        RongIM.connect(mToken, new RongIMClient.ConnectCallback() {
+        RongIM.connect(mToken2, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 Log.i("RongYun","onTokenIncorrect");
@@ -180,6 +181,13 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RongIM.getInstance().disconnect();
+    }
+
     private io.rong.imlib.model.UserInfo findUserById(String userId){
         UserInfo info = UserInfoDaoHelper.getInstance().getUserInfoById(Integer.parseInt(userId));
         io.rong.imlib.model.UserInfo userInfo = null;
@@ -194,12 +202,14 @@ public class MainActivity extends BaseActivity {
                     "陈无人",
                     Uri.parse("http://y0.ifengimg.com/e6ce10787c9a3bdb/2014/0423/re_53571adb03caf.jpg")
             );
+            PreferenceUtils.setPrefString(this,"token",mToken);
         }else{
             userInfo = new io.rong.imlib.model.UserInfo(
                     userId,
                     "张19",
                     Uri.parse("http://img1.mp.oeeee.com/201702/03/04f372705ced49eb.jpg")
             );
+            PreferenceUtils.setPrefString(this,"token",mToken2);
         }
 
 

@@ -173,7 +173,7 @@ public class MyFriendActivity extends BaseActivity {
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                RongIM.getInstance().startConversation(MyFriendActivity.this, Conversation.ConversationType.PRIVATE,"2",dataSource.get(position).getName());
+                RongIM.getInstance().startConversation(MyFriendActivity.this, Conversation.ConversationType.PRIVATE,"1",dataSource.get(position).getName());
             }
         });
 

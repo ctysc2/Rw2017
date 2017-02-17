@@ -1,5 +1,6 @@
 package com.home.rw.application;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDexApplication;
@@ -35,18 +36,22 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         sAppContext = this;
-        //初始化崩溃日志
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(this);
-        initApplicationComponent();
+        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
+            //初始化崩溃日志
+            CrashHandler crashHandler = CrashHandler.getInstance();
+            crashHandler.init(this);
+            initApplicationComponent();
 
-        //初始化Fresco
-        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory.newBuilder(this, new OkHttpClient())
-                .setDownsampleEnabled(true)
-                .build();
-        Fresco.initialize(this, config);
-        RongIM.init(this);
-        setDataBase();
+            //初始化Fresco
+            ImagePipelineConfig config = OkHttpImagePipelineConfigFactory.newBuilder(this, new OkHttpClient())
+                    .setDownsampleEnabled(true)
+                    .build();
+            Fresco.initialize(this, config);
+            RongIM.init(this);
+            RongCloudAppContext.init(this);
+            setDataBase();
+        }
+
     }
 
     private void setDataBase() {
@@ -82,5 +87,15 @@ public class App extends MultiDexApplication {
     public static App getInstances(){
 
         return sAppContext;
+    }
+    public static String getCurProcessName(Context context) {
+        int pid = android.os.Process.myPid();
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
     }
 }
