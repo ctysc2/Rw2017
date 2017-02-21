@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
+import com.home.rw.event.BeforeReadEvent;
+import com.home.rw.event.UnReadMessageEvent;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.BusinessMeetingPhoneEntity;
 import com.home.rw.mvp.entity.CallListEntity;
@@ -34,6 +36,7 @@ import com.home.rw.mvp.ui.activitys.message.ModifiRemarkActivity;
 import com.home.rw.mvp.ui.activitys.message.MyFriendActivity;
 import com.home.rw.mvp.ui.activitys.message.OriganizationActivity;
 import com.home.rw.mvp.ui.activitys.message.PreviewCallActivity;
+import com.home.rw.mvp.ui.activitys.rongCloud.ConversationListActivity;
 import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
@@ -41,6 +44,7 @@ import com.home.rw.mvp.ui.adapters.HomePagerAdapter;
 import com.home.rw.mvp.ui.adapters.MessegeMainAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewSperate;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.utils.RxBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +54,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imlib.RongIMClient;
+import rx.functions.Action1;
 
 import static android.app.Activity.RESULT_OK;
 import static com.home.rw.common.Const.TYPE_ADD;
@@ -107,6 +113,22 @@ public class MessageFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSubscription = RxBus.getInstance().toObservable(UnReadMessageEvent.class)
+                .subscribe(new Action1<UnReadMessageEvent>() {
+                    @Override
+                    public void call(UnReadMessageEvent unread) {
+                        RongIMClient.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
+                            @Override
+                            public void onSuccess(Integer integer) {
+                                mAdapter.updateChatNum(integer);
+                            }
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+
+                            }
+                        });
+                    }
+                });
 
     }
 
@@ -139,6 +161,16 @@ public class MessageFragment extends BaseFragment {
 
         ArrayList<MessegeMainEntity.DataEntity> subData = new ArrayList<>();
 
+        MessegeMainEntity.DataEntity child0 = new MessegeMainEntity.DataEntity(
+                -100,
+                0,
+                "新的消息",
+                null,
+                null,
+                null,
+                false
+        );
+
         MessegeMainEntity.DataEntity child1 = new MessegeMainEntity.DataEntity(
                 -1,
                 0,
@@ -152,8 +184,8 @@ public class MessageFragment extends BaseFragment {
                 -2,
                 0,
                 "我的好友",
-                "最近通话:小陈",
-                "10-29",
+                null,
+                null,
                 null,
                 false
         );
@@ -238,12 +270,14 @@ public class MessageFragment extends BaseFragment {
         subData.add(subchild3);
         subData.add(subchild1);
         subData.add(subchild3);
+        dataSource.add(child0);
         dataSource.add(child1);
-        dataSource.add(child2);
         dataSource.add(child3);
         dataSource.add(child4);
         dataSource.add(child5);
+        dataSource.add(child2);
         dataSource.add(child6);
+
 
 
         saveSetions();
@@ -290,6 +324,9 @@ public class MessageFragment extends BaseFragment {
                 }else {
                     Intent intent;
                     switch (entity.getId()){
+                        case -100:
+                            startActivity(new Intent(mActivity, ConversationListActivity.class));
+                            break;
                         case -1:
                             startActivity(new Intent(mActivity, BusinessPhoneActivity.class));
                             break;
@@ -363,5 +400,21 @@ public class MessageFragment extends BaseFragment {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RongIMClient.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer integer) {
+                mAdapter.updateChatNum(integer);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 }

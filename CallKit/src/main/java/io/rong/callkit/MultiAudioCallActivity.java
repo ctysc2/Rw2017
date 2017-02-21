@@ -3,6 +3,7 @@ package io.rong.callkit;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -28,6 +29,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Discussion;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.InformationNotificationMessage;
+import io.rong.push.RongPushClient;
 
 public class MultiAudioCallActivity extends BaseCallActivity {
     private static final String TAG = "VoIPMultiAudioCallActivity";
@@ -250,6 +252,18 @@ public class MultiAudioCallActivity extends BaseCallActivity {
             case REMOTE_HANGUP:
                 break;
         }
+        RongIM.getInstance().removeMemberFromDiscussion(this.callSession.getTargetId(), userId, new RongIMClient.OperationCallback() {
+
+            @Override
+            public void onSuccess() {
+                Log.i("RongYun","removeMember success userId:"+userId+" id:"+callSession.getTargetId());
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.i("RongYun","removeMember error userId:"+userId+" reason:"+errorCode.getMessage());
+            }
+        });
         if (text != null) {
             memberContainer.updateChildState(userId, text);
         }
@@ -355,10 +369,11 @@ public class MultiAudioCallActivity extends BaseCallActivity {
                 MultiAudioCallActivity.super.onMinimizeClick(v);
             }
         });
+
     }
 
     @Override
-    public void onCallDisconnected(RongCallSession callSession, RongCallCommon.CallDisconnectedReason reason) {
+    public void onCallDisconnected(final RongCallSession callSession, RongCallCommon.CallDisconnectedReason reason) {
         super.onCallDisconnected(callSession, reason);
 
         isFinishing = true;
@@ -387,6 +402,18 @@ public class MultiAudioCallActivity extends BaseCallActivity {
                 finish();
             }
         });
+        RongIM.getInstance().quitDiscussion(callSession.getTargetId(), new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                Log.i("RongYun","quitDiscussion success id: "+callSession.getTargetId());
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.i("RongYun","quitDiscussion error id: "+callSession.getTargetId()+" reason:"+errorCode.getMessage());
+            }
+        });
+
     }
 
     @Override
@@ -473,5 +500,10 @@ public class MultiAudioCallActivity extends BaseCallActivity {
         if (memberContainer != null && memberContainer.findChildById(userInfo.getUserId()) != null) {
             memberContainer.updateChildInfo(userInfo.getUserId(), userInfo);
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RongPushClient.clearAllPushNotifications(this);
     }
 }

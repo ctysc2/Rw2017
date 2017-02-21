@@ -34,6 +34,7 @@ import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
+import io.rong.push.RongPushClient;
 
 public class SingleCallActivity extends BaseCallActivity implements Handler.Callback {
     private static final String TAG = "VoIPSingleActivity";
@@ -52,7 +53,7 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
     private int EVENT_FULL_SCREEN = 1;
 
     private String targetId = null;
-    private RongCallCommon.CallMediaType mediaType;
+    private RongCallCommon.CallMediaType mediaType = RongCallCommon.CallMediaType.AUDIO;
 
     @Override
     final public boolean handleMessage(Message msg) {
@@ -64,7 +65,6 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
     }
 
     @Override
-    @TargetApi(23)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rc_voip_activity_single_call);
@@ -79,11 +79,14 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
         RongCallAction callAction = RongCallAction.valueOf(intent.getStringExtra("callAction"));
 
         if (callAction.equals(RongCallAction.ACTION_OUTGOING_CALL)) {
-            if (intent.getAction().equals(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO)) {
-                mediaType = RongCallCommon.CallMediaType.AUDIO;
-            } else {
-                mediaType = RongCallCommon.CallMediaType.VIDEO;
+            if(intent.getAction()!=null){
+                if (intent.getAction().equals(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO)) {
+                    mediaType = RongCallCommon.CallMediaType.AUDIO;
+                } else {
+                    mediaType = RongCallCommon.CallMediaType.VIDEO;
+                }
             }
+
         } else if (callAction.equals(RongCallAction.ACTION_INCOMING_CALL)) {
             callSession = intent.getParcelableExtra("callSession");
             mediaType = callSession.getMediaType();
@@ -109,7 +112,7 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
             finish();
         }
     }
-
+    @TargetApi(23)
     @Override
     protected void onNewIntent(Intent intent) {
         startForCheckPermissions = intent.getBooleanExtra("checkPermissions", false);
@@ -118,11 +121,14 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
             return;
         }
         if (callAction.equals(RongCallAction.ACTION_OUTGOING_CALL)) {
-            if (intent.getAction().equals(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO)) {
-                mediaType = RongCallCommon.CallMediaType.AUDIO;
-            } else {
-                mediaType = RongCallCommon.CallMediaType.VIDEO;
+            if(intent.getAction()!=null){
+                if (intent.getAction().equals(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO)) {
+                    mediaType = RongCallCommon.CallMediaType.AUDIO;
+                } else {
+                    mediaType = RongCallCommon.CallMediaType.VIDEO;
+                }
             }
+
         } else if (callAction.equals(RongCallAction.ACTION_INCOMING_CALL)) {
             callSession = intent.getParcelableExtra("callSession");
             mediaType = callSession.getMediaType();
@@ -205,7 +211,7 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
     }
 
     private void setupIntent() {
-        RongCallCommon.CallMediaType mediaType;
+        RongCallCommon.CallMediaType mediaType = RongCallCommon.CallMediaType.AUDIO;
         Intent intent = getIntent();
         RongCallAction callAction = RongCallAction.valueOf(intent.getStringExtra("callAction"));
 //        if (callAction.equals(RongCallAction.ACTION_RESUME_CALL)) {
@@ -216,11 +222,14 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
             mediaType = callSession.getMediaType();
             targetId = callSession.getInviterUserId();
         } else if (callAction.equals(RongCallAction.ACTION_OUTGOING_CALL)) {
-            if (intent.getAction().equals(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO)) {
-                mediaType = RongCallCommon.CallMediaType.AUDIO;
-            } else {
-                mediaType = RongCallCommon.CallMediaType.VIDEO;
+            if(intent.getAction()!=null){
+                if (intent.getAction().equals(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO)) {
+                    mediaType = RongCallCommon.CallMediaType.AUDIO;
+                } else {
+                    mediaType = RongCallCommon.CallMediaType.VIDEO;
+                }
             }
+
             Conversation.ConversationType conversationType = Conversation.ConversationType.valueOf(intent.getStringExtra("conversationType").toUpperCase(Locale.getDefault()));
             targetId = intent.getStringExtra("targetId");
 
@@ -642,6 +651,12 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
 //        } else {
 //            RongCallClient.getInstance().hangUpCall(callSession.getCallId());
 //        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RongPushClient.clearAllPushNotifications(this);
     }
 
     public void onEventMainThread(UserInfo userInfo) {

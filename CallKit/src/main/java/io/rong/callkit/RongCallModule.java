@@ -2,6 +2,7 @@ package io.rong.callkit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class RongCallModule implements IExternalModule {
     private final static String TAG = "RongCallModule";
 
     private RongCallSession mCallSession;
-    private boolean mViewLoaded;
+    private boolean mViewLoaded = true;
     private Context mContext;
 
     public RongCallModule() {
@@ -37,6 +38,7 @@ public class RongCallModule implements IExternalModule {
 
     @Override
     public void onConnected(String token) {
+        RLog.i("RongYun", "RongCallModule onConnected token:"+token);
         RongCallClient.getInstance().setVoIPCallListener(RongCallProxy.getInstance());
     }
 
@@ -113,6 +115,7 @@ public class RongCallModule implements IExternalModule {
             } else {
                 action = RongVoIPIntent.RONG_INTENT_ACTION_VOIP_MULTIAUDIO;
             }
+
             Intent intent = new Intent(action);
             intent.putExtra("callSession", callSession);
             intent.putExtra("callAction", RongCallAction.ACTION_INCOMING_CALL.getName());

@@ -59,7 +59,13 @@ public class LoginActivity extends BaseActivity implements LoginView {
                // mLoginPresenterImpl.beforeRequest();
                 //mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
                 //mLoginPresenterImpl.processLogin("oa_e","1234");
-                 startActivity(new Intent(this,MainActivity.class));
+                if(mEtName.getText().toString().equals("")){
+                    Toast.makeText(this,"请输入用户名",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                PreferenceUtils.setPrefString(this,"userName",mEtName.getText().toString());
+                startActivity(new Intent(this,MainActivity.class));
+                finish();
                 break;
             default:
                 break;
@@ -121,6 +127,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void showProgress() {
         mDialog = DialogUtils.create(this,DialogUtils.TYPE_COMMOM_LOADING);
         mDialog.show();
+
     }
 
     @Override

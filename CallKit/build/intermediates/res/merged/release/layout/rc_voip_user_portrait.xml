@@ -10,6 +10,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@android:color/transparent"
-        app:RCCornerRadius="3dp"
+        app:RCShape="circle"
         app:RCDefDrawable="@drawable/rc_default_portrait"/>
 </FrameLayout>

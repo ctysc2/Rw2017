@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -110,6 +111,9 @@ public class BaseCallActivity extends Activity implements IRongCallListener {
             e.printStackTrace();
         }
         isFinishing = false;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setStatusBarColor(Color.parseColor("#262E42"));// SDK21
+
         RongCallProxy.getInstance().setCallListener(this);
     }
 

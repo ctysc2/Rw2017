@@ -45,7 +45,6 @@ public class UserInfoDaoHelper {
             user = new UserInfo();
             user.setUserName(username);
             dao.insert(user);
-
         }
 
         return user;
@@ -84,7 +83,7 @@ public class UserInfoDaoHelper {
                     user.setNickName(value);
                     break;
                 case HEADURL:
-                    user.setHeadUrl(value);
+                    user.setAvatar(value);
                     break;
                 default:
                     break;
@@ -112,7 +111,7 @@ public class UserInfoDaoHelper {
                 result = user.getNickName();
                 break;
             case HEADURL:
-                result = user.getHeadUrl();
+                result = user.getAvatar();
                 break;
             default:
                 break;

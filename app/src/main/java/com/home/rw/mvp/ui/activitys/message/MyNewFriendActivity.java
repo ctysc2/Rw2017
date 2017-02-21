@@ -25,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongContext;
+import io.rong.imkit.model.Event;
+import io.rong.imlib.model.Conversation;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,6 +47,8 @@ public class MyNewFriendActivity extends BaseActivity {
     SwipeRefreshLayout mRefresh;
 
     private ReceiveFriendAdapter mAdapter;
+
+    private String mTargetId;
 
     private boolean mIsLoadingMore;
     private ArrayList<ReceiveFriendEntity.DataEntity> dataSource  = new ArrayList<>();
@@ -74,6 +79,7 @@ public class MyNewFriendActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        mTargetId = getIntent().getStringExtra("mTargetId");
         midText.setText(getString(R.string.newFriend));
         mBack.setImageResource(R.drawable.btn_back);
         mRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -229,5 +235,19 @@ public class MyNewFriendActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mTargetId!=null && !mTargetId.equals("")){
+            Event.SyncReadStatusEvent sync = new Event.SyncReadStatusEvent(Conversation.ConversationType.PRIVATE,mTargetId);
+            RongContext.getInstance().getEventBus().post(sync);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

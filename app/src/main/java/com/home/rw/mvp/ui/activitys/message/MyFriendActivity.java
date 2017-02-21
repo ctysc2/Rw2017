@@ -22,6 +22,7 @@ import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.adapters.HomePagerAdapter;
 import com.home.rw.mvp.ui.adapters.MyFriendAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewSperate;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -119,44 +120,47 @@ public class MyFriendActivity extends BaseActivity {
             }
         });
         //dummy data
-        MyFriendEntity.DataEntity entity1 = new MyFriendEntity.DataEntity();
 
-        entity1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=9db9758da6c27d1eb12b33967abcc60b/21a4462309f79052d1a480170ef3d7ca7bcbd564.jpg");
-        entity1.setName("习近平");
-        entity1.setDate("01-22");
+
+        MyFriendEntity.DataEntity entity1 = new MyFriendEntity.DataEntity();
+        entity1.setAvatar("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2636222877,2825274081&fm=23&gp=0.jpg");
+        entity1.setName("孙悟空");
+        entity1.setDate("");
+        entity1.setId(1);
 
         MyFriendEntity.DataEntity entity2 = new MyFriendEntity.DataEntity();
 
-        entity2.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=31326f1bab18972bb737089887a410ec/f31fbe096b63f6248a446a0c8744ebf81a4ca3a0.jpg");
-        entity2.setName("江泽民");
-        entity2.setDate("01-20");
+        entity2.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=50088fe8d3ca7bcb6976cf7ddf600006/b2de9c82d158ccbf4e8703111dd8bc3eb13541e5.jpg");
+        entity2.setName("猪八戒");
+        entity2.setDate("");
+        entity2.setId(2);
 
         MyFriendEntity.DataEntity entity3 = new MyFriendEntity.DataEntity();
 
-        entity3.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=6d88c0a5cd177f3e0439f45f11a650a2/0bd162d9f2d3572cad9fcecf8e13632762d0c3a0.jpg");
-        entity3.setName("胡锦涛");
-        entity3.setDate("01-18");
+        entity3.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=f5e2a401dac451dae2fb04b9d7943903/b219ebc4b74543a96c11c69319178a82b9011462.jpg");
+        entity3.setName("沙和尚");
+        entity3.setDate("");
+        entity3.setId(3);
 
-        MyFriendEntity.DataEntity entity4 = new MyFriendEntity.DataEntity();
 
-        entity4.setName("邓超");
-        entity4.setDate("01-16");
+        switch (PreferenceUtils.getPrefString(this,"userName","3")){
+            case "1":
+                dataSource.add(entity2);
+                dataSource.add(entity3);
+                break;
+            case "2":
+                dataSource.add(entity1);
+                dataSource.add(entity3);
+                break;
+            case "3":
+            default:
+                dataSource.add(entity1);
+                dataSource.add(entity2);
+                break;
+        }
 
-        dataSource.add(entity1);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity4);
-        dataSource.add(entity3);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity3);
-        dataSource.add(entity2);
+
+
 
         mHeader = LayoutInflater.from(this).inflate(R.layout.cell_friend_top, null, false);
         ((TextView)mHeader.findViewById(R.id.tv_friend_num)).setText("15");
@@ -173,7 +177,7 @@ public class MyFriendActivity extends BaseActivity {
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                RongIM.getInstance().startConversation(MyFriendActivity.this, Conversation.ConversationType.PRIVATE,"1",dataSource.get(position).getName());
+                RongIM.getInstance().startConversation(MyFriendActivity.this, Conversation.ConversationType.PRIVATE,String.valueOf(dataSource.get(position).getId()),dataSource.get(position).getName());
             }
         });
 

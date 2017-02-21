@@ -25,6 +25,9 @@ public class KeyBoardUtils {
     private MotionEvent ev;
     private View v;
 
+    public KeyBoardUtils() {
+    }
+
     public KeyBoardUtils(MotionEvent ev, InputMethodManager im, View v) {
         this.ev=ev;
         this.v=v;
@@ -67,7 +70,7 @@ public class KeyBoardUtils {
      * 多种隐藏软件盘方法的其中一种
      * @param token
      */
-    private void hideSoftInput(IBinder token) {
+    public void hideSoftInput(IBinder token) {
         if (token != null) {
             im.hideSoftInputFromWindow(token,
                     InputMethodManager.HIDE_NOT_ALWAYS);

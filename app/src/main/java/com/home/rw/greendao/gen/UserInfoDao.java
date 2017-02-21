@@ -28,7 +28,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property UserID = new Property(1, String.class, "userID", false, "USER_ID");
         public final static Property UserName = new Property(2, String.class, "userName", false, "USER_NAME");
         public final static Property NickName = new Property(3, String.class, "nickName", false, "NICK_NAME");
-        public final static Property HeadUrl = new Property(4, String.class, "headUrl", false, "HEAD_URL");
+        public final static Property Avatar = new Property(4, String.class, "avatar", false, "AVATAR");
     };
 
 
@@ -48,7 +48,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"USER_ID\" TEXT," + // 1: userID
                 "\"USER_NAME\" TEXT," + // 2: userName
                 "\"NICK_NAME\" TEXT," + // 3: nickName
-                "\"HEAD_URL\" TEXT);"); // 4: headUrl
+                "\"AVATAR\" TEXT);"); // 4: avatar
     }
 
     /** Drops the underlying database table. */
@@ -81,9 +81,9 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindString(4, nickName);
         }
  
-        String headUrl = entity.getHeadUrl();
-        if (headUrl != null) {
-            stmt.bindString(5, headUrl);
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(5, avatar);
         }
     }
 
@@ -111,9 +111,9 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindString(4, nickName);
         }
  
-        String headUrl = entity.getHeadUrl();
-        if (headUrl != null) {
-            stmt.bindString(5, headUrl);
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(5, avatar);
         }
     }
 
@@ -129,7 +129,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userID
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // userName
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // nickName
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // headUrl
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // avatar
         );
         return entity;
     }
@@ -140,7 +140,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setUserID(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setUserName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setNickName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setHeadUrl(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAvatar(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     @Override

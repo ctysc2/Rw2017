@@ -40,7 +40,12 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private LayoutInflater inflater;
     private ArrayList<MessegeMainEntity.DataEntity> dataSource;
     private Map<String,Integer> headMap = new HashMap<>();
+    private int chatNum = 0;
 
+    public void updateChatNum(int chatNum){
+        this.chatNum = chatNum;
+        notifyDataSetChanged();
+    }
     //设置详情监听事件
     public void setOnDetailClickListener(OnItemClickListener mListener){
 
@@ -62,11 +67,12 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.context = context;
         inflater = LayoutInflater.from(context);
 
+        headMap.put(context.getString(R.string.newMessage),R.drawable.icon_haoyou);
         headMap.put(context.getString(R.string.shangWu),R.drawable.icon_shangwu);
-        headMap.put(context.getString(R.string.haoYou),R.drawable.icon_haoyou);
         headMap.put(context.getString(R.string.zhiDi),R.drawable.icon_zhidi);
         headMap.put(context.getString(R.string.gongSi),R.drawable.icon_gongsi);
         headMap.put(context.getString(R.string.qiYe),R.drawable.icon_qiye);
+        headMap.put(context.getString(R.string.haoYou),R.drawable.icon_haoyou);
         headMap.put(context.getString(R.string.changYong),R.drawable.icon_changyong);
     }
 
@@ -131,6 +137,12 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((MainViewHolder)holder).mRightImg.setVisibility(View.GONE);
             }
 
+            if(entity.getId() == -100 && chatNum!=0){
+                ((MainViewHolder)holder).mChatNum.setVisibility(View.VISIBLE);
+                ((MainViewHolder)holder).mChatNum.setText(String.valueOf(chatNum));
+            }else{
+                ((MainViewHolder)holder).mChatNum.setVisibility(View.GONE);
+            }
             if(position == dataSource.size()-1){
                 ((MainViewHolder)holder).mSperate.setVisibility(View.GONE);
             }
@@ -217,6 +229,9 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @BindView(R.id.iv_right)
         ImageView mRightImg;
+
+        @BindView(R.id.tv_chat_num)
+        TextView mChatNum;
 
         @BindView(R.id.sperate)
         View mSperate;

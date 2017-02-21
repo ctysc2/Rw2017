@@ -38,7 +38,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import okhttp3.ResponseBody;
 import rx.Observer;
 import rx.functions.Func1;
@@ -146,8 +148,11 @@ public class MainActivity extends BaseActivity {
         addFragment();
     }
 
-    private String mToken = "cKAsG5HC2cGlfLbazQzwPW7NRrR+UMcreHvSS1S/dBvCeP5T+KlqPOKuRv/L7PruKLoxFZuMe/sCjtDzK6xcOA==";
-    private String mToken2 = "xG3zApLx/oT5Lj4xU2lSyARzB15IL/xC1Y0D/SKsLhU/6U1ceFneHGeTaQoFER00r2z8/5BLCrA=";
+    private String mToken1 = "QlbrYrD1RRRW0h/abjiy4W7NRrR+UMcreHvSS1S/dBvCeP5T+KlqPHvzIUlMuZpOsxoiCrcMVkoCjtDzK6xcOA==";
+    private String mToken2 = "1t33Wpe6GiSmz+cyclErqiQPSAlBcInGYJyuRDuzYBQ/JthdPeQWkltPQljTJfkAs7rFFJpy7rscwdB/fTcMcw==";
+    private String mToken3 = "RhfcRSV8g5ewQwKfrEuis27NRrR+UMcreHvSS1S/dBvCeP5T+KlqPLvP/2UHkd3l5sjai2rb5q0CjtDzK6xcOA==";
+
+    private String mToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,9 +162,22 @@ public class MainActivity extends BaseActivity {
         tabArray.add(mLlSocial);
         tabArray.add(mLlMine);
         initViews();
-
+         switch (PreferenceUtils.getPrefString(this,"userName","3")){
+             case "1":
+                 mToken = mToken1;
+                 break;
+             case "2":
+                 mToken = mToken2;
+                 break;
+             case "3":
+                 mToken = mToken3;
+                 break;
+             default:
+                 mToken = mToken3;
+                 break;
+         }
         GoogleMapUtils.getInstance().initGoogleMap(this);
-        RongIM.connect(mToken2, new RongIMClient.ConnectCallback() {
+        RongIM.connect(mToken, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 Log.i("RongYun","onTokenIncorrect");
@@ -168,8 +186,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(String s) {
                 Log.i("RongYun", "onSuccess userId:" + s);
-                RongIM.getInstance().setCurrentUserInfo(findUserById(s));
-                RongIM.getInstance().setMessageAttachedUserInfo(true);
+                PreferenceUtils.setPrefString(MainActivity.this,"token",mToken);
+
             }
 
             @Override
@@ -187,35 +205,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         RongIM.getInstance().disconnect();
     }
-
-    private io.rong.imlib.model.UserInfo findUserById(String userId){
-        UserInfo info = UserInfoDaoHelper.getInstance().getUserInfoById(Integer.parseInt(userId));
-        io.rong.imlib.model.UserInfo userInfo = null;
-//        io.rong.imlib.model.UserInfo userInfo = new io.rong.imlib.model.UserInfo(
-//                String.valueOf(info.getId()),
-//                info.getUserName(),
-//                Uri.parse(info.getHeadUrl())
-//                );
-        if(userId.equals("1")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    userId,
-                    "陈无人",
-                    Uri.parse("http://y0.ifengimg.com/e6ce10787c9a3bdb/2014/0423/re_53571adb03caf.jpg")
-            );
-            PreferenceUtils.setPrefString(this,"token",mToken);
-        }else{
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    userId,
-                    "张19",
-                    Uri.parse("http://img1.mp.oeeee.com/201702/03/04f372705ced49eb.jpg")
-            );
-            PreferenceUtils.setPrefString(this,"token",mToken2);
-        }
-
-
-        return userInfo;
-    }
-    private void addFragment() {
+    public void addFragment() {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         transaction.add(R.id.fl_Content, mMessageFragment);

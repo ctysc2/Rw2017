@@ -31,6 +31,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongContext;
+import io.rong.imkit.model.Event;
+import io.rong.imlib.model.Conversation;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,6 +45,9 @@ public class RollMeActivity extends BaseActivity {
     private RollMelistAdapter mAdapter;
 
     private ArrayList<RollMeEntity.DataEntity> dataSource  = new ArrayList<>();
+
+    private String mTargetId;
+
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
 
@@ -89,6 +95,7 @@ public class RollMeActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        mTargetId = getIntent().getStringExtra("mTargetId");
         midText.setText(R.string.rollme);
         mback.setImageResource(R.drawable.btn_back);
         initRecycleView();
@@ -237,10 +244,21 @@ public class RollMeActivity extends BaseActivity {
         });
 
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mTargetId!=null && !mTargetId.equals("")){
+            Event.SyncReadStatusEvent sync = new Event.SyncReadStatusEvent(Conversation.ConversationType.PRIVATE,mTargetId);
+            RongContext.getInstance().getEventBus().post(sync);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

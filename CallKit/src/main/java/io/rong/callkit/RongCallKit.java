@@ -34,7 +34,7 @@ public class RongCallKit {
         } else {
             action = RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEVIDEO;
         }
-        Intent intent = new Intent(action);
+        Intent intent = new Intent(context,SingleCallActivity.class);
         intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE.getName().toLowerCase());
         intent.putExtra("targetId", targetId);
         intent.putExtra("callAction", RongCallAction.ACTION_OUTGOING_CALL.getName());

@@ -15,13 +15,30 @@ public class UserInfo {
     private String userID;
     private String userName;
     private String nickName;
-    private String headUrl;
-    public String getHeadUrl() {
-        return this.headUrl;
+    private String avatar;
+
+    @Generated(hash = 1610275392)
+    public UserInfo(Long id, String userID, String userName, String nickName,
+            String avatar) {
+        this.id = id;
+        this.userID = userID;
+        this.userName = userName;
+        this.nickName = nickName;
+        this.avatar = avatar;
     }
-    public void setHeadUrl(String headUrl) {
-        this.headUrl = headUrl;
+
+    @Generated(hash = 1279772520)
+    public UserInfo() {
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getNickName() {
         return this.nickName;
     }
@@ -46,16 +63,6 @@ public class UserInfo {
     public void setUserID(String userID) {
         this.userID = userID;
     }
-    @Generated(hash = 1579399695)
-    public UserInfo(Long id, String userID, String userName, String nickName,
-            String headUrl) {
-        this.id = id;
-        this.userID = userID;
-        this.userName = userName;
-        this.nickName = nickName;
-        this.headUrl = headUrl;
-    }
-    @Generated(hash = 1279772520)
-    public UserInfo() {
-    }
+
+
 }

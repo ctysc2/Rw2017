@@ -48,6 +48,19 @@
         android:text="10-28"
         android:layout_marginRight="15dp"
         android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/tv_chat_num"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:textSize="11sp"
+        android:text="31"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/widowColor"
+        android:background="@drawable/shape_friend_num"
+        android:layout_marginRight="15dp"/>
     <ImageView
         android:id="@+id/iv_right"
         android:layout_width="15dp"

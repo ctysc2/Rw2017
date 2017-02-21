@@ -1,5 +1,6 @@
 package com.home.rw.mvp.ui.activitys.rongCloud;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -9,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -19,18 +22,28 @@ import com.home.rw.R;
 import com.home.rw.annotation.BindValues;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.mvp.entity.CallListEntity;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.message.AddFriendIndex;
 import com.home.rw.mvp.ui.activitys.message.MyNewFriendActivity;
+import com.home.rw.mvp.ui.activitys.message.PreviewCallActivity;
+import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.PreferenceUtils;
+
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.callkit.RongCallKit;
+import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
+import io.rong.imkit.model.Event;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.push.notification.PushMessageReceiver;
@@ -47,11 +60,16 @@ public class ConversationActivity extends BaseActivity {
     private Conversation.ConversationType mConversationType;
 
     private boolean isFromPush = false;
+    private String mTitle;
     @BindView(R.id.back)
     ImageButton mback;
 
     @BindView(R.id.midText)
     TextView midText;
+
+    @BindView(R.id.rightText)
+    TextView rightText;
+
 
     @BindView(R.id.rong_content)
     FrameLayout mContent;
@@ -61,12 +79,21 @@ public class ConversationActivity extends BaseActivity {
 
     private ConversationFragment mFragment;
     @OnClick({R.id.back,
+            R.id.rightText,
     })
     public void onClick(View v){
         switch(v.getId()){
             case R.id.back:
                 doBack();
-
+                break;
+            case R.id.rightText:
+                Intent intent = new Intent(this,PreviewCallActivity.class);
+                CallListEntity.DataEntity entity = new CallListEntity.DataEntity();
+                entity.setId(Integer.parseInt(mTargetId));
+                entity.setAvatar("http://juqing.9duw.com/UploadPic/2016-8/20168261027734857.jpg");
+                entity.setName(mTitle);
+                intent.putExtra("data",entity);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -89,6 +116,7 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void doBack(){
+        hintKbTwo();
         if (isFromPush) {
             isFromPush = false;
             startActivity(new Intent(this, MainActivity.class));
@@ -98,13 +126,31 @@ public class ConversationActivity extends BaseActivity {
     public void initViews() {
 
         Intent intent = getIntent();
-        midText.setText(intent.getData().getQueryParameter("title"));
+        mTitle = intent.getData().getQueryParameter("title");
+        midText.setText(mTitle);
         mback.setImageResource(R.drawable.btn_back);
-        mConversationType = Conversation.ConversationType.PRIVATE;
+        rightText.setText(R.string.doPhone);
+        mConversationType = Conversation.ConversationType.valueOf(intent.getData()
+                .getLastPathSegment().toUpperCase(Locale.getDefault()));
         mTargetId = intent.getData().getQueryParameter("targetId");
 
-        if (mTargetId != null && mTargetId.equals("10000")) {
-            startActivity(new Intent(ConversationActivity.this, MyNewFriendActivity.class));
+        if (mTargetId != null && (mTargetId.equals("1001")||(mTargetId.equals("1000")))) {
+            Intent friendIntent = new Intent(ConversationActivity.this, MyNewFriendActivity.class);
+            friendIntent.putExtra("mTargetId",mTargetId);
+            friendIntent.putExtra("mConversationType",mConversationType);
+            startActivity(friendIntent);
+            RongIMClient.getInstance().clearMessagesUnreadStatus(mConversationType, mTargetId, null);
+            finish();
+            return;
+        }
+        if (mTargetId != null && mTargetId.equals("1002")) {
+            Intent rollIntent = new Intent(ConversationActivity.this, RollMeActivity.class);
+            rollIntent.putExtra("mTargetId",mTargetId);
+            rollIntent.putExtra("mConversationType",mConversationType);
+            startActivity(rollIntent);
+            RongIMClient.getInstance().clearMessagesUnreadStatus(mConversationType, mTargetId, null);
+
+            finish();
             return;
         }
         isPushMessage(intent);
@@ -175,33 +221,7 @@ public class ConversationActivity extends BaseActivity {
             reconnect(token);
         }
     }
-    private io.rong.imlib.model.UserInfo findUserById(String userId){
-        UserInfo info = UserInfoDaoHelper.getInstance().getUserInfoById(Integer.parseInt(userId));
-        io.rong.imlib.model.UserInfo userInfo = null;
-//        io.rong.imlib.model.UserInfo userInfo = new io.rong.imlib.model.UserInfo(
-//                String.valueOf(info.getId()),
-//                info.getUserName(),
-//                Uri.parse(info.getHeadUrl())
-//                );
-        if(userId.equals("1")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    userId,
-                    "陈无人",
-                    Uri.parse("http://y0.ifengimg.com/e6ce10787c9a3bdb/2014/0423/re_53571adb03caf.jpg")
-            );
 
-        }else{
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    userId,
-                    "张19",
-                    Uri.parse("http://img1.mp.oeeee.com/201702/03/04f372705ced49eb.jpg")
-            );
-
-        }
-
-
-        return userInfo;
-    }
     private void reconnect(String token) {
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
             @Override
@@ -211,8 +231,6 @@ public class ConversationActivity extends BaseActivity {
 
             @Override
             public void onSuccess(String s) {
-                RongIM.getInstance().setCurrentUserInfo(findUserById(s));
-                RongIM.getInstance().setMessageAttachedUserInfo(true);
                 enterFragment(mConversationType, mTargetId);
 
             }
@@ -245,6 +263,14 @@ public class ConversationActivity extends BaseActivity {
         //xxx 为你要加载的 id
         transaction.add(R.id.rong_content, mFragment);
         transaction.commitAllowingStateLoss();
-
     }
+    private void hintKbTwo() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,11 +20,17 @@ import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.adapters.CallListAdatper;
 import com.home.rw.mvp.ui.adapters.SpaceItemDecoration;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.callkit.RongCallKit;
+import io.rong.calllib.RongCallClient;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 
 public class PreviewCallActivity extends BaseActivity {
 
@@ -99,6 +106,10 @@ public class PreviewCallActivity extends BaseActivity {
             isEditing = false;
             mAdapter.notifyDataSetChanged();
         }
+        if(RongCallClient.getInstance().getCallSession() != null){
+            Toast.makeText(this,R.string.calling,Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (id){
             case R.id.ll_netCall:
                 if(callListLength<4){
@@ -106,12 +117,49 @@ public class PreviewCallActivity extends BaseActivity {
                 }else if(callListLength >4){
                     Toast.makeText(this,getString(R.string.onlyOneOp),Toast.LENGTH_SHORT).show();
                 }else{
-                }
+                    RongCallKit.startSingleCall( this, String.valueOf(dataSource.get(1).getId()), RongCallKit.CallMediaType.CALL_MEDIA_TYPE_AUDIO );
+               }
                 break;
             case R.id.ll_meeting:
                 if(callListLength<4){
                     Toast.makeText(this,getString(R.string.toastMeetingAtLeastOneOp),Toast.LENGTH_SHORT).show();
-                }
+                }else if(callListLength == 4){
+                    RongCallKit.startSingleCall( this, String.valueOf(dataSource.get(1).getId()), RongCallKit.CallMediaType.CALL_MEDIA_TYPE_AUDIO );
+
+                }else{
+
+                    ArrayList<String> userIds = new ArrayList<>();
+                    switch (PreferenceUtils.getPrefString(this,"userName","3")){
+                        case "1":
+                            userIds.add("2");
+                            userIds.add("3");
+                            break;
+                        case "2":
+                            userIds.add("1");
+                            userIds.add("3");
+                            break;
+                        case "3":
+                        default:
+                            userIds.add("1");
+                            userIds.add("2");
+                            break;
+                    }
+
+                    final ArrayList<String> userlist = userIds;
+                    RongIM.getInstance().createDiscussion("temp", userIds, new RongIMClient.CreateDiscussionCallback() {
+                        @Override
+                        public void onSuccess(String s) {
+                            Log.i("RongYun","createDiscussion success current id:"+s);
+                            RongCallKit.startMultiCall(PreviewCallActivity.this, Conversation.ConversationType.DISCUSSION, s, RongCallKit.CallMediaType.CALL_MEDIA_TYPE_AUDIO,  userlist);
+
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                            Log.i("RongYun","createDiscussion error errorCode:"+errorCode.getMessage());
+                        }
+                    });
+              }
                 break;
             case R.id.ll_normalCall:
                 if(callListLength<4){
