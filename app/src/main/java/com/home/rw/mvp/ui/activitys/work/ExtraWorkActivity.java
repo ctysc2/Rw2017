@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
@@ -27,11 +29,28 @@ import com.bigkoo.pickerview.listener.OnDismissListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.google.gson.Gson;
 import com.home.rw.R;
 import com.home.rw.common.Const;
+import com.home.rw.common.HostType;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.listener.AlertDialogListener;
+import com.home.rw.mvp.entity.AddApplyEntity;
+import com.home.rw.mvp.entity.ApplyDetailEntity;
+import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.AddApplyPresenterImpl;
+import com.home.rw.mvp.presenter.impl.ApplyDetailPresenterImpl;
+import com.home.rw.mvp.presenter.impl.DoApprovePresenterImpl;
+import com.home.rw.mvp.presenter.impl.EditApplyPresenterImpl;
+import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.AddApplyView;
+import com.home.rw.mvp.view.ApplyDetailView;
+import com.home.rw.mvp.view.DoApproveView;
+import com.home.rw.mvp.view.EditApplyView;
+import com.home.rw.mvp.view.UploadView;
+import com.home.rw.utils.CompressUtils;
 import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
@@ -41,13 +60,34 @@ import com.photoselector.model.PhotoModel;
 import com.photoselector.ui.PhotoPreviewActivity;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
-public class ExtraWorkActivity extends BaseActivity implements AlertDialogListener {
+import static com.home.rw.common.HostType.ADD_APPLY_LEAVE;
+import static com.home.rw.common.HostType.ADD_APPLY_OVERTIME;
+import static com.home.rw.common.HostType.APPLY_DO_PASS;
+import static com.home.rw.common.HostType.APPLY_DO_REJECT;
+import static com.home.rw.common.HostType.DETAIL_APPLY_OUTGO;
+import static com.home.rw.common.HostType.DETAIL_APPLY_OVERTIME;
+import static com.home.rw.common.HostType.EDIT_APPLY_OVERTIME;
+import static com.home.rw.common.HostType.UPLOAD;
+
+public class ExtraWorkActivity extends BaseActivity implements AlertDialogListener,AddApplyView,EditApplyView,UploadView,DoApproveView,ApplyDetailView {
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -91,6 +131,31 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
     @BindView(R.id.rl_type)
     RelativeLayout mRlType;
 
+    @BindView(R.id.iv_approver_header)
+    SimpleDraweeView mApproverHeader;
+
+    @BindView(R.id.tv_approver_name)
+    TextView mApproverName;
+
+
+    @Inject
+    AddApplyPresenterImpl mAddApplyPresenterImpl;
+
+    @Inject
+    EditApplyPresenterImpl mEditApplyPresenterImpl;
+
+    @Inject
+    UploadPresenterImpl mUploadPresenterImpl;
+
+    @Inject
+    DoApprovePresenterImpl mDoApprovePresenterImpl;
+
+    @Inject
+    ApplyDetailPresenterImpl mApplyDetailPresenterImpl;
+
+    private String mainFormID = "";
+    private boolean mIsFirstCreateForm = true;
+
     private ArrayList<String> Items = new ArrayList<String>();
 
     private static final int DEFAULT = -1;
@@ -129,7 +194,11 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
               R.id.rl_endTime,
               R.id.rl_type,
               R.id.iv_update_photo,
-              R.id.iv_taked_picture1
+              R.id.iv_taked_picture1,
+              R.id.bt_commit,
+              R.id.bt_passed,
+              R.id.bt_refused,
+
     })
     public void onClick(View v){
         switch(v.getId()){
@@ -159,6 +228,34 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
                 break;
             case R.id.iv_taked_picture1:
                 startPreview();
+                break;
+            case R.id.bt_commit:
+                if(!checkCommitData()){
+                    Toast.makeText(this,getString(R.string.checkinput),Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                if(mainFormID == null || mainFormID.equals("")){
+                    //创建失败的话重新创建
+                    addExtraWorkForm();
+                }else{
+                    //创建成功则直接跳到step2
+                    //step2:如果有图片先上传图片,没图片直接跳到step3
+                    if(!TextUtils.isEmpty(headerPathTemp)){
+                        commitImgs();
+                    }else{
+                        editExtraWorkForm(null);
+                    }
+                }
+                break;
+            case R.id.bt_passed:
+                mDoApprovePresenterImpl.setAddApplyType(HostType.APPLY_DO_PASS);
+                mDoApprovePresenterImpl.beforeRequest();
+                mDoApprovePresenterImpl.doApprove(mainFormID);
+                break;
+            case R.id.bt_refused:
+                mDoApprovePresenterImpl.setAddApplyType(HostType.APPLY_DO_REJECT);
+                mDoApprovePresenterImpl.beforeRequest();
+                mDoApprovePresenterImpl.doApprove(mainFormID);
                 break;
             default:
                 break;
@@ -233,27 +330,27 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
 
         //开始时间
         mRlStartTime.setEnabled(false);
-        mStartTimeSelect.setText("2016年12月11日 9:30");
+        mStartTimeSelect.setText("");
 
         //结束时间
         mRlEndTime.setEnabled(false);
-        mEndTimeSelect.setText("2016年12月12日 9:30");
+        mEndTimeSelect.setText("");
 
         //加班类型
         mRlType.setEnabled(false);
-        mTypeSelect.setText("领导是xx");
+        mTypeSelect.setText("");
 
         //持续时间
         mDuration.setEnabled(false);
-        mDuration.setText("1小时");
+        mDuration.setText("");
 
         //加班理由
         mReasonDetail.setEnabled(false);
-        mReasonDetail.setText("领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx领导是xx");
+        mReasonDetail.setText("");
+        mReasonDetail.setHint("");
         //上传头像
         iv_photo.setVisibility(View.GONE);
-        headerPathTemp = "http://img1.gamersky.com/image2016/11/20161114zd_337_39/gamersky_01small_02_20161114165972E.jpg";
-        mPhoto.setImageURI(headerPathTemp);
+
 
     }
     //计算
@@ -278,6 +375,26 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
             }
         }
     }
+    private boolean checkCommitData(){
+        boolean result = true;
+        if(!checkDate(mStartTimeSelect.getText().toString())){
+            result = false;
+        }
+        if(!checkDate(mEndTimeSelect.getText().toString())){
+            result = false;
+        }
+        if(!checkDate(mReasonDetail.getText().toString())){
+            result = false;
+        }
+        if(!checkDate(mTypeSelect.getText().toString())){
+            result = false;
+        }
+        if(!checkDate(mDuration.getText().toString())){
+            result = false;
+        }
+        return result;
+
+    }
     private boolean checkDate(String s){
         if(s!=null && !s.equals("") && !s.equals(getString(R.string.selectHint)))
             return true;
@@ -287,22 +404,38 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mainFormID = getIntent().getStringExtra("formID");
         if((entryType = getIntent().getStringExtra("entryType")) != null){
             if(entryType.equals("edit")){
                 //编辑模式
                 initViews();
+                mAddApplyPresenterImpl.attachView(this);
+                mEditApplyPresenterImpl.attachView(this);
+                mUploadPresenterImpl.attachView(this);
+                addExtraWorkForm();
+
 
             }else if(entryType.equals("show")){
                 //查看模式
                 initViewsShow();
+                mApplyDetailPresenterImpl.attachView(this);
+                mApplyDetailPresenterImpl.setAddApplyType(HostType.DETAIL_APPLY_OVERTIME);
+                mApplyDetailPresenterImpl.beforeRequest();
+                mApplyDetailPresenterImpl.getApplyDetail(mainFormID);
                 mBottomCommit.setVisibility(View.INVISIBLE);
                 mBottomApprove.setVisibility(View.INVISIBLE);
+                mIsFirstCreateForm = false;
             }else{
                 //审批模式
                 initViewsShow();
+                mDoApprovePresenterImpl.attachView(this);
+                mApplyDetailPresenterImpl.attachView(this);
+                mApplyDetailPresenterImpl.setAddApplyType(HostType.DETAIL_APPLY_OVERTIME);
+                mApplyDetailPresenterImpl.beforeRequest();
+                mApplyDetailPresenterImpl.getApplyDetail(mainFormID);
                 mBottomCommit.setVisibility(View.INVISIBLE);
                 mBottomApprove.setVisibility(View.VISIBLE);
+                mIsFirstCreateForm = false;
 
             }
 
@@ -501,5 +634,258 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
     public void onCancel() {
         mAlertDialog.dismiss();
 
+    }
+    //step1:新增加班单
+    private void addExtraWorkForm(){
+        if(!mIsFirstCreateForm){
+            mAddApplyPresenterImpl.beforeRequest();
+        }
+        mAddApplyPresenterImpl.setAddApplyType(ADD_APPLY_OVERTIME);
+        mAddApplyPresenterImpl.addApply();
+
+
+    }
+    //修改加班单
+    private void editExtraWorkForm(List<String> data){
+        mEditApplyPresenterImpl.setAddApplyType(HostType.EDIT_APPLY_OVERTIME);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("beginTime",mStartTimeSelect.getText().toString());
+        map.put("endTime",mEndTimeSelect.getText().toString());
+        map.put("workType",mTypeSelect.getText().toString());
+        map.put("content",mReasonDetail.getText().toString());
+        map.put("length",mDuration.getText().toString());
+        String imgs = "";
+        if(data != null && data.size()>0){
+            for(int i = 0;i<data.size();i++){
+                imgs+=data.get(i);
+                if(i!=data.size()-1)
+                    imgs+=",";
+            }
+        }
+        map.put("imgs",imgs);
+        String log = new Gson().toJson(map);
+        Log.i("Retrofit","editExtraWorkForm commit log body:"+log);
+        mEditApplyPresenterImpl.beforeRequest();
+        mEditApplyPresenterImpl.editApply(mainFormID,map);
+
+    }
+    private String createNewFilePath(String oldPath){
+        String newPath = "";
+
+        String[] data = oldPath.split("/");
+        int length = data.length;
+        String fileName = data[length-1];
+
+        newPath = root+"/"+fileName;
+
+        return newPath;
+    }
+    private void commitImgs(){
+        mUploadPresenterImpl.beforeRequest();
+        rx.Observable.create(new rx.Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                subscriber.onNext(null);
+
+            }
+        }).map(new Func1<Object, ArrayList<String>>() {
+            @Override
+            public ArrayList<String> call(Object o) {
+                ArrayList<String> list = new ArrayList<String>();
+                try {
+                    if(!TextUtils.isEmpty(headerPathTemp)) {
+                        String newPath = createNewFilePath(headerPathTemp);
+                        Log.i("Retrofit", "newPath head:" + newPath);
+                        CompressUtils.getInstance().compressAndGenImage(headerPathTemp, newPath, 800, false);
+                        list.add(newPath);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+                return list;
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<ArrayList<String>>() {
+                    @Override
+                    public void call(ArrayList<String> list) {
+                        mUploadPresenterImpl.processUpload(list);
+                    }
+                });
+    }
+    @Override
+    public void addApplyCompleted(AddApplyEntity data) {
+        Log.i("Retrofit","addApplyCompleted");
+        if(data.getCode().equals("ok")){
+            mainFormID = data.getData().getId();
+            mApproverHeader.setImageURI(data.getData().getAvatar());
+            mApproverName.setText(data.getData().getAssessor());
+            Log.i("Retrofit","addApplyCompleted ok mainFormID:"+mainFormID);
+            if(mIsFirstCreateForm){
+                mIsFirstCreateForm = false;
+                return;
+            }
+            //step2:如果有图片先上传图片,没图片直接跳到step3
+            if(!TextUtils.isEmpty(headerPathTemp)){
+                commitImgs();
+            }else{
+                editExtraWorkForm(null);
+            }
+        }else{
+            if(!mIsFirstCreateForm){
+                if(mLoadDialog!=null){
+                    mLoadDialog.dismiss();
+                    mLoadDialog = null;
+                }
+                Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+            }
+        }
+        mIsFirstCreateForm = false;
+    }
+    @Override
+    public void uploadComplete(UploadEntity data) {
+        if(data.getCode().equals("ok")){
+            //step3:编辑
+            editExtraWorkForm(data.getData());
+
+        }else{
+            if(mLoadDialog!=null){
+                mLoadDialog.dismiss();
+                mLoadDialog = null;
+            }
+            Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void editApplyCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(this,getString(R.string.commitSuccessed),Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+        }
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+    @Override
+    public void showProgress(int reqType) {
+        if(mLoadDialog==null) {
+            switch (reqType) {
+                case ADD_APPLY_OVERTIME:
+                case UPLOAD:
+                case EDIT_APPLY_OVERTIME:
+                case APPLY_DO_PASS:
+                case APPLY_DO_REJECT:
+                    mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_UPDATE);
+                    mLoadDialog.show();
+                    break;
+                case DETAIL_APPLY_OVERTIME:
+                    mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_LOADING);
+                    mLoadDialog.show();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+//        if(mLoadDialog!=null){
+//            switch (reqType){
+//                case ADD_APPLY_OVERTIME:
+//                case UPLOAD:
+//                case EDIT_APPLY_OVERTIME:
+//                    mLoadDialog.dismiss();
+//                    mLoadDialog = null;
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        if(!mIsFirstCreateForm){
+            if(entryType.equals("edit")){
+                Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this,getString(R.string.getFailed),Toast.LENGTH_SHORT).show();
+            }
+        }
+        mIsFirstCreateForm = false;
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mAddApplyPresenterImpl!=null){
+            mAddApplyPresenterImpl.onDestroy();
+        }
+
+        if(mEditApplyPresenterImpl!=null){
+            mEditApplyPresenterImpl.onDestroy();
+        }
+
+        if(mUploadPresenterImpl!=null){
+            mUploadPresenterImpl.onDestroy();
+        }
+        if(mDoApprovePresenterImpl!=null){
+            mDoApprovePresenterImpl.onDestroy();
+        }
+
+        if(mApplyDetailPresenterImpl!=null){
+            mApplyDetailPresenterImpl.onDestroy();
+        }
+
+
+    }
+
+    @Override
+    public void doApproveCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(this,getString(R.string.commitSuccessed),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra("position",getIntent().getIntExtra("position",0));
+            setResult(RESULT_OK,intent);
+            finish();
+        }else{
+            Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+        }
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+
+    }
+    @Override
+    public void getApplyDetailCompleted(ApplyDetailEntity data) {
+        if(data.getCode().equals("ok") && data.getData()!=null){
+            mApproverHeader.setImageURI(data.getData().getAvatar());
+            mApproverName.setText(data.getData().getAssessor());
+            mStartTimeSelect.setText(data.getData().getBeginTime());
+            mEndTimeSelect.setText(data.getData().getEndTime());
+            mReasonDetail.setText(data.getData().getContent());
+            mDuration.setText(data.getData().getLength());
+            mTypeSelect.setText(data.getData().getWorkType());
+            headerPathTemp = data.getData().getImgs();
+            mPhoto.setImageURI(headerPathTemp);
+
+        }
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
     }
 }

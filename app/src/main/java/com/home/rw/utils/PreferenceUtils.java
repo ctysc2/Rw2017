@@ -74,6 +74,7 @@ public class PreferenceUtils {
                                  final int defaultValue) {
         final SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(context);
+
         return settings.getInt(key, defaultValue);  //如果key取不到值，就取回后面的值!
     }
 
@@ -91,7 +92,7 @@ public class PreferenceUtils {
         return settings.getFloat(key, defaultValue);
     }
 
-    public static void setSettingLong(Context context, final String key,
+    public static void setPrefLong(Context context, final String key,
                                       final long value) {
         final SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(context);

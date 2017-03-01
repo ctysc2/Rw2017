@@ -266,6 +266,12 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
                     "沙和尚",
                     Uri.parse("https://imgsa.baidu.com/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=f5e2a401dac451dae2fb04b9d7943903/b219ebc4b74543a96c11c69319178a82b9011462.jpg"));
 
+        }else if(s.equals("4")){
+            userInfo = new io.rong.imlib.model.UserInfo(
+                    s,
+                    "白龙马",
+                    Uri.parse("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1487750183704&di=c241129fbe42167014cc19a1c73877a9&imgtype=0&src=http%3A%2F%2Fkibey-echo.b0.upaiyun.com%2Fd90252fcbe11a6b02bf95d4708e74513.jpg"));
+
         }else{
             userInfo = new io.rong.imlib.model.UserInfo(
                     s,
@@ -273,8 +279,7 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
                     null
             );
         }
-
-        return userInfo;
+       return userInfo;
     }
 
     @Override

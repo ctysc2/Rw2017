@@ -2,9 +2,5 @@
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/xml/rc_file_path.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/xml/rc_file_path.xml"
-    },
-    {
-        "merged": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/res/merged/release/xml/rc_file_path.xml",
-        "source": "/Users/cty/projects/sealtalk-android-master/CallKit/build/intermediates/exploded-aar/sealtalk-android-master/IMKit/unspecified/res/xml/rc_file_path.xml"
     }
 ]

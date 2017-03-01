@@ -3,19 +3,31 @@ package com.home.rw.repository.network;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.home.rw.R;
 import com.home.rw.application.App;
 import com.home.rw.common.ApiConstants;
 import com.home.rw.common.HostType;
+import com.home.rw.event.ReLoginEvent;
+import com.home.rw.mvp.entity.AddApplyEntity;
+import com.home.rw.mvp.entity.ApplyDetailEntity;
+import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.utils.PreferenceUtils;
+import com.home.rw.utils.RxBus;
 import com.home.rw.utils.SystemTool;
 import com.socks.library.KLog;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +48,10 @@ import okio.BufferedSource;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Field;
+import retrofit2.http.GET;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -86,9 +101,9 @@ public class RetrofitManager {
                         1024 * 1024 * 100);
                 if (sOkHttpClient == null) {
                     sOkHttpClient = new OkHttpClient.Builder().cache(cache)
-                            .connectTimeout(6, TimeUnit.SECONDS)
-                            .readTimeout(6, TimeUnit.SECONDS)
-                            .writeTimeout(6, TimeUnit.SECONDS)
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(10, TimeUnit.SECONDS)
                             .retryOnConnectionFailure(true)
                             //.addInterceptor(mRewriteCacheControlInterceptor)
                             .addInterceptor(mLoggingInterceptor)
@@ -117,14 +132,14 @@ public class RetrofitManager {
             //request = request.newBuilder().addHeader("Cookie","123").build();
             //KLog.i("Retrofit","request.headers:"+request.headers());
             Response originalResponse;
-
-            if(App.sessionID!=null && !App.sessionID.equals("")){
+            String sessionID = PreferenceUtils.getPrefString(App.getAppContext(),"sessionID","");
+            if(sessionID!=null && !sessionID.equals("")){
                 //添加公共参数
                 HttpUrl.Builder authorizedUrlBuilder = request.url()
                         .newBuilder()
                         .scheme(request.url().scheme())
                         .host(request.url().host())
-                        .addQueryParameter("jsid", App.sessionID);
+                        .addQueryParameter("jsid", sessionID);
 
                 // 新的请求
                 Request newRequest = request.newBuilder()
@@ -154,6 +169,7 @@ public class RetrofitManager {
                         .header("Cache-Control", "public, only-if-cached, max-stale=" + CACHE_STALE_SEC)
                         .removeHeader("Pragma")
                         .build();
+
             }
         }
     };
@@ -173,8 +189,8 @@ public class RetrofitManager {
             BufferedSource source = response.body().source();
             source.request(Long.MAX_VALUE);
             Buffer buffer = source.buffer();
-            KLog.i("Retrofit","response.body:"+buffer.clone().readString(UTF_8));
-
+            String logResponseBody = buffer.clone().readString(UTF_8);
+            KLog.i("Retrofit","response.body:"+logResponseBody);
             return response;
         }
     };
@@ -200,7 +216,7 @@ public class RetrofitManager {
     }
 
     /**
-     * example：Rw登录接口
+     * Rw登录接口
      *
      * @param phone ：手机号
      * @param password ：密码
@@ -211,20 +227,89 @@ public class RetrofitManager {
 
 
     /**
-     * example：文件上传
+     * 文件上传
      * @param body ：文件集合body
      */
     public Observable<UploadEntity> upload(MultipartBody body) {
         return mRWService.upload(body);
     }
 
+
     /**
-     * example：文件上传
-     * @param map ：文件名/用户id
+     * 获取用户信息
      */
-    public Observable<BaseEntity> updateAvatar(
-            Map<String,Object> map){
-        return mRWService.updateAvatar(map);
+    public Observable<UserInfoEntity> getUserInfo() {
+        return mRWService.getUserInfo();
+    }
+
+    /**
+     * 请假/报销/外出/加班新增接口
+     */
+    public Observable<AddApplyEntity> addApply() {
+        return mRWService.addApply();
+    }
+
+
+    /**
+     * 请假/外出/加班新增接口
+     */
+    public Observable<BaseEntity> editApply(String id,HashMap<String,Object> input) {
+        return mRWService.editApply(id,input);
+    }
+
+    //我已审批
+
+    public Observable<ApprovementListEntity> checked(int page, int size){
+        return mRWService.checked(page,size);
+    }
+
+    //待我审批
+    public Observable<ApprovementListEntity> waitinghecked(int page, int size){
+        return mRWService.waitinghecked(page,size);
+    }
+
+
+    //审核中
+    public Observable<ApprovementListEntity> checking(int page, int size){
+        return mRWService.checking(page,size);
+    }
+
+
+    //通过审核的
+    public Observable<ApprovementListEntity> passed(int page, int size){
+        return mRWService.passed(page,size);
+    }
+
+    //审核被拒的
+    public Observable<ApprovementListEntity> reject(int page, int size){
+        return mRWService.reject(page,size);
+    }
+
+    //通过
+    public Observable<BaseEntity> doPass(String id){
+        return mRWService.doPass(id);
+    }
+
+    //拒绝
+    public Observable<BaseEntity> doReject(String id){
+        return mRWService.doReject(id);
+    }
+
+    //获取详情
+    public Observable<ApplyDetailEntity> applyDetail(String id){
+        return mRWService.applyDetail(id);
+    }
+    //写日志
+    public Observable<BaseEntity> addLog(String title,String content){
+        return mRWService.addLog(title,content);
+    }
+    //发送的日志列表
+    public Observable<LogEntity> sendLogList(int page, int size){
+        return mRWService.sendLogList(page,size);
+    }
+    //接受的日志列表
+    public Observable<LogEntity> receiveLogList(int page,int size){
+        return mRWService.receiveLogList(page,size);
     }
 
 }

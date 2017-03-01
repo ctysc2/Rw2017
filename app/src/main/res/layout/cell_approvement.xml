@@ -22,6 +22,8 @@
         android:layout_toRightOf="@+id/iv_header"
         android:layout_alignTop="@+id/iv_header"
         android:text="李婷婷"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textSize="15sp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"

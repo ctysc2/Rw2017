@@ -167,14 +167,13 @@ public class SocialFragment extends BaseFragment implements ViewPager.OnPageChan
         mTvLeft.setText(R.string.find);
         mTvMid.setText(R.string.facus);
         mTvRight.setText(R.string.homepage);
-
         mFragmentList.add(mFindFragment);
         mFragmentList.add(mFocusFragment);
         mFragmentList.add(mHomePageFragment);
 
 
 
-        mAdapter = new FragmentAdapter(mFragmentActivity.getSupportFragmentManager(),mFragmentList);
+        mAdapter = new FragmentAdapter(getChildFragmentManager(),mFragmentList);
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(this);
     }

@@ -22,11 +22,14 @@ import com.home.rw.listener.AnimationEndListener;
 public class DialogUtils {
     public static final int TYPE_COMMOM_LOADING = 0;
     public static final int TYPE_ALERT = 1;
+    public static final int TYPE_UPDATE = 2;
+    public static final int TYPE_LOADING = 3;
+
     private  Context mContext;
     private  int mDialogType;
     private Dialog mDialog;
+    private int resID = R.string.loading;
     public static  DialogUtils create(Context context,int dialogType){
-
 
         return new DialogUtils(context,dialogType);
 
@@ -43,12 +46,19 @@ public class DialogUtils {
     public void show(){
         switch (mDialogType){
             case TYPE_COMMOM_LOADING:
-                showLoadingDialog();
+                resID = R.string.loging;
+                break;
+            case TYPE_UPDATE:
+                resID = R.string.updating;
+                break;
+            case TYPE_LOADING:
+                resID = R.string.loading;
                 break;
             default:
                 break;
-        }
 
+        }
+        showLoadingDialog();
     }
     public void show(AlertDialogListener listenerString ,String hint1){
 
@@ -82,16 +92,17 @@ public class DialogUtils {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         View contentView = inflater.inflate(R.layout.common_loading, null);
-
+        ((TextView)contentView.findViewById(R.id.tv_loading)).setText(mContext.getString(resID));
         mDialog = new AlertDialog.Builder(mContext).create();
         mDialog.show();
-        //mDialog.setCancelable(false);
+        if(resID == R.string.loging)
+            mDialog.setCancelable(false);
         mDialog.setContentView(contentView);
         Window window = mDialog.getWindow();
         window.setBackgroundDrawableResource(android.R.color.transparent); //背景透明
 
         WindowManager.LayoutParams params = mDialog.getWindow().getAttributes();
-        params.width = (int)(DimenUtil.getScreenWidth()*0.6);
+        params.width = (int)(DimenUtil.getScreenWidth()*0.5);
         window.setAttributes(params);
         window.setWindowAnimations(R.style.loadingPopinStyle);
 

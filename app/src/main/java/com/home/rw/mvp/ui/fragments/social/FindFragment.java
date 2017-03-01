@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
@@ -25,6 +27,7 @@ import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.ImageHelper;
 import com.home.rw.widget.AutoScrollViewPager;
 import com.home.rw.widget.SwipeMenuLayout;
 
@@ -270,11 +273,13 @@ public class FindFragment extends BaseFragment {
         public Object instantiateItem(final ViewGroup container,
                                       final int position)
         {
-            //final ImageView view = new ImageView(container.getContext());
-
-            final SimpleDraweeView imageView = new SimpleDraweeView(container.getContext());
-            //imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageView.setImageURI(testData[position]);
+//            final SimpleDraweeView imageView = new SimpleDraweeView(container.getContext());
+//            imageView.setImageURI(testData[position]);
+            final ImageView imageView = new ImageView(container.getContext());
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            ImageHelper.getInstance().display(
+                    imageView,
+                    testData[position],R.drawable.test_ad);
             container.addView(imageView);
             imageView.setOnClickListener(new View.OnClickListener()
             {

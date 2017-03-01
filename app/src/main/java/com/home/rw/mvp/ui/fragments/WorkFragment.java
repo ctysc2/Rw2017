@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.mvp.entity.CarouselResponseEntity;
@@ -24,6 +25,7 @@ import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.utils.DimenUtil;
+import com.home.rw.utils.ImageHelper;
 import com.home.rw.utils.SystemTool;
 import com.home.rw.widget.AutoScrollViewPager;
 
@@ -260,9 +262,11 @@ public class WorkFragment extends BaseFragment {
         {
             //final ImageView view = new ImageView(container.getContext());
 
-            final SimpleDraweeView imageView = new SimpleDraweeView(container.getContext());
-            //imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageView.setImageURI(testData[position]);
+            final ImageView imageView = new ImageView(container.getContext());
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            ImageHelper.getInstance().display(
+                    imageView,
+                    testData[position],R.drawable.test_ad);
             container.addView(imageView);
             Log.i("lunbo","instantiateItem");
             imageView.setOnClickListener(new View.OnClickListener()

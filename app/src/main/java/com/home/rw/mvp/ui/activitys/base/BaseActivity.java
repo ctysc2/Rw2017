@@ -41,6 +41,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     protected DialogUtils mAlertDialog;
 
+    protected DialogUtils mLoadDialog;
     protected boolean mIsStatusTranslucent = true;
 
     protected ActivityComponent mActivityComponent;

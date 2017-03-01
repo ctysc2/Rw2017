@@ -1,5 +1,6 @@
 package com.home.rw.mvp.presenter.impl;
 
+import com.home.rw.common.HostType;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.interactor.LoginInteractor;
 import com.home.rw.mvp.interactor.impl.LoginInteractorImpl;
@@ -17,6 +18,7 @@ public class LoginPresenterImpl extends BasePresenterImpl<LoginView,LoginEntity>
     @Inject
     public LoginPresenterImpl(LoginInteractorImpl loginInteractor){
         mLoginInteractorImpl = loginInteractor;
+        reqType = HostType.LOGIN;
 
     }
 

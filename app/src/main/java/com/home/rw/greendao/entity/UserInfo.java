@@ -11,34 +11,43 @@ import org.greenrobot.greendao.annotation.Id;
 public class UserInfo {
     @Id
     private Long id;
-
-    private String userID;
     private String userName;
     private String nickName;
     private String avatar;
-
-    @Generated(hash = 1610275392)
-    public UserInfo(Long id, String userID, String userName, String nickName,
-            String avatar) {
-        this.id = id;
-        this.userID = userID;
-        this.userName = userName;
-        this.nickName = nickName;
-        this.avatar = avatar;
+    private String phone;
+    private String gender;
+    private String noticeNum;
+    private String pubNum;
+    public String getPubNum() {
+        return this.pubNum;
     }
-
-    @Generated(hash = 1279772520)
-    public UserInfo() {
+    public void setPubNum(String pubNum) {
+        this.pubNum = pubNum;
     }
-
+    public String getNoticeNum() {
+        return this.noticeNum;
+    }
+    public void setNoticeNum(String noticeNum) {
+        this.noticeNum = noticeNum;
+    }
+    public String getGender() {
+        return this.gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    public String getPhone() {
+        return this.phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
     public String getAvatar() {
-        return avatar;
+        return this.avatar;
     }
-
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-
     public String getNickName() {
         return this.nickName;
     }
@@ -57,11 +66,20 @@ public class UserInfo {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getUserID() {
-        return this.userID;
+    @Generated(hash = 395905980)
+    public UserInfo(Long id, String userName, String nickName, String avatar,
+            String phone, String gender, String noticeNum, String pubNum) {
+        this.id = id;
+        this.userName = userName;
+        this.nickName = nickName;
+        this.avatar = avatar;
+        this.phone = phone;
+        this.gender = gender;
+        this.noticeNum = noticeNum;
+        this.pubNum = pubNum;
     }
-    public void setUserID(String userID) {
-        this.userID = userID;
+    @Generated(hash = 1279772520)
+    public UserInfo() {
     }
 
 

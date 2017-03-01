@@ -2,7 +2,10 @@ package com.home.rw.mvp.interactor.impl;
 
 import android.util.Log;
 
+import com.home.rw.R;
+import com.home.rw.application.App;
 import com.home.rw.common.HostType;
+import com.home.rw.event.ReLoginEvent;
 import com.home.rw.listener.RequestCallBack;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.UploadEntity;
@@ -10,6 +13,7 @@ import com.home.rw.mvp.interactor.LoginInteractor;
 import com.home.rw.mvp.interactor.UploadInteractor;
 import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.RetrofitUtils;
+import com.home.rw.utils.RxBus;
 import com.home.rw.utils.TransformUtils;
 import okhttp3.MediaType;
 
@@ -55,8 +59,14 @@ public class UploadInteractorImpl implements UploadInteractor<UploadEntity> {
                     }
 
                     @Override
-                    public void onNext(UploadEntity result) {
-                        callback.success(result);
+                    public void onNext(UploadEntity data) {
+                        if(data!=null && data.getCode().equals("9999")){
+                            callback.onError(App.getAppContext().getString(R.string.reRoad));
+                            RxBus.getInstance().post(new ReLoginEvent());
+                        }
+                        else{
+                            callback.success(data);
+                        }
 
                     }
 

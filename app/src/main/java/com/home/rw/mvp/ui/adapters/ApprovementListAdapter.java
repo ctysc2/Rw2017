@@ -26,17 +26,21 @@ import butterknife.ButterKnife;
  * Created by cty on 2016/12/20.
  */
 
-public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementListEntity.DataEntity> {
+public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementListEntity.DataEntity.ResLst> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
+    private boolean IsShowResult = false;
 
-    public ApprovementListAdapter(ArrayList<ApprovementListEntity.DataEntity> dataSource, Context context){
+    public ApprovementListAdapter(ArrayList<ApprovementListEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.dataSource = dataSource;
         this.context = context;
         inflater = LayoutInflater.from(context);
 
+    }
+    public void setIsShowResult(boolean IsShowResult){
+        this.IsShowResult = IsShowResult;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,10 +89,11 @@ public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementL
 
             holder.itemView.setTag(mPosition);
 
+
             resolveAppStates(mHolder.mResult,mPosition);
             resolveAppType(mHolder.mType,mPosition);
-            mHolder.mName.setText(dataSource.get(mPosition).getName());
-
+            mHolder.mName.setText(dataSource.get(mPosition).getRealname());
+            mHolder.mDate.setText(dataSource.get(mPosition).getCreatedDate());
             if(position == dataSource.size()-1)
                 mHolder.mSperate.setVisibility(View.INVISIBLE);
             else
@@ -99,9 +104,9 @@ public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementL
     }
 
     private void resolveAppStates(TextView tvStatus,int position) {
-        if(dataSource.get(position).getAppStatus() == -1) {
+        if(!IsShowResult) {
             tvStatus.setVisibility(View.INVISIBLE);
-        } else if(dataSource.get(position).getAppStatus() == 0){
+        } else if(dataSource.get(position).getStatus().equals("2")){
             tvStatus.setText(R.string.agree);
             tvStatus.setTextColor(Color.parseColor("#49CA5D"));
             tvStatus.setBackgroundResource(R.drawable.shape_agree_bac);
@@ -113,20 +118,20 @@ public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementL
     }
 
     private void resolveAppType(TextView type,int position) {
-        switch (dataSource.get(position).getAppType()){
-            case 0:
+        switch (dataSource.get(position).getType()){
+            case "0":
                 type.setText(R.string.getout);
                 type.setBackgroundResource(R.drawable.shape_getout_bac);
                 break;
-            case 1:
+            case "1":
                 type.setText(R.string.askforleave);
                 type.setBackgroundResource(R.drawable.shape_leave_bac);
                 break;
-            case 2:
+            case "2":
                 type.setText(R.string.extrawork);
                 type.setBackgroundResource(R.drawable.shape_extra_bac);
                 break;
-            case 3:
+            case "3":
                 type.setText(R.string.wiped);
                 type.setBackgroundResource(R.drawable.shape_wiped_bac);
                 break;

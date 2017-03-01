@@ -12,28 +12,37 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
 import com.home.rw.R;
+import com.home.rw.application.App;
 import com.home.rw.common.HostType;
+import com.home.rw.event.BeforeReadEvent;
+import com.home.rw.event.ReLoginEvent;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.presenter.impl.LoginPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.fragments.IncrementFragment;
 import com.home.rw.mvp.ui.fragments.MessageFragment;
 import com.home.rw.mvp.ui.fragments.MineMeFragment;
 import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
+import com.home.rw.mvp.view.LoginView;
 import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.GoogleMapUtils;
 import com.home.rw.utils.PreferenceUtils;
+import com.home.rw.utils.RxBus;
 import com.home.rw.utils.TransformUtils;
 import com.socks.library.KLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,9 +52,10 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import okhttp3.ResponseBody;
 import rx.Observer;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements LoginView {
 
     @BindView(R.id.ll_increment)
     LinearLayout mLlIncrement;
@@ -105,6 +115,9 @@ public class MainActivity extends BaseActivity {
     //我的tab索引
     final int TAB_MINE = 4;
 
+    @Inject
+    LoginPresenterImpl mLoginPresenterImpl;
+
     //当前选择的Fragment
     private int mCurrentIndex = -1;
 
@@ -140,7 +153,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -151,7 +164,7 @@ public class MainActivity extends BaseActivity {
     private String mToken1 = "QlbrYrD1RRRW0h/abjiy4W7NRrR+UMcreHvSS1S/dBvCeP5T+KlqPHvzIUlMuZpOsxoiCrcMVkoCjtDzK6xcOA==";
     private String mToken2 = "1t33Wpe6GiSmz+cyclErqiQPSAlBcInGYJyuRDuzYBQ/JthdPeQWkltPQljTJfkAs7rFFJpy7rscwdB/fTcMcw==";
     private String mToken3 = "RhfcRSV8g5ewQwKfrEuis27NRrR+UMcreHvSS1S/dBvCeP5T+KlqPLvP/2UHkd3l5sjai2rb5q0CjtDzK6xcOA==";
-
+    private String mToken4 = "Naq42Ze8RkhN0wOi6wNuCSQPSAlBcInGYJyuRDuzYBQ/JthdPeQWkib8PGrfW4OaJgeeuC8FGnUcwdB/fTcMcw==";
     private String mToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,22 +175,22 @@ public class MainActivity extends BaseActivity {
         tabArray.add(mLlSocial);
         tabArray.add(mLlMine);
         initViews();
-         switch (PreferenceUtils.getPrefString(this,"userName","3")){
-             case "1":
-                 mToken = mToken1;
-                 break;
-             case "2":
-                 mToken = mToken2;
-                 break;
-             case "3":
-                 mToken = mToken3;
-                 break;
-             default:
-                 mToken = mToken3;
-                 break;
-         }
+//         switch (PreferenceUtils.getPrefString(this,"userName","3")){
+//             case "1":
+//                 mToken = mToken1;
+//                 break;
+//             case "2":
+//                 mToken = mToken2;
+//                 break;
+//             case "3":
+//                 mToken = mToken3;
+//                 break;
+//             default:
+//                 mToken = mToken3;
+//                 break;
+//         }
         GoogleMapUtils.getInstance().initGoogleMap(this);
-        RongIM.connect(mToken, new RongIMClient.ConnectCallback() {
+        RongIM.connect(mToken4, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 Log.i("RongYun","onTokenIncorrect");
@@ -186,7 +199,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(String s) {
                 Log.i("RongYun", "onSuccess userId:" + s);
-                PreferenceUtils.setPrefString(MainActivity.this,"token",mToken);
+                PreferenceUtils.setPrefString(MainActivity.this,"token",mToken4);
 
             }
 
@@ -196,7 +209,22 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        mLoginPresenterImpl.attachView(this);
+        mSubscription = RxBus.getInstance().toObservable(ReLoginEvent.class)
+                .subscribe(new Action1<ReLoginEvent>() {
+                    @Override
+                    public void call(ReLoginEvent reLoginEvent) {
 
+                        String userName = PreferenceUtils.getPrefString(MainActivity.this,"userName","");
+                        String passWord = PreferenceUtils.getPrefString(MainActivity.this,"passWord","");
+                        if(!userName.equals("") &&
+                                !passWord.equals("")){
+                            PreferenceUtils.setPrefString(MainActivity.this,"sessionID","");
+                            mLoginPresenterImpl.processLogin("oa1_user1","1234");
+                        }
+
+                    }
+                });
 
     }
 
@@ -204,6 +232,8 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         RongIM.getInstance().disconnect();
+        if(mLoginPresenterImpl!=null)
+            mLoginPresenterImpl.onDestroy();
     }
     public void addFragment() {
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -277,5 +307,29 @@ public class MainActivity extends BaseActivity {
 
 
 
+    }
+
+    @Override
+    public void loginCompleted(LoginEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(MainActivity.this,getString(R.string.reRoadSuccess),Toast.LENGTH_SHORT).show();
+            PreferenceUtils.setPrefString(this,"sessionID",data.getData().getSessionId());
+        }
+
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        Toast.makeText(MainActivity.this,getString(R.string.reRoadFailed),Toast.LENGTH_SHORT).show();
     }
 }

@@ -13,20 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.application.App;
+import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
-import com.home.rw.mvp.presenter.impl.AvatarPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
+import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
 import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
 import com.home.rw.mvp.ui.activitys.mineme.SettingActivity;
@@ -34,9 +34,10 @@ import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
-import com.home.rw.mvp.view.AvatarView;
-import com.home.rw.mvp.view.LoginView;
 import com.home.rw.mvp.view.UploadView;
+import com.home.rw.mvp.view.UserInfoView;
+import com.home.rw.utils.DialogUtils;
+import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.utils.UriUtils;
 import com.home.rw.widget.GenderTakerPopWindow;
 import com.home.rw.widget.PicTakerPopWindow;
@@ -44,20 +45,21 @@ import com.home.rw.widget.PicTakerPopWindow;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.home.rw.common.HostType.LOGIN;
+import static com.home.rw.common.HostType.USER_INFO;
+
 /**
  * Created by cty on 2016/12/13.
  */
 
-public class MineMeFragment extends BaseFragment implements UploadView,AvatarView {
+public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView {
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
@@ -89,7 +91,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,AvatarVie
     UploadPresenterImpl mUploadPresenterImpl;
 
     @Inject
-    AvatarPresenterImpl mAvatarPresenterImpl;
+    UserInfoPresenterImpl mUserInfoPresenterImpl;
 
     //选择头像
     PicTakerPopWindow menuWindow;
@@ -205,7 +207,8 @@ public class MineMeFragment extends BaseFragment implements UploadView,AvatarVie
         mSetting.setImageResource(R.drawable.btn_setting);
         initCache();
         mUploadPresenterImpl.attachView(this);
-        mAvatarPresenterImpl.attachView(this);
+        mUserInfoPresenterImpl.attachView(this);
+
     }
 
     @Override
@@ -332,12 +335,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,AvatarVie
             Log.i("cty","Mineme onHiddenChanged 隐藏");
         }else{
             Log.i("cty","Mineme onHiddenChanged 显示");
-            //用户名
-            mUserName.setText(UserInfoDaoHelper.getInstance().getDataByUser(App.ID,UserInfoDaoHelper.USERNAME));
-            //昵称
-            UserInfoDaoHelper.getInstance().getDataByUser(App.ID,UserInfoDaoHelper.NICKNAME);
-            //头像
-            mHeaderView.setImageURI(UserInfoDaoHelper.getInstance().getDataByUser(App.ID,UserInfoDaoHelper.HEADURL));
+            UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(mActivity,"ID",0));
+            mUserInfoPresenterImpl.beforeRequest();
+            mUserInfoPresenterImpl.getUserInfo();
 
         }
         super.onHiddenChanged(hidden);
@@ -346,29 +346,52 @@ public class MineMeFragment extends BaseFragment implements UploadView,AvatarVie
     @Override
     public void uploadComplete(UploadEntity data) {
         if(data.getCode().equals("ok")){
-            if (data.getData().size()>0)
-                mAvatarPresenterImpl.updateAvatar(data.getData().get(0));
+            if (data.getData().size()>0){
+
+            }
+
         }
     }
 
     @Override
-    public void showProgress() {
+    public void showProgress(int reqType) {
+        switch (reqType){
+            case USER_INFO:
+                break;
+        }
+//        mAlertDialog = DialogUtils.create(mActivity,DialogUtils.TYPE_UPDATE);
+//        mAlertDialog.show();
 
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgress(int reqType) {
+        if(mAlertDialog!=null)
+            mAlertDialog.dismiss();
+    }
+
+    @Override
+    public void showErrorMsg(int reqType,String msg) {
+        Log.i("Retrofit","type error:"+reqType+" "+msg);
+
+    }
+    @Override
+    public void getUserInfoCompleted(UserInfoEntity data) {
+        Log.i("Retrofit","getUserInfoCompleted data:"+data.toString());
+        UserInfo user = new UserInfo();
+        user.setId(PreferenceUtils.getPrefLong(mActivity,"ID",0));
+        UserInfoDaoHelper.getInstance().insertUserInfo(user);
 
     }
 
     @Override
-    public void showErrorMsg(String msg) {
-        Log.i("Retrofit","error:"+msg);
+    public void onDestroy() {
+        super.onDestroy();
+        if(mUploadPresenterImpl != null)
+            mUploadPresenterImpl.onDestroy();
 
-    }
-
-    @Override
-    public void updateAvatarCompleted(BaseEntity data) {
+        if(mUserInfoPresenterImpl!=null)
+            mUserInfoPresenterImpl.onDestroy();
 
     }
 }

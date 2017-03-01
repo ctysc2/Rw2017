@@ -4,9 +4,9 @@ package com.home.rw.mvp.view.base;
  * Created by cty on 16/10/18.
  */
 public interface BaseView {
-    void showProgress();
+    void showProgress(int reqType);
 
-    void hideProgress();
+    void hideProgress(int reqType);
 
-    void showErrorMsg(String msg);
+    void showErrorMsg(int reqType,String msg);
 }

@@ -1,9 +1,16 @@
 package com.home.rw.repository.network;
 
+import com.home.rw.mvp.entity.AddApplyEntity;
+import com.home.rw.mvp.entity.ApplyDetailEntity;
+import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.utils.CacheUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -13,6 +20,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -33,6 +41,9 @@ public interface RWService {
             @Query("username") String phone,
             @Query("password") String password);
 
+    //获取用户信息接口
+    @GET("user_info.json")
+    Observable<UserInfoEntity> getUserInfo();
 
     //文件上传接口
     @POST("attachment_uploads.json")
@@ -40,9 +51,91 @@ public interface RWService {
             @Body MultipartBody body);
 
 
-    //上传头像
+    //请假/报销/外出/加班新增接口
+    @GET("add.json")
+    Observable<AddApplyEntity> addApply();
+
+    //请假/报销/外出/加班编辑接口
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
     @FormUrlEncoded
-    @POST("avatar.json")
-    Observable<BaseEntity> updateAvatar(
-            @FieldMap Map<String,Object> map);
+    @POST("edit.json")
+    Observable<BaseEntity> editApply(
+            @Query("id") String id,
+            @FieldMap HashMap<String,Object> input
+            );
+
+    //我已审批
+    @GET("checked.json")
+    Observable<ApprovementListEntity> checked(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //待我审批
+    @GET("waiting_check.json")
+    Observable<ApprovementListEntity> waitinghecked(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //审核中
+    @GET("checking.json")
+    Observable<ApprovementListEntity> checking(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //通过审核的
+    @GET("passed.json")
+    Observable<ApprovementListEntity> passed(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //审核被拒的
+    @GET("reject.json")
+    Observable<ApprovementListEntity> reject(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //通过
+    @GET("apply_passed.json")
+    Observable<BaseEntity> doPass(
+            @Query("id") String id
+
+    );
+    //拒绝
+    @GET("apply_reject.json")
+    Observable<BaseEntity> doReject(
+            @Query("id") String id
+    );
+
+    //外出,请假,报销,加班详情
+    @GET("details.json")
+    Observable<ApplyDetailEntity> applyDetail(
+            @Query("id") String id
+    );
+
+    //发送日志
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<BaseEntity> addLog(
+            @Field("title") String title,
+            @Field("content") String content
+    );
+    //发送日志列表
+    @GET("my_send.json")
+    Observable<LogEntity> sendLogList(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //接受日志列表
+    @GET("my_receive.json")
+    Observable<LogEntity> receiveLogList(
+            @Query("page") int page,
+            @Query("size") int size
+    );
 }

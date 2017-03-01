@@ -52,20 +52,27 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //butterknife
+
     // retrofit2 + okhttp3
+
     // rxjava
+
     //dagger2
+
     //log
+
     //Fresco
+
     //loading Animation
+
     //greenDao
+
     //recycleview
     compile project(':pickerview')
     compile project(':photoSelector')
     compile project(':library')
     compile project(':CallKit')
-    compile project(':IMKit');
-
+    compile project(':IMKit')
     compile 'com.android.support:cardview-v7:24.2.0'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -93,4 +100,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile files('src/main/libs/xUtils-2.6.14.jar')
 }

@@ -11,15 +11,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.home.rw.R;
+import com.home.rw.common.HostType;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.presenter.impl.ApprovementListPresenterImpl;
 import com.home.rw.mvp.ui.activitys.work.AskForLeaveActivity;
 import com.home.rw.mvp.ui.activitys.work.ExtraWorkActivity;
 import com.home.rw.mvp.ui.activitys.work.GetOutActivity;
 import com.home.rw.mvp.ui.activitys.work.WipedActivity;
 import com.home.rw.mvp.ui.adapters.ApprovementListAdapter;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.ApprovementListView;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -35,11 +38,23 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by cty on 2016/12/21.
  */
 
-public class ApproveByMeAfterFragment extends BaseFragment {
+public class ApproveByMeAfterFragment extends BaseFragment implements ApprovementListView{
 
     private ApprovementListAdapter mAdapter;
 
     private boolean mIsLoadingMore;
+
+    private boolean isFirstLoad = true;
+
+    private int mTotalPage = 0;
+
+    private int mCurrentPage = 0;
+
+    private boolean isFragmentVisible = false;
+
+    private boolean isViewCreated = false;
+
+    private final int PAGE_SIZE = 15;
 
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
@@ -51,7 +66,25 @@ public class ApproveByMeAfterFragment extends BaseFragment {
     Activity mActivity;
 
     @Inject
+    ApprovementListPresenterImpl mApprovementListPresenterImpl;
+
+    @Inject
     public ApproveByMeAfterFragment(){
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isFragmentVisible = isVisibleToUser;
+
+
+        if(isFirstLoad && isFragmentVisible && isViewCreated){
+            mApprovementListPresenterImpl.beforeRequest();
+            mApprovementListPresenterImpl.getApprovementList(mCurrentPage,PAGE_SIZE);
+            isFirstLoad = false;
+        }
+
 
     }
 
@@ -62,35 +95,30 @@ public class ApproveByMeAfterFragment extends BaseFragment {
 
 
 
-    private ArrayList<ApprovementListEntity.DataEntity> dataSource  = new ArrayList<>();
+    private ArrayList<ApprovementListEntity.DataEntity.ResLst> dataSource  = new ArrayList<>();
+
     @Override
     public void initViews(View view) {
+        mApprovementListPresenterImpl.attachView(this);
+        mApprovementListPresenterImpl.setAddApplyType(HostType.APPROVE_CHECKED);
         mRefresh.setColorSchemeResources(R.color.colorPrimary);
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 //下拉刷新
-                Observable.timer(1, TimeUnit.SECONDS).
-                        observeOn(AndroidSchedulers.mainThread()).
-                        subscribe(new Observer<Long>() {
-                            @Override
-                            public void onCompleted() {
-                                mRefresh.setRefreshing(false);
-                            }
+                mCurrentPage = 0;
+                mApprovementListPresenterImpl.getApprovementList(mCurrentPage,PAGE_SIZE);
 
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-                        });
             }
         });
         initRecycleView();
+
+        isViewCreated = true;
+        if(isFirstLoad && isFragmentVisible && isViewCreated){
+            mApprovementListPresenterImpl.beforeRequest();
+            mApprovementListPresenterImpl.getApprovementList(mCurrentPage,PAGE_SIZE);
+            isFirstLoad = false;
+        }
     }
 
 
@@ -100,78 +128,36 @@ public class ApproveByMeAfterFragment extends BaseFragment {
     }
 
     private void initRecycleView(){
-        //dummy data
-        ApprovementListEntity entity = new ApprovementListEntity();
-        ArrayList<ApprovementListEntity.DataEntity> list = new ArrayList<>();
-
-        //1
-        ApprovementListEntity.DataEntity child1 = new ApprovementListEntity.DataEntity();
-        child1.setName("cyan");
-        child1.setAppType(2);
-        child1.setAppStatus(0);
-
-
-        //2
-        ApprovementListEntity.DataEntity child2 = new ApprovementListEntity.DataEntity();
-        child2.setName("macsed");
-        child2.setAppType(1);
-        child2.setAppStatus(1);
-
-        //3
-        ApprovementListEntity.DataEntity child3 = new ApprovementListEntity.DataEntity();
-        child3.setName("xigua");
-        child3.setAppType(3);
-        child3.setAppStatus(1);
-
-        //4
-        ApprovementListEntity.DataEntity child4 = new ApprovementListEntity.DataEntity();
-        child4.setName("leelee");
-        child4.setAppType(0);
-        child4.setAppStatus(0);
-
-
-        list.add(child1);
-        list.add(child2);
-        list.add(child3);
-        list.add(child4);
-        list.add(child1);
-        list.add(child2);
-        list.add(child3);
-        list.add(child4);
-        list.add(child1);
-        list.add(child2);
-        list.add(child3);
-        list.add(child4);
-
-        entity.setData(list);
-        dataSource = entity.getData();
-
 
         mAdapter = new ApprovementListAdapter(dataSource,mActivity);
-
+        mAdapter.setIsShowResult(true);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent intent;
-                switch (dataSource.get(position).getAppType()){
-                    case 0:
+                switch (dataSource.get(position).getType()){
+                    case "0":
                         intent = new Intent(mActivity,GetOutActivity.class);
                         intent.putExtra("entryType","show");
+                        intent.putExtra("formID",dataSource.get(position).getId());
                         startActivity(intent);
                         break;
-                    case 1:
+                    case "1":
                         intent = new Intent(mActivity,AskForLeaveActivity.class);
                         intent.putExtra("entryType","show");
+                        intent.putExtra("formID",dataSource.get(position).getId());
                         startActivity(intent);
                         break;
-                    case 2:
+                    case "2":
                         intent = new Intent(mActivity,ExtraWorkActivity.class);
                         intent.putExtra("entryType","show");
+                        intent.putExtra("formID",dataSource.get(position).getId());
                         startActivity(intent);
                         break;
-                    case 3:
+                    case "3":
                         intent = new Intent(mActivity,WipedActivity.class);
                         intent.putExtra("entryType","show");
+                        intent.putExtra("formID",dataSource.get(position).getId());
                         startActivity(intent);
                         break;
                 }
@@ -197,43 +183,61 @@ public class ApproveByMeAfterFragment extends BaseFragment {
                 if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItemPosition >= totalItemCount - 1) {
                     Log.i("mRecycleView","end");
-                    mAdapter.showFooter();
-                    mIsLoadingMore = true;
-                    mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
-                    Observable.timer(2, TimeUnit.SECONDS).
-                            observeOn(AndroidSchedulers.mainThread()).
-                            subscribe(new Observer<Long>() {
-                                @Override
-                                public void onCompleted() {
-                                    mAdapter.hideFooter();
-                                    mIsLoadingMore = false;
-                                    ApprovementListEntity.DataEntity child3 = new ApprovementListEntity.DataEntity();
-                                    child3.setName("xigua");
-                                    child3.setAppType(3);
-                                    child3.setAppStatus(1);
+                    mCurrentPage++;
+                    if(mCurrentPage<mTotalPage){
+                        mAdapter.showFooter();
+                        mIsLoadingMore = true;
+                        mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
+                        mApprovementListPresenterImpl.getApprovementList(mCurrentPage,PAGE_SIZE);
 
-                                    ArrayList<ApprovementListEntity.DataEntity> temp  = new ArrayList<>();
-                                    temp.add(child3);
-                                    temp.add(child3);
-                                    temp.add(child3);
-                                    temp.add(child3);
-                                    temp.add(child3);
-                                    mAdapter.addMore(temp);
-                                }
+                    }
 
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(Long aLong) {
-
-                                }
-                            });
                 }
             }
 
         });
     }
+
+    @Override
+    public void getApprovementListCompleted(ApprovementListEntity data) {
+        if(data.getCode().equals("ok")){
+            mTotalPage = data.getData().getTotalPages();
+            if(mCurrentPage == 0){
+                dataSource = data.getData().getResLst();
+                mAdapter.setList(dataSource);
+            }
+            else
+                mAdapter.addMore(data.getData().getResLst());
+        }else{
+            Toast.makeText(mActivity,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+        mRefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        mRefresh.setRefreshing(false);
+        if(mIsLoadingMore){
+            mAdapter.hideFooter();
+            mIsLoadingMore = false;
+        }
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        mRefresh.setRefreshing(false);
+        if(mIsLoadingMore){
+            mAdapter.hideFooter();
+            mIsLoadingMore = false;
+        }
+        Toast.makeText(mActivity,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+
+    }
+
+
 }

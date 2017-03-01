@@ -28,12 +28,12 @@ import butterknife.ButterKnife;
  * Created by cty on 2016/12/20.
  */
 
-public class ReceivedLogListAdapter extends BaseRecyclerViewAdapter<LogEntity.DataEntity> {
+public class ReceivedLogListAdapter extends BaseRecyclerViewAdapter<LogEntity.DataEntity.ResLst> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
-    public ReceivedLogListAdapter(ArrayList<LogEntity.DataEntity> dataSource, Context context){
+    public ReceivedLogListAdapter(ArrayList<LogEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -93,11 +93,11 @@ public class ReceivedLogListAdapter extends BaseRecyclerViewAdapter<LogEntity.Da
 
             final int mPosition = position;
             LogViewHolder mHolder = (LogViewHolder)holder;
-            LogEntity.DataEntity entity = dataSource.get(mPosition);
+            LogEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
             mHolder.itemView.setTag(mPosition);
-            mHolder.mHeader.setImageURI(entity.getHeadUrl());
-            mHolder.mName.setText(entity.getName());
-            mHolder.mDate.setText(entity.getDate());
+            mHolder.mHeader.setImageURI(entity.getAvatar());
+            mHolder.mName.setText(entity.getAuthor());
+            mHolder.mDate.setText(entity.getCreatedDate());
             mHolder.mContent.setText(entity.getContent());
 
         }

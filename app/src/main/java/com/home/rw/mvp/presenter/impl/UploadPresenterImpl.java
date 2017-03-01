@@ -1,5 +1,6 @@
 package com.home.rw.mvp.presenter.impl;
 
+import com.home.rw.common.HostType;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.interactor.LoginInteractor;
@@ -23,6 +24,7 @@ public class UploadPresenterImpl extends BasePresenterImpl<UploadView,UploadEnti
     @Inject
     public UploadPresenterImpl(UploadInteractorImpl uploadInteractor){
         mUploadInteractorImpl = uploadInteractor;
+        reqType = HostType.UPLOAD;
 
     }
 

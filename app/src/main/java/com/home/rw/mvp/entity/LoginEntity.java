@@ -14,7 +14,7 @@ public class LoginEntity extends BaseEntity{
     }
 
     public class DataEntity{
-        int id;
+        String id;
         String nickname;
         String username;
         String sessionId;
@@ -24,7 +24,7 @@ public class LoginEntity extends BaseEntity{
             this.avatar = avatar;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -40,7 +40,7 @@ public class LoginEntity extends BaseEntity{
             this.username = username;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 

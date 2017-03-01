@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@drawable/shape_common_loading">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:gravity="center">
     <com.wang.avi.AVLoadingIndicatorView
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:visibility="visible"
         android:layout_marginTop="8dp"
         app:indicatorName="BallSpinFadeLoaderIndicator"
@@ -19,6 +24,7 @@
         android:layout_height="30dp"
         android:gravity="center"
         android:textSize="18sp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:text="@string/loging"/>
+    </LinearLayout>
 </LinearLayout>

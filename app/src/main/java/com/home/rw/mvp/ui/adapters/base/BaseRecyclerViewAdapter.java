@@ -152,6 +152,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
     public void setList(List<T> items) {
         dataSource = items;
+        notifyDataSetChanged();
     }
 
     //设置是否显示头布局

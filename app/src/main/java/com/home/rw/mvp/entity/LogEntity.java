@@ -1,5 +1,6 @@
 package com.home.rw.mvp.entity;
 
+import com.home.rw.mvp.entity.base.BaseApprovementEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 
 import java.util.ArrayList;
@@ -10,52 +11,72 @@ import java.util.ArrayList;
 
 public class LogEntity extends BaseEntity {
 
-    public ArrayList<LogEntity.DataEntity> data;
+    public LogEntity.DataEntity data;
 
-    public ArrayList<LogEntity.DataEntity> getData() {
+    public LogEntity.DataEntity getData() {
         return data;
     }
 
-    public void setData(ArrayList<LogEntity.DataEntity> data) {
+    public void setData(LogEntity.DataEntity data) {
         this.data = data;
     }
 
-    public static class DataEntity {
-        public String headUrl;
-        public String name;
-        public String date;
-        public String content;
+    public static class DataEntity extends BaseApprovementEntity{
+        private ArrayList<ResLst> resLst;
 
-        public void setName(String name) {
-            this.name = name;
+        public void setResLst(ArrayList<ResLst> resLst) {
+            this.resLst = resLst;
         }
 
-        public void setHeadUrl(String headUrl) {
-            this.headUrl = headUrl;
+        public ArrayList<ResLst> getResLst() {
+            return resLst;
         }
 
-        public void setDate(String date) {
-            this.date = date;
-        }
+        public static class ResLst{
+            String title;
+            String author;
+            String avatar;
+            String content;
+            String createdDate;
 
-        public String getName() {
-            return name;
-        }
+            public void setCreatedDate(String createdDate) {
+                this.createdDate = createdDate;
+            }
 
-        public String getHeadUrl() {
-            return headUrl;
-        }
+            public String getCreatedDate() {
+                return createdDate;
+            }
+            public String getTitle() {
+                return title;
+            }
 
-        public String getDate() {
-            return date;
-        }
+            public void setTitle(String title) {
+                this.title = title;
+            }
 
-        public void setContent(String content) {
-            this.content = content;
-        }
+            public String getAuthor() {
+                return author;
+            }
 
-        public String getContent() {
-            return content;
+            public void setAuthor(String author) {
+                this.author = author;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
         }
     }
 }

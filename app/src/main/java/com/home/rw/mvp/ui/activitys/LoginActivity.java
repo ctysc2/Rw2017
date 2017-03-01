@@ -56,16 +56,17 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bt_login:
-               // mLoginPresenterImpl.beforeRequest();
+                mLoginPresenterImpl.beforeRequest();
                 //mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
-                //mLoginPresenterImpl.processLogin("oa_e","1234");
-                if(mEtName.getText().toString().equals("")){
-                    Toast.makeText(this,"请输入用户名",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                PreferenceUtils.setPrefString(this,"userName",mEtName.getText().toString());
-                startActivity(new Intent(this,MainActivity.class));
-                finish();
+                if(mEtName.getText().toString().equals("1"))
+                    mLoginPresenterImpl.processLogin("oa1_user1","1234");
+                else
+                    mLoginPresenterImpl.processLogin("oa_m","1234");
+//                if(mEtName.getText().toString().equals("")){
+//                    Toast.makeText(this,"请输入用户名",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+
                 break;
             default:
                 break;
@@ -107,40 +108,44 @@ public class LoginActivity extends BaseActivity implements LoginView {
     //保存登录信息
     private void containLoginData(LoginEntity data) {
 
-        long id = data.getData().getId();
-        String name = data.getData().getUsername();
-        String nickname = data.getData().getNickname();
-        String avatar = data.getData().getAvatar();
+        long id = Long.parseLong(data.getData().getId());
         String session = data.getData().getSessionId();
-
-        PreferenceUtils.setPrefInt(this,"ID",(int)id);
+        PreferenceUtils.setPrefLong(this,"ID",id);
         PreferenceUtils.setPrefString(this,"sessionID",session);
-        Map<String,String> map = new HashMap<>();
-        map.put(UserInfoDaoHelper.USERNAME,name);
-        map.put(UserInfoDaoHelper.NICKNAME,nickname);
-        map.put(UserInfoDaoHelper.HEADURL,avatar);
-        UserInfoDaoHelper.getInstance().updateUserInfo(id,map);
+
+        PreferenceUtils.setPrefString(this,"userName",mEtName.getText().toString());
+        PreferenceUtils.setPrefString(this,"passWord",mEtPsw.getText().toString());
+//        Map<String,String> map = new HashMap<>();
+//        map.put(UserInfoDaoHelper.USERNAME,name);
+//        map.put(UserInfoDaoHelper.NICKNAME,nickname);
+//        map.put(UserInfoDaoHelper.HEADURL,avatar);
+//        UserInfoDaoHelper.getInstance().updateUserInfo(id,map);
 
     }
 
     @Override
-    public void showProgress() {
+    public void showProgress(int reqType) {
         mDialog = DialogUtils.create(this,DialogUtils.TYPE_COMMOM_LOADING);
         mDialog.show();
 
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgress(int reqType) {
         mDialog.dismiss();
     }
 
     @Override
-    public void showErrorMsg(String msg) {
+    public void showErrorMsg(int reqType,String msg) {
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mLoginPresenterImpl!=null)
+            mLoginPresenterImpl.onDestroy();
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

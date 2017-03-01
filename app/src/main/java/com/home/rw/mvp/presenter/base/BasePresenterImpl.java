@@ -15,7 +15,7 @@ import rx.Subscription;
 public class BasePresenterImpl<T extends BaseView, E> implements BasePresenter, RequestCallBack<E> {
     protected T mView;
     protected Subscription mSubscription;
-
+    protected int reqType;
     @Override
     public void onCreate() {
 
@@ -34,19 +34,19 @@ public class BasePresenterImpl<T extends BaseView, E> implements BasePresenter, 
 
     @Override
     public void beforeRequest() {
-        mView.showProgress();
+        mView.showProgress(reqType);
     }
 
     @Override
     public void success(E data) {
-        mView.hideProgress();
+        mView.hideProgress(reqType);
 
     }
 
     @Override
     public void onError(String errorMsg) {
-        mView.hideProgress();
-        mView.showErrorMsg(errorMsg);
+        mView.hideProgress(reqType);
+        mView.showErrorMsg(reqType,errorMsg);
     }
 
 

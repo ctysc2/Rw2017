@@ -3,7 +3,8 @@
     <!--登录-->
     <string name="login">登录</string>
     <string name="loging">登录中...</string>
-
+    <string name="updating">提交中...</string>
+    <string name="loading">加载中...</string>
     <!--TabBar-->
     <string name="message">消息</string>
     <string name="work">办公</string>
@@ -132,7 +133,7 @@
     <string name="wipedMoney">报销金额</string>
     <string name="wipedType">报销类别</string>
     <string name="wipedDetail">费用明细</string>
-    <string name="wipedSum">总金额报销: %1$d元</string>
+    <string name="wipedSum">总金额报销: %1$.2f元</string>
     <string name="addWipedDetail">增加报销明细</string>
     <string name="access">附件</string>
 
@@ -276,7 +277,14 @@
     <string name="calling">通话中</string>
     <!--Toast-->
     <string name="canNotAddMoreCallMember">最多添加7名会议人员</string>
-
+    <string name="commitSuccessed">提交成功</string>
+    <string name="commitFailed">提交失败,请重试</string>
+    <string name="loadFailed">加载失败</string>
+    <string name="reRoad">用户验证失败,正在重新验证</string>
+    <string name="reRoadSuccess">验证成功</string>
+    <string name="reRoadFailed">验证失败</string>
+    <string name="getFailed">获取失败</string>
+    <string name="checkinput">请检查输入信息</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>

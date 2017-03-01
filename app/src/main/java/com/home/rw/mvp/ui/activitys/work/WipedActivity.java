@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,14 +28,33 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.home.rw.R;
 import com.home.rw.common.Const;
+import com.home.rw.common.HostType;
 import com.home.rw.listener.AlertDialogListener;
+import com.home.rw.mvp.entity.AddApplyEntity;
+import com.home.rw.mvp.entity.ApplyDetailEntity;
+import com.home.rw.mvp.entity.UploadEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.AddApplyPresenterImpl;
+import com.home.rw.mvp.presenter.impl.ApplyDetailPresenterImpl;
+import com.home.rw.mvp.presenter.impl.DoApprovePresenterImpl;
+import com.home.rw.mvp.presenter.impl.EditApplyPresenterImpl;
+import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.AddApplyView;
+import com.home.rw.mvp.view.ApplyDetailView;
+import com.home.rw.mvp.view.DoApproveView;
+import com.home.rw.mvp.view.EditApplyView;
+import com.home.rw.mvp.view.UploadView;
+import com.home.rw.utils.CompressUtils;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.FrescoUtils;
@@ -45,15 +66,35 @@ import com.photoselector.ui.PhotoPreviewActivity;
 import com.photoselector.ui.PhotoSelectorActivity;
 
 import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Observable;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
+import static com.home.rw.common.HostType.ADD_APPLY_EXPENSE;
+import static com.home.rw.common.HostType.APPLY_DO_PASS;
+import static com.home.rw.common.HostType.APPLY_DO_REJECT;
+import static com.home.rw.common.HostType.DETAIL_APPLY_EXPENSE;
+import static com.home.rw.common.HostType.DETAIL_APPLY_OVERTIME;
+import static com.home.rw.common.HostType.EDIT_APPLY_EXPENSE;
+import static com.home.rw.common.HostType.UPLOAD;
 
 
-
-public class WipedActivity extends BaseActivity implements AlertDialogListener {
+public class WipedActivity extends BaseActivity implements AlertDialogListener,AddApplyView,EditApplyView,UploadView,DoApproveView,ApplyDetailView {
     private ArrayList<View> viewContainer = new ArrayList<>();
 
     private static  final String root = Environment.getExternalStorageDirectory().
@@ -83,7 +124,27 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
     //是否选择附件图片
     private boolean isAccess;
 
-    private int mSumMoney = 0;
+    private double mSumMoney = 0.0;
+
+    @Inject
+    AddApplyPresenterImpl mAddApplyPresenterImpl;
+
+    @Inject
+    EditApplyPresenterImpl mEditApplyPresenterImpl;
+
+    @Inject
+    UploadPresenterImpl mUploadPresenterImpl;
+
+    @Inject
+    DoApprovePresenterImpl mDoApprovePresenterImpl;
+
+    @Inject
+    ApplyDetailPresenterImpl mApplyDetailPresenterImpl;
+
+    private String mainFormID = "";
+    private boolean mIsFirstCreateForm = true;
+
+
     @BindView(R.id.back)
     ImageButton mback;
 
@@ -135,6 +196,11 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
     @BindView(R.id.tv_sum)
     TextView mSum;
 
+    @BindView(R.id.iv_approver_header)
+    SimpleDraweeView mApproverHeader;
+
+    @BindView(R.id.tv_approver_name)
+    TextView mApproverName;
 
 
     @OnClick({R.id.back,
@@ -145,7 +211,10 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
             R.id.iv_wiped_picture2,
             R.id.iv_wiped_picture3,
             R.id.rl_access,
-            R.id.iv_update_wiped
+            R.id.iv_update_wiped,
+            R.id.bt_commit,
+            R.id.bt_passed,
+            R.id.bt_refused,
     })
     public void onClick(View v){
         switch(v.getId()){
@@ -190,6 +259,34 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
                 break;
             case R.id.iv_update_wiped:
                 startSelect();
+                break;
+            case R.id.bt_commit:
+                if(!checkCommitData()){
+                    Toast.makeText(this,getString(R.string.checkinput),Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                if(mainFormID == null || mainFormID.equals("")){
+                    //创建失败的话重新创建
+                    addWipedForm();
+                }else{
+                    //创建成功则直接跳到step2
+                    //step2:如果有图片先上传图片,没图片直接跳到step3
+                    if(!TextUtils.isEmpty(headerPathTemp) || photos.size()!=0){
+                        commitImgs();
+                    }else{
+                        editWipedForm(null);
+                    }
+                }
+                break;
+            case R.id.bt_passed:
+                mDoApprovePresenterImpl.setAddApplyType(HostType.APPLY_DO_PASS);
+                mDoApprovePresenterImpl.beforeRequest();
+                mDoApprovePresenterImpl.doApprove(mainFormID);
+                break;
+            case R.id.bt_refused:
+                mDoApprovePresenterImpl.setAddApplyType(HostType.APPLY_DO_REJECT);
+                mDoApprovePresenterImpl.beforeRequest();
+                mDoApprovePresenterImpl.doApprove(mainFormID);
                 break;
             default:
                 break;
@@ -262,7 +359,7 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -301,31 +398,52 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
     }
 
     private void reCalculatorSumMoney() {
-        mSumMoney = 0;
+        mSumMoney = 0.0;
         for(int i = 0;i<viewContainer.size();i++){
             try {
-                int money = Integer.parseInt(((EditText)viewContainer.get(i).findViewById(R.id.et_wipedmoney)).getText().toString());
+                double money = Double.parseDouble(((EditText)viewContainer.get(i).findViewById(R.id.et_wipedmoney)).getText().toString());
                 mSumMoney+=money;
             }catch (NumberFormatException e){
                 continue;
             }
        }
+        mSumMoney = new BigDecimal(mSumMoney).setScale(2, RoundingMode.UP).doubleValue();
         mSum.setText(String.format(getString(R.string.wipedSum),mSumMoney));
     }
+    private boolean checkDate(String s){
+        if(s!=null && !s.equals("") )
+            return true;
+        else
+            return false;
+    }
+    private boolean checkCommitData(){
+        boolean result = true;
+        for(int i = 0;i<viewContainer.size();i++){
+            View child = viewContainer.get(i);
+            EditText etMoney = (EditText)child.findViewById(R.id.et_wipedmoney);
+            EditText etType = (EditText)child.findViewById(R.id.et_wipedtype);
 
+            if(!checkDate(etMoney.getText().toString())){
+                return false;
+            }
+            if(!checkDate(etType.getText().toString())){
+                return false;
+            }
+
+        }
+
+        return result;
+
+    }
     private void initViewsShow(){
         midText.setText(R.string.wiped);
         mback.setImageResource(R.drawable.btn_back);
         mSum.setText(String.format(getString(R.string.wipedSum),mSumMoney));
         //添加数据
-        for(int i = 0;i<4;i++){
-            updateWipedData(i);
-        }
+        updateWipedData(null);
 
         updateWipedList();
 
-        headerPathTemp = "http://img1.gamersky.com/image2016/11/20161114zd_337_39/gamersky_01small_02_20161114165972E.jpg";
-        mPhoto.setImageURI(headerPathTemp);
         mRightArrow.setVisibility(View.GONE);
         iv_photo.setVisibility(View.GONE);
         mUpdatewiped.setVisibility(View.GONE);
@@ -333,9 +451,6 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
         mAdd.setVisibility(View.GONE);
         mUpdatewiped.setVisibility(View.GONE);
 
-        photos.add(new PhotoModel("http://img1.gamersky.com/image2016/11/20161114zd_337_39/gamersky_01small_02_20161114165972E.jpg"));
-        photos.add(new PhotoModel("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=9963e0334e90f60310bd9415587bd87e/ac345982b2b7d0a21f15689fcfef76094a369ad7.jpg"));
-        photos.add(new PhotoModel("http://img1.cache.netease.com/game/starcraft2/news/201601/62.jpg"));
 
         if (photos.size() == 3){
             mWiped1.setVisibility(View.VISIBLE);
@@ -368,51 +483,103 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
         }
         mSum.setText(String.format(getString(R.string.wipedSum),mSumMoney));
     }
-    private void updateWipedData(int index){
+    private void updateWipedData(ArrayList<ApplyDetailEntity.DataEntity.Detail> detailList){
 
-        View child = getLayoutInflater().inflate(R.layout.wiped_layout,null);
-        child.findViewById(R.id.rl_del).setVisibility(View.INVISIBLE);
-        if(index == 0)
+        if(detailList == null){
+            View child = getLayoutInflater().inflate(R.layout.wiped_layout,null);
+            child.findViewById(R.id.rl_del).setVisibility(View.INVISIBLE);
+            //第一行不显示
             child.findViewById(R.id.top_sperate).setVisibility(View.GONE);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)DimenUtil.dp2px(220));
-        child.setLayoutParams(lp);
-        mTop.addView(child);
-        viewContainer.add(child);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)DimenUtil.dp2px(220));
+            child.setLayoutParams(lp);
+            mTop.addView(child);
+            viewContainer.add(child);
 
-        EditText etMoney = (EditText)child.findViewById(R.id.et_wipedmoney);
-        etMoney.setEnabled(false);
-        etMoney.setText("15000");
+            EditText etMoney = (EditText)child.findViewById(R.id.et_wipedmoney);
+            etMoney.setEnabled(false);
+            etMoney.setText("");
 
-        EditText etType = (EditText)child.findViewById(R.id.et_wipedtype);
-        etType.setEnabled(false);
-        etType.setText("出差");
+            EditText etType = (EditText)child.findViewById(R.id.et_wipedtype);
+            etType.setEnabled(false);
+            etType.setText("");
 
-        EditText etDetail = (EditText)child.findViewById(R.id.et_wipeddetail);
-        etDetail.setEnabled(false);
-        etDetail.setText("出差有钱不拿白不拿");
+            EditText etDetail = (EditText)child.findViewById(R.id.et_wipeddetail);
+            etDetail.setEnabled(false);
+            etDetail.setText("");
+            return;
+        }
+        mTop.removeAllViews();
+        viewContainer.clear();
+        viewContainer = new ArrayList<>();
 
-        mSumMoney+=Integer.parseInt(etMoney.getText().toString());
+        for(int i = 0;i<detailList.size();i++){
+            ApplyDetailEntity.DataEntity.Detail detail = detailList.get(i);
+            View child = getLayoutInflater().inflate(R.layout.wiped_layout,null);
+            child.findViewById(R.id.rl_del).setVisibility(View.INVISIBLE);
+            //第一行不显示
+            if (i == 0 )
+                child.findViewById(R.id.top_sperate).setVisibility(View.GONE);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)DimenUtil.dp2px(220));
+            child.setLayoutParams(lp);
+            mTop.addView(child);
+            viewContainer.add(child);
+
+            EditText etMoney = (EditText)child.findViewById(R.id.et_wipedmoney);
+            etMoney.setEnabled(false);
+            int amount = detail.getAmount();
+            String point = "00";
+            if(amount%100 != 0){
+                point = ""+amount%100;
+            }
+            String newAmount = amount/100+"."+point;
+            etMoney.setText(newAmount);
+
+            EditText etType = (EditText)child.findViewById(R.id.et_wipedtype);
+            etType.setEnabled(false);
+            etType.setText(detail.getExpenseType());
+
+            EditText etDetail = (EditText)child.findViewById(R.id.et_wipeddetail);
+            etDetail.setEnabled(false);
+            etDetail.setText(detail.getRemark());
+            mSumMoney+=Double.parseDouble(etMoney.getText().toString());
+        }
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mainFormID = getIntent().getStringExtra("formID");
         if((entryType = getIntent().getStringExtra("entryType")) != null){
             if(entryType.equals("edit")){
                 //编辑模式
                 initViews();
+                mAddApplyPresenterImpl.attachView(this);
+                mEditApplyPresenterImpl.attachView(this);
+                mUploadPresenterImpl.attachView(this);
+                addWipedForm();
 
 
             }else if(entryType.equals("show")){
                 //查看模式
                 initViewsShow();
+                mApplyDetailPresenterImpl.attachView(this);
+                mApplyDetailPresenterImpl.setAddApplyType(DETAIL_APPLY_EXPENSE);
+                mApplyDetailPresenterImpl.beforeRequest();
+                mApplyDetailPresenterImpl.getApplyDetail(mainFormID);
                 mBottomCommit.setVisibility(View.GONE);
                 mBottomApprove.setVisibility(View.GONE);
+                mIsFirstCreateForm = false;
             }else{
                 //审批模式
                 initViewsShow();
+                mDoApprovePresenterImpl.attachView(this);
+                mApplyDetailPresenterImpl.attachView(this);
+                mApplyDetailPresenterImpl.setAddApplyType(DETAIL_APPLY_EXPENSE);
+                mApplyDetailPresenterImpl.beforeRequest();
+                mApplyDetailPresenterImpl.getApplyDetail(mainFormID);
                 mBottomCommit.setVisibility(View.GONE);
                 mBottomApprove.setVisibility(View.VISIBLE);
+                mIsFirstCreateForm = false;
 
             }
 
@@ -700,12 +867,7 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        Log.i("Wiped","onDestroy");
-        clearCache();
-        super.onDestroy();
-    }
+
 
     private void clearCache(){
         FrescoUtils.clearCache();
@@ -744,4 +906,318 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener {
         }
         finish();
     }
+    //step1:新增外出单
+    private void addWipedForm(){
+        if(!mIsFirstCreateForm){
+            mAddApplyPresenterImpl.beforeRequest();
+        }
+        mAddApplyPresenterImpl.setAddApplyType(ADD_APPLY_EXPENSE);
+        mAddApplyPresenterImpl.addApply();
+
+
+    }
+    //修改外出单
+    private void editWipedForm(List<String> data){
+        mEditApplyPresenterImpl.setAddApplyType(HostType.EDIT_APPLY_EXPENSE);
+        mEditApplyPresenterImpl.beforeRequest();
+
+        HashMap<String,Object> container = new HashMap<>();
+        List<HashMap<String,Object>> content = new ArrayList<>();
+        for(int i = 0;i<viewContainer.size();i++){
+            View v = viewContainer.get(i);
+            EditText num = (EditText)v.findViewById(R.id.et_wipedmoney);
+            EditText type = (EditText)v.findViewById(R.id.et_wipedtype);
+            EditText detail = (EditText)v.findViewById(R.id.et_wipeddetail);
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("amount",(int)(Double.parseDouble(num.getText().toString())*100));
+            map.put("expenseType",type.getText().toString());
+            map.put("remark",detail.getText().toString());
+            content.add(map);
+        }
+
+        String stringContent = new Gson().toJson(content);
+        String extra = "";
+        String imgs = "";
+        if(data != null && data.size()>0){
+            if(TextUtils.isEmpty(headerPathTemp)){
+                for(int j = 0;j<data.size();j++){
+                    extra+=data.get(j);
+                    if(j!=data.size()-1)
+                        extra+=",";
+                }
+            }else{
+                imgs = data.get(0);
+                for(int j = 1;j<data.size();j++){
+                    extra+=data.get(j);
+                    if(j!=data.size()-1)
+                        extra+=",";
+                }
+            }
+
+        }
+        container.put("extra",extra);
+        container.put("imgs",imgs);
+        container.put("details",stringContent);
+        String log = new Gson().toJson(container);
+        Log.i("Retrofit","editWipedForm commit log body:"+log);
+
+        mEditApplyPresenterImpl.editApply(mainFormID,container);
+
+
+
+
+    }
+    private String createNewFilePath(String oldPath){
+        String newPath = "";
+
+        String[] data = oldPath.split("/");
+        int length = data.length;
+        String fileName = data[length-1];
+
+        newPath = root+"/"+fileName;
+
+        return newPath;
+    }
+    private void commitImgs(){
+        mUploadPresenterImpl.beforeRequest();
+        rx.Observable.create(new rx.Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                subscriber.onNext(null);
+
+            }
+        }).map(new Func1<Object, ArrayList<String>>() {
+            @Override
+            public ArrayList<String> call(Object o) {
+                ArrayList<String> list = new ArrayList<String>();
+                try {
+                    if(!TextUtils.isEmpty(headerPathTemp)){
+                        String newPath = createNewFilePath(headerPathTemp);
+                        Log.i("Retrofit","newPath head:"+newPath);
+                        CompressUtils.getInstance().compressAndGenImage(headerPathTemp,newPath,800,false);
+                        list.add(newPath);
+                    }
+                    if(photos.size()!=0){
+                        for(int i = 0;i<photos.size();i++){
+                            String newPath = createNewFilePath(photos.get(i).getOriginalPath());
+                            Log.i("Retrofit","newPath photos:"+newPath);
+                            CompressUtils.getInstance().compressAndGenImage(photos.get(i).getOriginalPath(),newPath,800,false);
+                            list.add(newPath);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+                return list;
+            }
+        })
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(new Action1<ArrayList<String>>() {
+                    @Override
+                    public void call(ArrayList<String> list) {
+                        mUploadPresenterImpl.processUpload(list);
+                    }
+                });
+    }
+    @Override
+    public void addApplyCompleted(AddApplyEntity data) {
+        Log.i("Retrofit","addApplyCompleted");
+        if(data.getCode().equals("ok")){
+            mainFormID = data.getData().getId();
+            mApproverHeader.setImageURI(data.getData().getAvatar());
+            mApproverName.setText(data.getData().getAssessor());
+            Log.i("Retrofit","addApplyCompleted ok mainFormID:"+mainFormID);
+            if(mIsFirstCreateForm){
+                mIsFirstCreateForm = false;
+                return;
+            }
+            //step2:如果有图片先上传图片,没图片直接跳到step3
+            if(!TextUtils.isEmpty(headerPathTemp) || photos.size()!=0){
+                commitImgs();
+            }else{
+                editWipedForm(null);
+            }
+        }else{
+            if(!mIsFirstCreateForm){
+                if(mLoadDialog!=null){
+                    mLoadDialog.dismiss();
+                    mLoadDialog = null;
+                }
+                Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+            }
+        }
+        mIsFirstCreateForm = false;
+    }
+    @Override
+    public void uploadComplete(UploadEntity data) {
+        if(data.getCode().equals("ok")){
+            //step3:编辑
+            editWipedForm(data.getData());
+
+        }else{
+            if(mLoadDialog!=null){
+                mLoadDialog.dismiss();
+                mLoadDialog = null;
+            }
+            Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void editApplyCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(this,getString(R.string.commitSuccessed),Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+        }
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+    @Override
+    public void showProgress(int reqType) {
+        if(mLoadDialog==null) {
+            switch (reqType) {
+                case ADD_APPLY_EXPENSE:
+                case UPLOAD:
+                case EDIT_APPLY_EXPENSE:
+                case APPLY_DO_PASS:
+                case APPLY_DO_REJECT:
+                    mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_UPDATE);
+                    mLoadDialog.show();
+                    break;
+                case DETAIL_APPLY_EXPENSE:
+                    mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_LOADING);
+                    mLoadDialog.show();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        if(!mIsFirstCreateForm){
+            if(entryType.equals("edit")){
+                Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this,getString(R.string.getFailed),Toast.LENGTH_SHORT).show();
+            }
+        }
+        mIsFirstCreateForm = false;
+
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i("Wiped","onDestroy");
+        clearCache();
+        if(mAddApplyPresenterImpl!=null){
+            mAddApplyPresenterImpl.onDestroy();
+        }
+
+        if(mEditApplyPresenterImpl!=null){
+            mEditApplyPresenterImpl.onDestroy();
+        }
+
+        if(mUploadPresenterImpl!=null){
+            mUploadPresenterImpl.onDestroy();
+        }
+
+        if(mDoApprovePresenterImpl!=null){
+            mDoApprovePresenterImpl.onDestroy();
+        }
+
+        if(mApplyDetailPresenterImpl!=null){
+            mApplyDetailPresenterImpl.onDestroy();
+        }
+        super.onDestroy();
+    }
+    @Override
+    public void doApproveCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(this,getString(R.string.commitSuccessed),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra("position",getIntent().getIntExtra("position",0));
+            setResult(RESULT_OK,intent);
+            finish();
+        }else{
+            Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
+        }
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+
+    }
+
+    @Override
+    public void getApplyDetailCompleted(ApplyDetailEntity data) {
+        if(data.getCode().equals("ok") && data.getData()!=null){
+            mApproverHeader.setImageURI(data.getData().getAvatar());
+            mApproverName.setText(data.getData().getAssessor());
+            ArrayList<ApplyDetailEntity.DataEntity.Detail> detailList = new Gson().fromJson(data.getData().getDetails(), new TypeToken<List<ApplyDetailEntity.DataEntity.Detail>>() {}.getType());
+            updateWipedData(detailList);
+            updateWipedList();
+            reCalculatorSumMoney();
+            headerPathTemp = data.getData().getImgs();
+            mPhoto.setImageURI(headerPathTemp);
+            if(!TextUtils.isEmpty(data.getData().getExtra())){
+                String[] extras = data.getData().getExtra().split(",");
+                for(int i = 0;i<extras.length;i++){
+                    photos.add(new PhotoModel(extras[i]));
+                }
+            }
+            if (photos.size() == 3){
+                mWiped1.setVisibility(View.VISIBLE);
+                mWiped2.setVisibility(View.VISIBLE);
+                mWiped3.setVisibility(View.VISIBLE);
+
+                FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+                FrescoUtils.load(Uri.parse(photos.get(1).getOriginalPath()),mWiped2,200,120);
+                FrescoUtils.load(Uri.parse(photos.get(2).getOriginalPath()),mWiped3,200,120);
+
+            }else if(photos.size() == 2){
+                mWiped1.setVisibility(View.VISIBLE);
+                mWiped2.setVisibility(View.VISIBLE);
+                mWiped3.setVisibility(View.GONE);
+
+                FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+                FrescoUtils.load(Uri.parse(photos.get(1).getOriginalPath()),mWiped2,200,120);
+
+            }else if(photos.size() == 1){
+                mWiped1.setVisibility(View.VISIBLE);
+                mWiped2.setVisibility(View.INVISIBLE);
+                mWiped3.setVisibility(View.GONE);
+
+                FrescoUtils.load(Uri.parse(photos.get(0).getOriginalPath()),mWiped1,200,120);
+
+            }else{
+                mWiped1.setVisibility(View.GONE);
+                mWiped2.setVisibility(View.GONE);
+                mWiped3.setVisibility(View.GONE);
+            }
+        }
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+
 }

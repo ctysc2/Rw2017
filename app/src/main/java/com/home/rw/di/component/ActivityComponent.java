@@ -20,6 +20,7 @@ import com.home.rw.mvp.ui.activitys.work.GetOutActivity;
 import com.home.rw.mvp.ui.activitys.work.ProposeFromMeActivity;
 import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
 import com.home.rw.mvp.ui.activitys.work.WipedActivity;
+import com.home.rw.mvp.ui.activitys.work.WriteLogActivity;
 
 import dagger.Component;
 
@@ -51,6 +52,8 @@ public interface ActivityComponent {
     void inject(OrderActivity orderActivity);
     void inject(WalletActivity walletActivity);
     void inject(CompanyNoticeActivity companyNoticeActivity);
+    void inject(WriteLogActivity writeLogActivity);
+
 
 
 }

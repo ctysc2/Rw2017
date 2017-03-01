@@ -1,5 +1,6 @@
 package com.home.rw.mvp.entity;
 
+import com.home.rw.mvp.entity.base.BaseApprovementEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 
 import java.util.ArrayList;
@@ -10,62 +11,83 @@ import java.util.ArrayList;
 
 public class ApprovementListEntity extends BaseEntity {
 
-    public ArrayList<DataEntity> data;
+    public DataEntity data;
 
-    public ArrayList<DataEntity> getData() {
+    public DataEntity getData() {
         return data;
     }
 
-    public void setData(ArrayList<DataEntity> data) {
+    public void setData(DataEntity data) {
         this.data = data;
     }
 
-    public static class DataEntity {
-        public String headUrl;
-        public String name;
-        public String date;
-        public int appStatus = -1;
-        private int appType = -1;
 
-        public void setAppType(int appType) {
-            this.appType = appType;
+    public static class DataEntity extends BaseApprovementEntity {
+
+        public ArrayList<ResLst> resLst;
+
+        public void setResLst(ArrayList<ResLst> resLst) {
+            this.resLst = resLst;
         }
 
-        public void setAppStatus(int appStatus) {
-            this.appStatus = appStatus;
+        public ArrayList<ResLst> getResLst() {
+            return resLst;
         }
 
-        public void setDate(String date) {
-            this.date = date;
-        }
+        public static class ResLst{
+            public String id;
+            public String realname;
+            public String type;
+            public String createdDate;
+            public String status;
+            public String username;
+            public String getId() {
+                return id;
+            }
 
-        public void setHeadUrl(String headUrl) {
-            this.headUrl = headUrl;
-        }
+            public void setId(String id) {
+                this.id = id;
+            }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+            public void setUsername(String username) {
+                this.username = username;
+            }
 
+            public String getUsername() {
+                return username;
+            }
 
-        public int getAppStatus() {
-            return appStatus;
-        }
+            public String getRealname() {
+                return realname;
+            }
 
-        public String getDate() {
-            return date;
-        }
+            public void setRealname(String realname) {
+                this.realname = realname;
+            }
 
-        public String getHeadUrl() {
-            return headUrl;
-        }
+            public String getType() {
+                return type;
+            }
 
-        public String getName() {
-            return name;
-        }
+            public void setType(String type) {
+                this.type = type;
+            }
 
-        public int getAppType() {
-            return appType;
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public void setCreatedDate(String createdDate) {
+                this.createdDate = createdDate;
+            }
+
+            public String getCreatedDate() {
+                return createdDate;
+            }
+
+            public String getStatus() {
+                return status;
+            }
         }
     }
 }
