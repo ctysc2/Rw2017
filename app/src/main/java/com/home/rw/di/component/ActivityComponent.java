@@ -10,15 +10,21 @@ import com.home.rw.di.scope.PerActivity;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
 import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
+import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
+import com.home.rw.mvp.ui.activitys.mineme.FeedBackActivity;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
 import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovedByMeActivity;
 import com.home.rw.mvp.ui.activitys.work.AskForLeaveActivity;
+import com.home.rw.mvp.ui.activitys.work.CardActivity;
 import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
 import com.home.rw.mvp.ui.activitys.work.ExtraWorkActivity;
 import com.home.rw.mvp.ui.activitys.work.GetOutActivity;
 import com.home.rw.mvp.ui.activitys.work.ProposeFromMeActivity;
 import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
+import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
+import com.home.rw.mvp.ui.activitys.work.SignInActivity;
+import com.home.rw.mvp.ui.activitys.work.SignListActivity;
 import com.home.rw.mvp.ui.activitys.work.WipedActivity;
 import com.home.rw.mvp.ui.activitys.work.WriteLogActivity;
 
@@ -53,7 +59,12 @@ public interface ActivityComponent {
     void inject(WalletActivity walletActivity);
     void inject(CompanyNoticeActivity companyNoticeActivity);
     void inject(WriteLogActivity writeLogActivity);
-
+    void inject(SendRollActivity sendRollActivity);
+    void inject(SignListActivity signListActivity);
+    void inject(SignInActivity signInActivity);
+    void inject(CardActivity cardActivity);
+    void inject(FeedBackActivity feedBackActivity);
+    void inject(ChangePassWord changePassWord);
 
 
 }

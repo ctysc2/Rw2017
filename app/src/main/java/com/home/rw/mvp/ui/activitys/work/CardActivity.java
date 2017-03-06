@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,17 +25,30 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.home.rw.R;
+import com.home.rw.common.HostType;
 import com.home.rw.listener.OnAddressReceive;
+import com.home.rw.mvp.entity.CardQueryEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.CardPresenterImpl;
+import com.home.rw.mvp.presenter.impl.CardQueryPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.CardQueryView;
+import com.home.rw.mvp.view.CardView;
 import com.home.rw.utils.DateUtils;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.GoogleMapUtils;
+import com.home.rw.utils.PreferenceUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CardActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class CardActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,CardView,CardQueryView {
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -46,6 +60,7 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
 
     private int CheckNum = 0;
 
+    private int mCardType = 0;
     @BindView(R.id.iv_header)
     SimpleDraweeView mHeader;
 
@@ -90,6 +105,23 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @BindView(R.id.tv_checked_time2)
     TextView mChecked2;
+
+    @BindView(R.id.tv_date1)
+    TextView mDate1;
+
+    @BindView(R.id.tv_date2)
+    TextView mDate2;
+
+    @BindView(R.id.tv_name)
+    TextView mName;
+
+
+    @Inject
+    CardPresenterImpl mCardPresenterImpl;
+
+    @Inject
+    CardQueryPresenterImpl mCardQueryPresenterImpl;
+
     @OnClick({
             R.id.back,
             R.id.bt_card1,
@@ -101,23 +133,34 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
                 finish();
                 break;
             case R.id.bt_card1:
-                mllAddress1.setVisibility(View.VISIBLE);
-                mTvadd1.setText(mAddress);
-                mIv1.setImageResource(R.drawable.icon_card_check);
-                mChecked1.setVisibility(View.VISIBLE);
-                mChecked1.setText(DateUtils.getTimeHHmmss(new Date())+getString(R.string.shangbanCard));
-                mCard1.setVisibility(View.GONE);
-                mBt1.setEnabled(false);
+                if(mLastLocation != null && mAddress!=null && !mAddress.equals("")){
+                    mCardType = 0;
+                    mCardPresenterImpl.beforeRequest();
+                    HashMap<String,Object> map = new HashMap<>();
+                    map.put("type",mCardType);
+                    map.put("longitude",String.valueOf(mLastLocation.getLongitude()));
+                    map.put("latitude",String.valueOf(mLastLocation.getLatitude()));
+                    map.put("remark",mAddress);
+                    mCardPresenterImpl.card(map);
+                }else{
+                    Toast.makeText(this,getString(R.string.gettingLocation),Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.bt_card2:
-                mllAddress2.setVisibility(View.VISIBLE);
-                mCard2.setVisibility(View.GONE);
-                mIv2.setImageResource(R.drawable.icon_card_check);
-                mChecked2.setVisibility(View.VISIBLE);
-                mChecked2.setText(DateUtils.getTimeHHmmss(new Date())+getString(R.string.xiabanCard));
-                mTvadd2.setText(mAddress);
-                mBt2.setEnabled(false);
-                break;
+                if(mLastLocation != null && mAddress!=null && !mAddress.equals("")){
+                    mCardType = 1;
+                    mCardPresenterImpl.beforeRequest();
+                    HashMap<String,Object> map1 = new HashMap<>();
+                    map1.put("type",mCardType);
+                    map1.put("longitude",String.valueOf(mLastLocation.getLongitude()));
+                    map1.put("latitude",String.valueOf(mLastLocation.getLatitude()));
+                    map1.put("remark",mAddress);
+                    mCardPresenterImpl.card(map1);
+                    break;
+                }else{
+                    Toast.makeText(this,getString(R.string.gettingLocation),Toast.LENGTH_SHORT).show();
+                }
+
             default:
                 break;
 
@@ -132,14 +175,24 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
     public void initViews() {
         midText.setText(R.string.cardLabel);
+        mName.setText(PreferenceUtils.getPrefString(this,"realname",""));
         mback.setImageResource(R.drawable.btn_back);
-        mHeader.setImageURI("http://imgsrc.baidu.com/forum/w%3D580/sign=637a3737f603918fd7d13dc2613c264b/f7ca27d0f703918fa0b15d1d503d26975beec4f6.jpg");
+        mHeader.setImageURI(PreferenceUtils.getPrefString(this,"avatar",""));
+        mCardPresenterImpl.attachView(this);
+        mCardQueryPresenterImpl.attachView(this);
+        mCardQueryPresenterImpl.setAddApplyType(HostType.CARD_QUERY);
+        mCardQueryPresenterImpl.beforeRequest();
+        mCardQueryPresenterImpl.cardQuery();
+        mBt1.setEnabled(false);
+        mBt2.setEnabled(false);
+        mDate1.setText(DateUtils.getCardTime(new Date()));
+        mDate2.setText(DateUtils.getCardTime(new Date()));
     }
 
     @Override
@@ -170,7 +223,7 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(100);
-        mLocationRequest.setNumUpdates(3);
+        mLocationRequest.setNumUpdates(10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     }
@@ -261,5 +314,119 @@ public class CardActivity extends BaseActivity implements GoogleApiClient.Connec
                     },mLastLocation);
 
         }
+    }
+
+    @Override
+    public void getCardQueryCompleted(CardQueryEntity data) {
+        if(data!=null && data.getCode().equals("ok")){
+            ArrayList<CardQueryEntity.DataEntity> list = data.getData();
+            if(list!=null){
+                if(list.size() == 0){
+                    mBt1.setEnabled(true);
+                    mBt2.setEnabled(false);
+                }else if(list.size() == 1){
+                    CardQueryEntity.DataEntity entity = list.get(0);
+                    mllAddress1.setVisibility(View.VISIBLE);
+                    mTvadd1.setText(entity.getRemark());
+                    mIv1.setImageResource(R.drawable.icon_card_check);
+                    mChecked1.setVisibility(View.VISIBLE);
+                    if(entity.getSignInTime().split(" ").length>1)
+                        mChecked1.setText(entity.getSignInTime().split(" ")[1]+getString(R.string.shangbanCard));
+                    else
+                        mChecked1.setText(entity.getSignInTime()+getString(R.string.shangbanCard));
+                    mCard1.setVisibility(View.GONE);
+                    mBt1.setText(getString(R.string.carded));
+                    mBt2.setEnabled(true);
+                }else if(list.size() == 2){
+                    CardQueryEntity.DataEntity entity1 = list.get(0);
+                    CardQueryEntity.DataEntity entity2 = list.get(1);
+                    mllAddress1.setVisibility(View.VISIBLE);
+                    mTvadd1.setText(entity1.getRemark());
+                    mIv1.setImageResource(R.drawable.icon_card_check);
+                    mChecked1.setVisibility(View.VISIBLE);
+                    if(entity1.getSignInTime().split(" ").length>1)
+                        mChecked1.setText(entity1.getSignInTime().split(" ")[1]+getString(R.string.shangbanCard));
+                    else
+                        mChecked1.setText(entity1.getSignInTime()+getString(R.string.shangbanCard));
+                    mCard1.setVisibility(View.GONE);
+                    mBt1.setText(getString(R.string.carded));
+
+
+                    mllAddress2.setVisibility(View.VISIBLE);
+                    mTvadd2.setText(entity2.getRemark());
+                    mIv2.setImageResource(R.drawable.icon_card_check);
+                    mChecked2.setVisibility(View.VISIBLE);
+                    if(entity2.getSignInTime().split(" ").length>1)
+                        mChecked2.setText(entity2.getSignInTime().split(" ")[1]+getString(R.string.xiabanCard));
+                    else
+                        mChecked2.setText(entity2.getSignInTime()+getString(R.string.xiabanCard));
+                    mCard2.setVisibility(View.GONE);
+                    mBt2.setText(getString(R.string.carded));
+
+
+                }
+            }
+
+
+        }
+    }
+
+    @Override
+    public void cardCompleted(BaseEntity data) {
+        if(data!=null && data.getCode().equals("ok")){
+            if(mCardType  == 0){
+                mllAddress1.setVisibility(View.VISIBLE);
+                mCard1.setVisibility(View.GONE);
+                mIv1.setImageResource(R.drawable.icon_card_check);
+                mChecked1.setVisibility(View.VISIBLE);
+                mChecked1.setText(DateUtils.getTimeHHmmss(new Date())+getString(R.string.shangbanCard));
+                mTvadd1.setText(mAddress);
+                mBt1.setEnabled(false);
+                mBt2.setEnabled(true);
+            }else{
+                mllAddress2.setVisibility(View.VISIBLE);
+                mCard2.setVisibility(View.GONE);
+                mIv2.setImageResource(R.drawable.icon_card_check);
+                mChecked2.setVisibility(View.VISIBLE);
+                mChecked2.setText(DateUtils.getTimeHHmmss(new Date())+getString(R.string.xiabanCard));
+                mTvadd2.setText(mAddress);
+                mBt2.setEnabled(false);
+            }
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+        if(mLoadDialog == null){
+            switch (reqType){
+                case HostType.CARD:
+                    mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_UPDATE);
+                    mLoadDialog.show();
+                    break;
+                case HostType.CARD_QUERY:
+                    mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_LOADING);
+                    mLoadDialog.show();
+                    break;
+            }
+
+        }
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        if(reqType == HostType.CARD){
+            Toast.makeText(this,getString(R.string.cardInfoFailed),Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,getString(R.string.cardFailed),Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

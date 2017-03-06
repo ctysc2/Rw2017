@@ -1,5 +1,6 @@
 package com.home.rw.mvp.entity;
 
+import com.home.rw.mvp.entity.base.BaseApprovementEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 
 import java.util.ArrayList;
@@ -10,61 +11,83 @@ import java.util.ArrayList;
 
 public class RollMeEntity extends BaseEntity {
 
-    public ArrayList<RollMeEntity.DataEntity> data;
+    public RollMeEntity.DataEntity data;
 
-    public ArrayList<RollMeEntity.DataEntity> getData() {
+    public RollMeEntity.DataEntity getData() {
         return data;
     }
 
-    public void setData(ArrayList<RollMeEntity.DataEntity> data) {
+    public void setData(RollMeEntity.DataEntity data) {
         this.data = data;
     }
 
-    public static class DataEntity{
-        String sender;
-        String sendTime;
-        String deadLineTime;
-        String content;
-        boolean isExpand = false;
+    public static class DataEntity extends BaseApprovementEntity{
 
-        public boolean isExpand() {
-            return isExpand;
+        private ArrayList<ResLst> resLst;
+
+        public void setResLst(ArrayList<ResLst> resLst) {
+            this.resLst = resLst;
         }
 
-        public void setExpand(boolean expand) {
-            isExpand = expand;
+        public ArrayList<ResLst> getResLst() {
+            return resLst;
         }
 
-        public void setContent(String content) {
-            this.content = content;
-        }
+        public static class ResLst{
+            String author;
+            String avatar;
+            String beginTime;
+            String endTime;
+            String content;
+            boolean isExpand = false;
 
-        public void setDeadLineTime(String deadLineTime) {
-            this.deadLineTime = deadLineTime;
-        }
+            public boolean isExpand() {
+                return isExpand;
+            }
 
-        public void setSender(String sender) {
-            this.sender = sender;
-        }
+            public void setExpand(boolean expand) {
+                isExpand = expand;
+            }
 
-        public void setSendTime(String sendTime) {
-            this.sendTime = sendTime;
-        }
+            public String getAuthor() {
+                return author;
+            }
 
-        public String getContent() {
-            return content;
-        }
+            public void setAuthor(String author) {
+                this.author = author;
+            }
 
-        public String getDeadLineTime() {
-            return deadLineTime;
-        }
+            public String getAvatar() {
+                return avatar;
+            }
 
-        public String getSender() {
-            return sender;
-        }
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
 
-        public String getSendTime() {
-            return sendTime;
+            public String getBeginTime() {
+                return beginTime;
+            }
+
+            public void setBeginTime(String beginTime) {
+                this.beginTime = beginTime;
+            }
+
+            public String getEndTime() {
+                return endTime;
+            }
+
+            public void setEndTime(String endTime) {
+                this.endTime = endTime;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
         }
 
 

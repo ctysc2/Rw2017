@@ -95,7 +95,7 @@ public class DialogUtils {
         ((TextView)contentView.findViewById(R.id.tv_loading)).setText(mContext.getString(resID));
         mDialog = new AlertDialog.Builder(mContext).create();
         mDialog.show();
-        if(resID == R.string.loging)
+//        if(resID == R.string.loging)
             mDialog.setCancelable(false);
         mDialog.setContentView(contentView);
         Window window = mDialog.getWindow();

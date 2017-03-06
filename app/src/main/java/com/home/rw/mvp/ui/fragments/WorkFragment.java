@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.mvp.entity.CarouselResponseEntity;
+import com.home.rw.mvp.ui.activitys.WebViewActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovementActivity;
 import com.home.rw.mvp.ui.activitys.work.CardActivity;
 import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
@@ -274,7 +275,8 @@ public class WorkFragment extends BaseFragment {
                 @Override
                 public void onClick(View v)
                 {
-
+                    Intent intent = new Intent(mActivity, WebViewActivity.class);
+                    startActivity(intent);
                 }
 
             });

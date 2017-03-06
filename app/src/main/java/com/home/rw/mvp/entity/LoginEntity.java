@@ -15,11 +15,19 @@ public class LoginEntity extends BaseEntity{
 
     public class DataEntity{
         String id;
-        String nickname;
+        String realname;
         String username;
         String sessionId;
         String avatar;
+        String rongCloudToken;
 
+        public void setRongCloudToken(String rongCloudToken) {
+            this.rongCloudToken = rongCloudToken;
+        }
+
+        public String getRongCloudToken() {
+            return rongCloudToken;
+        }
         public void setAvatar(String avatar) {
             this.avatar = avatar;
         }
@@ -28,9 +36,6 @@ public class LoginEntity extends BaseEntity{
             this.id = id;
         }
 
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
 
         public void setSessionId(String sessionId) {
             this.sessionId = sessionId;
@@ -48,8 +53,12 @@ public class LoginEntity extends BaseEntity{
             return avatar;
         }
 
-        public String getNickname() {
-            return nickname;
+        public void setRealname(String realname) {
+            this.realname = realname;
+        }
+
+        public String getRealname() {
+            return realname;
         }
 
         public String getSessionId() {

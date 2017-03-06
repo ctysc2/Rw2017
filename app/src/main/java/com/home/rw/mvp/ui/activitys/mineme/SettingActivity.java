@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
+import com.home.rw.common.HostType;
 import com.home.rw.listener.AlertDialogListener;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.utils.CacheUtils;
@@ -25,7 +26,7 @@ import butterknife.OnClick;
 public class SettingActivity extends BaseActivity implements AlertDialogListener {
 
     private boolean clean_flag = false;
-
+    private int mDialogType = 0;
     @BindView(R.id.back)
     ImageButton mback;
 
@@ -34,14 +35,16 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
 
     @BindView(R.id.tv_cache)
     TextView tvCacheSize;
-
+    
     @OnClick({
             R.id.back,
             R.id.rl_verson,
             R.id.rl_cache,
             R.id.rl_feedback,
+            R.id.bt_logout
     })
     public void OnClick(View v){
+        Intent intent;
         switch (v.getId()){
             case R.id.back:
                 finish();
@@ -50,11 +53,19 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
                 break;
             case R.id.rl_cache:
                 mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
-                mAlertDialog.show(this,getString(R.string.editExitHint1),getString(R.string.editExitHint2));
+                mAlertDialog.show(this,getString(R.string.isClearCache));
+                mDialogType = 1;
                 //clear_cache();
                 break;
             case R.id.rl_feedback:
-                startActivity(new Intent(this,FeedBackActivity.class));
+                intent = new Intent(this,FeedBackActivity.class);
+                intent.putExtra("entry", HostType.MY_FEEDBACK);
+                startActivity(intent);
+                break;
+            case R.id.bt_logout:
+                mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
+                mAlertDialog.show(this,getString(R.string.isClearCache));
+                mDialogType = 2;
                 break;
             default:
                 break;
@@ -122,7 +133,15 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
     @Override
     public void onConFirm() {
         mAlertDialog.dismiss();
-        clear_cache();
+        if(mDialogType == 1){
+            clear_cache();
+        }else{
+            doLogOut();
+        }
+        
+    }
+
+    private void doLogOut() {
     }
 
     @Override

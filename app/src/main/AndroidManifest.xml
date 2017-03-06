@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.home.rw">
-
+    <permission
+        android:name="com.home.rw.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,6 +18,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="com.home.rw.permission.C2D_MESSAGE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -39,9 +42,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBTPXEZku1kucfIhpAhlVCGqsAusYh_oZc" />
 
-        <activity android:name=".mvp.ui.activitys.MainActivity"
-            android:launchMode="singleTask"
-            />
+        <activity
+            android:name=".mvp.ui.activitys.MainActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".mvp.ui.activitys.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -127,8 +130,8 @@
                 <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
             </intent-filter>
         </receiver>
-        <activity android:name=".mvp.ui.activitys.rongCloud.ConversationActivity"
-             >
+
+        <activity android:name=".mvp.ui.activitys.rongCloud.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -156,6 +159,27 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
+        <activity android:name=".mvp.ui.activitys.WebViewActivity"></activity>
+        <!-- GCM 配置 < -->
+        <receiver android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.home.rw" />
+                <!-- 替换为自己的packagename < -->
+            </intent-filter>
+        </receiver>
+
+        <service android:name="io.rong.push.platform.RongGcmListenerService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service android:name="io.rong.push.platform.RongGCMInstanceIDListenerService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- GCM 配置结束 < -->
     </application>
 
 </manifest>

@@ -88,6 +88,37 @@ public class HostType {
 
     //接收的日志
     public static final int RECEIVE_LOG= 25;
+
+
+    //发送若一若
+    public static final int SEND_ROLL= 26;
+
+    //接收的若一若列表
+    public static final int RECEIVE_ROLL= 27;
+
+    //签到
+    public static final int SIGN= 28;
+
+    //签到列表
+    public static final int SIGN_LIST= 29;
+
+    //打卡
+    public static final int CARD= 30;
+
+    //打卡查询
+    public static final int CARD_QUERY= 31;
+
+    //修改个人信息
+    public static final int MODIFI_USER_INFO= 32;
+
+    //获取短信验证码
+    public static final int VERIFI_CODE= 33;
+
+    //修改密码
+    public static final int MODIFI_PASSWORD= 34;
+
+    //意见反馈
+    public static final int MY_FEEDBACK= 35;
     /**
      * 替代枚举的方案，使用IntDef保证类型安全
      */

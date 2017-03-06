@@ -30,12 +30,12 @@ import butterknife.ButterKnife;
  * Created by cty on 2016/12/20.
  */
 
-public class SignListAdapter extends BaseRecyclerViewAdapter<SignEntity.DataEntity> {
+public class SignListAdapter extends BaseRecyclerViewAdapter<SignEntity.DataEntity.ResLst> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
-    public SignListAdapter(ArrayList<SignEntity.DataEntity> dataSource, Context context){
+    public SignListAdapter(ArrayList<SignEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.dataSource = dataSource;
         this.context = context;
@@ -89,12 +89,12 @@ public class SignListAdapter extends BaseRecyclerViewAdapter<SignEntity.DataEnti
             final int mPosition = position;
             final SignViewHolder mHolder = (SignViewHolder)holder;
 
-            final SignEntity.DataEntity entity = dataSource.get(mPosition);
+            final SignEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
             mHolder.itemView.setTag(position);
-            mHolder.mHeader.setImageURI(entity.getHeader());
-            mHolder.mName.setText(entity.getName());
-            mHolder.mDate.setText(entity.getTime());
-            mHolder.mAddress.setText(entity.getAddress());
+            mHolder.mHeader.setImageURI(entity.getAvatar());
+            mHolder.mName.setText(entity.getRealname());
+            mHolder.mDate.setText(entity.getSignInTime()+context.getString(R.string.signLabel));
+            mHolder.mAddress.setText(entity.getRemark());
 
             if(dataSource.size() == mPosition+1){
                 mHolder.mSperate.setVisibility(View.GONE);

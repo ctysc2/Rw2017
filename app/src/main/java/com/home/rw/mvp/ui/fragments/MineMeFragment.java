@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
@@ -25,6 +26,7 @@ import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.ModifiUserInfoPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
 import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
@@ -34,6 +36,7 @@ import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.ModifiUserInfoView;
 import com.home.rw.mvp.view.UploadView;
 import com.home.rw.mvp.view.UserInfoView;
 import com.home.rw.utils.DialogUtils;
@@ -45,7 +48,9 @@ import com.home.rw.widget.PicTakerPopWindow;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -53,13 +58,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.home.rw.common.HostType.LOGIN;
+import static com.home.rw.common.HostType.MODIFI_USER_INFO;
 import static com.home.rw.common.HostType.USER_INFO;
 
 /**
  * Created by cty on 2016/12/13.
  */
 
-public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView {
+public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView,ModifiUserInfoView{
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
@@ -84,6 +90,18 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @BindView(R.id.tv_username)
     TextView mUserName;
 
+    @BindView(R.id.tv_publish)
+    TextView mPublish;
+
+    @BindView(R.id.tv_focus)
+    TextView mFocus;
+
+    @BindView(R.id.compName)
+    TextView mComp;
+
+    @BindView(R.id.tv_phone)
+    TextView mPhoneNum;
+
     @Inject
     Activity mActivity;
 
@@ -92,6 +110,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
 
     @Inject
     UserInfoPresenterImpl mUserInfoPresenterImpl;
+
+    @Inject
+    ModifiUserInfoPresenterImpl mModifiUserInfoPresenterImpl;
 
     //选择头像
     PicTakerPopWindow menuWindow;
@@ -111,6 +132,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             getAbsolutePath()+"/"+"RwCache";
     private  String headerPathTemp;
 
+    private int mSettingType;
     //为弹出窗口实现监听类
     private View.OnClickListener itemsOnClick = new View.OnClickListener(){
 
@@ -126,6 +148,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             Intent intent;
             switch (v.getId()) {
                 case R.id.btn_take_photo:
+                    mSettingType = 0;
                     intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
                     startActivityForResult(intent, RESULT_PICK_FROM_CAMERA_NORMAL);
@@ -133,6 +156,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
                     break;
                 case R.id.btn_pick_photo:
                     // 去图库中选择图片
+                    mSettingType = 0;
                     if (Build.VERSION.SDK_INT < 19) {
                         intent = new Intent(Intent.ACTION_GET_CONTENT);
                         intent.setType("image/*");
@@ -144,10 +168,18 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
 
                     break;
                 case R.id.btn_male:
-                    mtvGender.setText(getString(R.string.male));
+                    mSettingType = 1;
+                    mModifiUserInfoPresenterImpl.beforeRequest();
+                    HashMap<String,Object> map = new HashMap<>();
+                    map.put("gender","0");
+                    mModifiUserInfoPresenterImpl.modifiUserInfo(map);
                     break;
                 case R.id.btn_female:
-                    mtvGender.setText(getString(R.string.female));
+                    mModifiUserInfoPresenterImpl.beforeRequest();
+                    HashMap<String,Object> map1 = new HashMap<>();
+                    map1.put("gender","1");
+                    mSettingType = 2;
+                    mModifiUserInfoPresenterImpl.modifiUserInfo(map1);
                     break;
                 case R.id.btn_cancel:
                     break;
@@ -208,6 +240,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
         initCache();
         mUploadPresenterImpl.attachView(this);
         mUserInfoPresenterImpl.attachView(this);
+        mModifiUserInfoPresenterImpl.attachView(this);
 
     }
 
@@ -292,7 +325,6 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
                 Log.i("info","CROP_A_PICTURE");
                 if (resultCode == mActivity.RESULT_OK && data != null) {
                     Log.i("info","CROP_A_PICTURE2");
-                   mHeaderView.setImageURI(Uri.fromFile(new File(headerPathTemp)));
                     //上传头像
                     List<String> files = new ArrayList<>();
                     files.add(headerPathTemp);
@@ -335,8 +367,13 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             Log.i("cty","Mineme onHiddenChanged 隐藏");
         }else{
             Log.i("cty","Mineme onHiddenChanged 显示");
-            UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(mActivity,"ID",0));
-            mUserInfoPresenterImpl.beforeRequest();
+
+            //首先从数据库获取数据
+            UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(mActivity,"ID",0));
+            if(user!=null){
+                Log.i("GreenDao","获取user成功 id:"+user.getId());
+                updateViewsByCache(user);
+            }
             mUserInfoPresenterImpl.getUserInfo();
 
         }
@@ -347,43 +384,87 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     public void uploadComplete(UploadEntity data) {
         if(data.getCode().equals("ok")){
             if (data.getData().size()>0){
-
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("avatar",data.getData().get(0));
+                mModifiUserInfoPresenterImpl.beforeRequest();
+                mModifiUserInfoPresenterImpl.modifiUserInfo(map);
             }
 
         }
     }
-
     @Override
     public void showProgress(int reqType) {
         switch (reqType){
             case USER_INFO:
                 break;
+            case MODIFI_USER_INFO:
+                if(mAlertDialog == null){
+                    mAlertDialog = DialogUtils.create(mActivity,DialogUtils.TYPE_UPDATE);
+                    mAlertDialog.show();
+                }
+                break;
+            default:
+                break;
         }
-//        mAlertDialog = DialogUtils.create(mActivity,DialogUtils.TYPE_UPDATE);
-//        mAlertDialog.show();
-
     }
-
     @Override
     public void hideProgress(int reqType) {
-        if(mAlertDialog!=null)
+        if(mAlertDialog!=null){
             mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
+
     }
 
     @Override
     public void showErrorMsg(int reqType,String msg) {
         Log.i("Retrofit","type error:"+reqType+" "+msg);
+        switch (reqType){
+            case MODIFI_USER_INFO:
+                Toast.makeText(mActivity,getString(R.string.modifiFailed),Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
 
     }
     @Override
     public void getUserInfoCompleted(UserInfoEntity data) {
         Log.i("Retrofit","getUserInfoCompleted data:"+data.toString());
-        UserInfo user = new UserInfo();
-        user.setId(PreferenceUtils.getPrefLong(mActivity,"ID",0));
+        updateViews(data.getData());
+        UserInfo user = UserInfoDaoHelper.getInstance().parseEntity2UserInfo(data.getData());
         UserInfoDaoHelper.getInstance().insertUserInfo(user);
 
     }
+    private void updateViewsByCache(UserInfo user){
+        mUserName.setText(user.getRealName());
+        mtvGender.setText(user.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
+        mHeaderView.setImageURI(user.getAvatar());
+        mFocus.setText(user.getNoticeNum());
+        mPublish.setText(user.getPubNum());
+        mComp.setText(user.getCompany());
+        String phone = user.getPhone();
+        if(phone!=null){
+            mPhoneNum.setText(phone.substring(0,2)+"***"+phone.substring(5,phone.length()));
+        }else
+            mPhoneNum.setText("");
+    }
+    private void updateViews(UserInfoEntity.DataEntity data){
+        mUserName.setText(data.getRealname());
+        mtvGender.setText(data.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
+        mHeaderView.setImageURI(data.getAvatar());
+        mFocus.setText(data.getNoticeNum());
+        mPublish.setText(data.getPubNum());
+        mComp.setText(data.getCompany().getName());
+        String phone = data.getPhone();
+        if(phone!=null){
+            mPhoneNum.setText(phone.substring(0,2)+"***"+phone.substring(5,phone.length()));
+        }else
+            mPhoneNum.setText("");
 
+
+
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -392,6 +473,40 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
 
         if(mUserInfoPresenterImpl!=null)
             mUserInfoPresenterImpl.onDestroy();
+
+        if(mModifiUserInfoPresenterImpl!=null)
+            mModifiUserInfoPresenterImpl.onDestroy();
+    }
+
+    @Override
+    public void modifiUserInfoCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(mActivity,getString(R.string.modifiSuccessed),Toast.LENGTH_SHORT).show();
+
+            switch (mSettingType){
+                case 0:
+                    mHeaderView.setImageURI(Uri.fromFile(new File(headerPathTemp)));
+                    break;
+                case 1:
+                    mtvGender.setText(getString(R.string.male));
+                    break;
+                case 2:
+                    mtvGender.setText(getString(R.string.female));
+                    break;
+                default:
+                    break;
+
+            }
+
+            UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(mActivity,"ID",0));
+
+            if(user!=null){
+                Log.i("GreenDao","设置user成功 id:"+user.getId());
+                user.setAvatar(headerPathTemp);
+                user.setGender(mtvGender.getText().toString().equals(getString(R.string.male))?"0":"1");
+                UserInfoDaoHelper.getInstance().insertUserInfo(user);
+            }
+        }
 
     }
 }

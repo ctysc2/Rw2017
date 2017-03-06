@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp.OkHttpImagePipelineConfigFactory;
@@ -17,6 +18,8 @@ import com.home.rw.utils.CrashHandler;
 import com.squareup.okhttp.OkHttpClient;
 
 import io.rong.imkit.RongIM;
+import io.rong.push.RongPushClient;
+import io.rong.push.common.RongException;
 
 /**
  * Created by cty on 16/10/18.
@@ -47,6 +50,14 @@ public class App extends MultiDexApplication {
                     .setDownsampleEnabled(true)
                     .build();
             Fresco.initialize(this, config);
+            //注册GCM推送
+            try {
+                RongPushClient.registerGCM(this);
+
+            } catch (RongException e) {
+                Log.i("RongYun", "GCM失败:" + e.getMessage());
+                e.printStackTrace();
+            }
             RongIM.init(this);
             RongCloudAppContext.init(this);
             setDataBase();

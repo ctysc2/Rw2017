@@ -50,6 +50,8 @@ import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.push.RongPushClient;
+import io.rong.push.common.RongException;
 import okhttp3.ResponseBody;
 import rx.Observer;
 import rx.functions.Action1;
@@ -190,7 +192,7 @@ public class MainActivity extends BaseActivity implements LoginView {
 //                 break;
 //         }
         GoogleMapUtils.getInstance().initGoogleMap(this);
-        RongIM.connect(mToken4, new RongIMClient.ConnectCallback() {
+        RongIM.connect(PreferenceUtils.getPrefString(this,"token",""), new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 Log.i("RongYun","onTokenIncorrect");
@@ -199,7 +201,6 @@ public class MainActivity extends BaseActivity implements LoginView {
             @Override
             public void onSuccess(String s) {
                 Log.i("RongYun", "onSuccess userId:" + s);
-                PreferenceUtils.setPrefString(MainActivity.this,"token",mToken4);
 
             }
 
@@ -217,11 +218,11 @@ public class MainActivity extends BaseActivity implements LoginView {
 
                         String userName = PreferenceUtils.getPrefString(MainActivity.this,"userName","");
                         String passWord = PreferenceUtils.getPrefString(MainActivity.this,"passWord","");
-                        if(!userName.equals("") &&
-                                !passWord.equals("")){
+//                        if(!userName.equals("") &&
+//                                !passWord.equals("")){
                             PreferenceUtils.setPrefString(MainActivity.this,"sessionID","");
                             mLoginPresenterImpl.processLogin("oa1_user1","1234");
-                        }
+                        //}
 
                     }
                 });
@@ -234,6 +235,7 @@ public class MainActivity extends BaseActivity implements LoginView {
         RongIM.getInstance().disconnect();
         if(mLoginPresenterImpl!=null)
             mLoginPresenterImpl.onDestroy();
+        PreferenceUtils.setPrefString(MainActivity.this,"sessionID","");
     }
     public void addFragment() {
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -302,18 +304,19 @@ public class MainActivity extends BaseActivity implements LoginView {
                 ((TextView)ll.getChildAt(1)).setTextColor(getResources().getColor(R.color.text_color_176BF9));
             }
 
-
         }
 
-
-
     }
-
     @Override
     public void loginCompleted(LoginEntity data) {
         if(data.getCode().equals("ok")){
             Toast.makeText(MainActivity.this,getString(R.string.reRoadSuccess),Toast.LENGTH_SHORT).show();
+            long id = Long.parseLong(data.getData().getId());
+            PreferenceUtils.setPrefLong(this,"ID",id);
             PreferenceUtils.setPrefString(this,"sessionID",data.getData().getSessionId());
+            PreferenceUtils.setPrefString(this,"realname",data.getData().getRealname());
+            PreferenceUtils.setPrefString(this,"avatar",data.getData().getAvatar());
+            PreferenceUtils.setPrefString(this,"token",data.getData().getRongCloudToken());
         }
 
     }

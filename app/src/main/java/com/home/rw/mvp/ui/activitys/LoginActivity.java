@@ -112,9 +112,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
         String session = data.getData().getSessionId();
         PreferenceUtils.setPrefLong(this,"ID",id);
         PreferenceUtils.setPrefString(this,"sessionID",session);
-
         PreferenceUtils.setPrefString(this,"userName",mEtName.getText().toString());
         PreferenceUtils.setPrefString(this,"passWord",mEtPsw.getText().toString());
+        PreferenceUtils.setPrefString(this,"realname",data.getData().getRealname());
+        PreferenceUtils.setPrefString(this,"avatar",data.getData().getAvatar());
+        PreferenceUtils.setPrefString(this,"token",data.getData().getRongCloudToken());
 //        Map<String,String> map = new HashMap<>();
 //        map.put(UserInfoDaoHelper.USERNAME,name);
 //        map.put(UserInfoDaoHelper.NICKNAME,nickname);

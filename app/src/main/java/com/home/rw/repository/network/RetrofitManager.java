@@ -14,8 +14,11 @@ import com.home.rw.event.ReLoginEvent;
 import com.home.rw.mvp.entity.AddApplyEntity;
 import com.home.rw.mvp.entity.ApplyDetailEntity;
 import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.entity.CardQueryEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.entity.RollMeEntity;
+import com.home.rw.mvp.entity.SignEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
@@ -49,7 +52,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -101,11 +108,10 @@ public class RetrofitManager {
                         1024 * 1024 * 100);
                 if (sOkHttpClient == null) {
                     sOkHttpClient = new OkHttpClient.Builder().cache(cache)
-                            .connectTimeout(10, TimeUnit.SECONDS)
-                            .readTimeout(10, TimeUnit.SECONDS)
-                            .writeTimeout(10, TimeUnit.SECONDS)
+                            .connectTimeout(60, TimeUnit.SECONDS)
+                            .readTimeout(60, TimeUnit.SECONDS)
+                            .writeTimeout(60, TimeUnit.SECONDS)
                             .retryOnConnectionFailure(true)
-                            //.addInterceptor(mRewriteCacheControlInterceptor)
                             .addInterceptor(mLoggingInterceptor)
                             .addNetworkInterceptor(mRewriteCacheControlInterceptor).build();
 
@@ -311,5 +317,52 @@ public class RetrofitManager {
     public Observable<LogEntity> receiveLogList(int page,int size){
         return mRWService.receiveLogList(page,size);
     }
+    //发送若一若
+    public Observable<BaseEntity> sendRoll(HashMap<String,Object> input){
+        return mRWService.sendRoll(input);
+    }
+    //接受的若一若列表
+    public Observable<RollMeEntity> receiveRoll(int page,int size){
+        return mRWService.receiveRoll(page,size);
+    }
+    //签到
+    public Observable<BaseEntity> sign(HashMap<String,Object> input){
+        return mRWService.sign(input);
+    }
+    //签到列表
+    public Observable<SignEntity> signList(int page, int size){
+        return mRWService.signList(page,size);
+    }
 
+    //打卡
+    public Observable<BaseEntity> card(HashMap<String,Object> input){
+        return mRWService.card(input);
+    }
+
+    //打卡查询
+    public Observable<CardQueryEntity> cardQuery(){
+        return  mRWService.cardQuery();
+    }
+
+
+    //修改个人信息
+    public Observable<BaseEntity> modifiUserInfo(HashMap<String,Object> input){
+        return  mRWService.modifiUserInfo(input);
+    }
+
+
+    //获取短信验证码
+    public Observable<BaseEntity> sendVerifiCode(){
+        return mRWService.sendVerifiCode();
+    }
+
+    //修改密码
+    public Observable<BaseEntity> modifiPassword(HashMap<String,Object> input){
+        return mRWService.modifiPassword(input);
+    }
+
+    //个人中心意见反馈
+    public Observable<BaseEntity> feedBack(String content){
+        return  mRWService.feedBack(content);
+    }
 }

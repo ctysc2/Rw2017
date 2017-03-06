@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,14 +24,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.home.rw.R;
 import com.home.rw.listener.OnAddressReceive;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.SignPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.SignView;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.GoogleMapUtils;
+
+import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 
-public class SignInActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class SignInActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,SignView {
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -56,6 +65,9 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
 
     private Subscription mSubscription;
 
+    @Inject
+    SignPresenterImpl mSignPresenterImpl;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_sign_in;
@@ -63,7 +75,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @OnClick({
@@ -77,9 +89,16 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
                 finish();
                 break;
             case R.id.bt_sign:
-                mSign.setEnabled(false);
-                mSign.setText(getString(R.string.signed));
-                mHint.setText(getString(R.string.signedtoday));
+                if(mLastLocation != null && mAddress!=null && !mAddress.equals("")){
+                    mSignPresenterImpl.beforeRequest();
+                    HashMap<String,Object> map = new HashMap<>();
+                    map.put("longitude",String.valueOf(mLastLocation.getLongitude()));
+                    map.put("latitude",String.valueOf(mLastLocation.getLatitude()));
+                    map.put("remark",mAddress);
+                    mSignPresenterImpl.sign(map);
+                }else{
+                    Toast.makeText(this,getString(R.string.gettingLocation),Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.iv_list:
                 startActivity(new Intent(this,SignListActivity.class));
@@ -95,6 +114,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
     public void initViews() {
         midText.setText(R.string.signLabel);
         mback.setImageResource(R.drawable.btn_back);
+        mSignPresenterImpl.attachView(this);
     }
 
     @Override
@@ -111,7 +131,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(100);
-        mLocationRequest.setNumUpdates(3);
+        mLocationRequest.setNumUpdates(10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     }
@@ -181,6 +201,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
     protected void onDestroy() {
         Log.i("GoogleMap", "onDestroy");
         super.onDestroy();
+
     }
 
     @Override
@@ -234,7 +255,7 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
             mLastLocation = location;
             LatLng myLoc = new LatLng(location.getLatitude(), location.getLongitude());
 
-            mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc,17));
+            mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc,16));
 
             //获取地址信息
             mSubscription = GoogleMapUtils.getInstance().getAddressByLocationAsyn(this,
@@ -253,4 +274,33 @@ public class SignInActivity extends BaseActivity implements OnMapReadyCallback, 
 
         }
     }
+
+    @Override
+    public void signCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(this,getString(R.string.signSuccessed),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+        if(mLoadDialog == null){
+            mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_UPDATE);
+            mLoadDialog.show();
+        }
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        Toast.makeText(this,getString(R.string.signfailed),Toast.LENGTH_SHORT).show();
+    }
+
 }

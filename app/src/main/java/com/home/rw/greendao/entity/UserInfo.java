@@ -13,11 +13,19 @@ public class UserInfo {
     private Long id;
     private String userName;
     private String nickName;
+    private String realName;
     private String avatar;
     private String phone;
     private String gender;
     private String noticeNum;
     private String pubNum;
+    private String company;
+    public String getCompany() {
+        return this.company;
+    }
+    public void setCompany(String company) {
+        this.company = company;
+    }
     public String getPubNum() {
         return this.pubNum;
     }
@@ -48,6 +56,12 @@ public class UserInfo {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+    public String getRealName() {
+        return this.realName;
+    }
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
     public String getNickName() {
         return this.nickName;
     }
@@ -66,21 +80,27 @@ public class UserInfo {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 395905980)
-    public UserInfo(Long id, String userName, String nickName, String avatar,
-            String phone, String gender, String noticeNum, String pubNum) {
+    @Generated(hash = 171358491)
+    public UserInfo(Long id, String userName, String nickName, String realName,
+            String avatar, String phone, String gender, String noticeNum,
+            String pubNum, String company) {
         this.id = id;
         this.userName = userName;
         this.nickName = nickName;
+        this.realName = realName;
         this.avatar = avatar;
         this.phone = phone;
         this.gender = gender;
         this.noticeNum = noticeNum;
         this.pubNum = pubNum;
+        this.company = company;
     }
     @Generated(hash = 1279772520)
     public UserInfo() {
     }
+
+
+
 
 
 }

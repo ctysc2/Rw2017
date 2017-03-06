@@ -10,18 +10,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.RollMeEntity;
 import com.home.rw.mvp.entity.SignEntity;
+import com.home.rw.mvp.presenter.impl.RollListPresenterImpl;
+import com.home.rw.mvp.presenter.impl.SignListPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.adapters.RecycleViewSperate;
 import com.home.rw.mvp.ui.adapters.RollMelistAdapter;
 import com.home.rw.mvp.ui.adapters.SignListAdapter;
+import com.home.rw.mvp.view.SignListView;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,13 +35,21 @@ import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class SignListActivity extends BaseActivity {
+public class SignListActivity extends BaseActivity implements SignListView{
 
     private boolean mIsLoadingMore;
 
+    private int mTotalPage = 0;
+
+    private int mTotalNums = 0;
+
+    private int mCurrentPage = 0;
+
+    private final int PAGE_SIZE = 15;
+
     private SignListAdapter mAdapter;
 
-    private ArrayList<SignEntity.DataEntity> dataSource  = new ArrayList<>();
+    private ArrayList<SignEntity.DataEntity.ResLst> dataSource  = new ArrayList<>();
 
 
     @BindView(R.id.rv_list)
@@ -49,6 +63,10 @@ public class SignListActivity extends BaseActivity {
 
     @BindView(R.id.sw_refresh)
     SwipeRefreshLayout mRefresh;
+
+    @Inject
+    SignListPresenterImpl mSignListPresenterImpl;
+
 
     @OnClick({
             R.id.back,
@@ -73,7 +91,7 @@ public class SignListActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -85,26 +103,13 @@ public class SignListActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //下拉刷新
-                Observable.timer(1, TimeUnit.SECONDS).
-                        observeOn(AndroidSchedulers.mainThread()).
-                        subscribe(new Observer<Long>() {
-                            @Override
-                            public void onCompleted() {
-                                mRefresh.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-                        });
+                mCurrentPage = 0;
+                mSignListPresenterImpl.getSignList(mCurrentPage,PAGE_SIZE);
             }
         });
+        mSignListPresenterImpl.attachView(this);
+        mSignListPresenterImpl.beforeRequest();
+        mSignListPresenterImpl.getSignList(mCurrentPage,PAGE_SIZE);
     }
 
 
@@ -117,27 +122,7 @@ public class SignListActivity extends BaseActivity {
 
     private void initRecycleView() {
 
-        SignEntity.DataEntity entity1 = new SignEntity.DataEntity();
-        entity1.setHeader("https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1482949311&di=2cf75ddae16bd743f5e8453ed12e8dc9&src=http://a2.att.hudong.com/31/34/01300001128119142116348739631_s.jpg");
-        entity1.setName("Miss");
-        entity1.setTime("2016年11月12日 09:38");
-        entity1.setAddress("上海市清涧路");
 
-        SignEntity.DataEntity entity2 = new SignEntity.DataEntity();
-        entity2.setHeader("https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1482949311&di=2cf75ddae16bd743f5e8453ed12e8dc9&src=http://a2.att.hudong.com/31/34/01300001128119142116348739631_s.jpg");
-        entity2.setName("Miss");
-        entity2.setTime("2016年11月13日 08:37");
-        entity2.setAddress("人民广场");
-        dataSource.add(entity1);
-        dataSource.add(entity1);
-        dataSource.add(entity2);
-        dataSource.add(entity2);
-        dataSource.add(entity1);
-        dataSource.add(entity2);
-        dataSource.add(entity1);
-        dataSource.add(entity2);
-        dataSource.add(entity1);
-        dataSource.add(entity2);
 
         mAdapter = new SignListAdapter(dataSource,this);
 
@@ -163,48 +148,82 @@ public class SignListActivity extends BaseActivity {
                         .findLastCompletelyVisibleItemPosition();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
+                mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
-                if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItemPosition >= totalItemCount - 1) {
-                    Log.i("mRecycleView","end");
-                    mAdapter.showFooter();
-                    mIsLoadingMore = true;
-                    mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
-                    Observable.timer(2, TimeUnit.SECONDS).
-                            observeOn(AndroidSchedulers.mainThread()).
-                            subscribe(new Observer<Long>() {
-                                @Override
-                                public void onCompleted() {
-                                    mAdapter.hideFooter();
-                                    mIsLoadingMore = false;
+                        int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
+                                .findLastCompletelyVisibleItemPosition();
+                        int visibleItemCount = layoutManager.getChildCount();
+                        int totalItemCount = layoutManager.getItemCount();
 
-                                    SignEntity.DataEntity entity2 = new SignEntity.DataEntity();
-                                    entity2.setHeader("https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1482949311&di=2cf75ddae16bd743f5e8453ed12e8dc9&src=http://a2.att.hudong.com/31/34/01300001128119142116348739631_s.jpg");
-                                    entity2.setName("Miss");
-                                    entity2.setTime("2016年11月13日 08:37");
-                                    entity2.setAddress("人民广场");
-                                    ArrayList<SignEntity.DataEntity> temp  = new ArrayList<>();
-                                    temp.add(entity2);
-                                    temp.add(entity2);
-                                    temp.add(entity2);
-                                    temp.add(entity2);
-                                    temp.add(entity2);
-                                    mAdapter.addMore(temp);
-                                }
+                        if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                                && lastVisibleItemPosition >= totalItemCount - 1) {
+                            Log.i("mRecycleView","end");
+                            mCurrentPage++;
+                            if(mCurrentPage<mTotalPage){
+                                mAdapter.showFooter();
+                                mIsLoadingMore = true;
+                                mRecycleView.scrollToPosition(mAdapter.getItemCount() - 1);
+                                mSignListPresenterImpl.getSignList(mCurrentPage,PAGE_SIZE);
 
-                                @Override
-                                public void onError(Throwable e) {
+                            }
 
-                                }
+                        }
+                    }
 
-                                @Override
-                                public void onNext(Long aLong) {
-
-                                }
-                            });
-                }
+                });
             }
 
         });
+    }
+    @Override
+    public void getSignListComplete(SignEntity data) {
+        if(data.getCode().equals("ok")){
+            mTotalPage = data.getData().getTotalPages();
+            if(mCurrentPage == 0){
+                dataSource = data.getData().getResLst();
+                mAdapter.setList(dataSource);
+            }
+            else
+                mAdapter.addMore(data.getData().getResLst());
+        }else{
+            Toast.makeText(this,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void showProgress(int reqType) {
+        mRefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        mRefresh.setRefreshing(false);
+        if(mIsLoadingMore){
+            mAdapter.hideFooter();
+            mIsLoadingMore = false;
+        }
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        mRefresh.setRefreshing(false);
+        if(mIsLoadingMore){
+            mAdapter.hideFooter();
+            mIsLoadingMore = false;
+        }
+        Toast.makeText(this,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mSignListPresenterImpl!=null){
+            mSignListPresenterImpl.onDestroy();
+        }
     }
 }

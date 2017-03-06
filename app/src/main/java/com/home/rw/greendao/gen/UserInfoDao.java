@@ -27,11 +27,13 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property UserName = new Property(1, String.class, "userName", false, "USER_NAME");
         public final static Property NickName = new Property(2, String.class, "nickName", false, "NICK_NAME");
-        public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
-        public final static Property Phone = new Property(4, String.class, "phone", false, "PHONE");
-        public final static Property Gender = new Property(5, String.class, "gender", false, "GENDER");
-        public final static Property NoticeNum = new Property(6, String.class, "noticeNum", false, "NOTICE_NUM");
-        public final static Property PubNum = new Property(7, String.class, "pubNum", false, "PUB_NUM");
+        public final static Property RealName = new Property(3, String.class, "realName", false, "REAL_NAME");
+        public final static Property Avatar = new Property(4, String.class, "avatar", false, "AVATAR");
+        public final static Property Phone = new Property(5, String.class, "phone", false, "PHONE");
+        public final static Property Gender = new Property(6, String.class, "gender", false, "GENDER");
+        public final static Property NoticeNum = new Property(7, String.class, "noticeNum", false, "NOTICE_NUM");
+        public final static Property PubNum = new Property(8, String.class, "pubNum", false, "PUB_NUM");
+        public final static Property Company = new Property(9, String.class, "company", false, "COMPANY");
     };
 
 
@@ -50,11 +52,13 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"USER_NAME\" TEXT," + // 1: userName
                 "\"NICK_NAME\" TEXT," + // 2: nickName
-                "\"AVATAR\" TEXT," + // 3: avatar
-                "\"PHONE\" TEXT," + // 4: phone
-                "\"GENDER\" TEXT," + // 5: gender
-                "\"NOTICE_NUM\" TEXT," + // 6: noticeNum
-                "\"PUB_NUM\" TEXT);"); // 7: pubNum
+                "\"REAL_NAME\" TEXT," + // 3: realName
+                "\"AVATAR\" TEXT," + // 4: avatar
+                "\"PHONE\" TEXT," + // 5: phone
+                "\"GENDER\" TEXT," + // 6: gender
+                "\"NOTICE_NUM\" TEXT," + // 7: noticeNum
+                "\"PUB_NUM\" TEXT," + // 8: pubNum
+                "\"COMPANY\" TEXT);"); // 9: company
     }
 
     /** Drops the underlying database table. */
@@ -82,29 +86,39 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindString(3, nickName);
         }
  
+        String realName = entity.getRealName();
+        if (realName != null) {
+            stmt.bindString(4, realName);
+        }
+ 
         String avatar = entity.getAvatar();
         if (avatar != null) {
-            stmt.bindString(4, avatar);
+            stmt.bindString(5, avatar);
         }
  
         String phone = entity.getPhone();
         if (phone != null) {
-            stmt.bindString(5, phone);
+            stmt.bindString(6, phone);
         }
  
         String gender = entity.getGender();
         if (gender != null) {
-            stmt.bindString(6, gender);
+            stmt.bindString(7, gender);
         }
  
         String noticeNum = entity.getNoticeNum();
         if (noticeNum != null) {
-            stmt.bindString(7, noticeNum);
+            stmt.bindString(8, noticeNum);
         }
  
         String pubNum = entity.getPubNum();
         if (pubNum != null) {
-            stmt.bindString(8, pubNum);
+            stmt.bindString(9, pubNum);
+        }
+ 
+        String company = entity.getCompany();
+        if (company != null) {
+            stmt.bindString(10, company);
         }
     }
 
@@ -127,29 +141,39 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindString(3, nickName);
         }
  
+        String realName = entity.getRealName();
+        if (realName != null) {
+            stmt.bindString(4, realName);
+        }
+ 
         String avatar = entity.getAvatar();
         if (avatar != null) {
-            stmt.bindString(4, avatar);
+            stmt.bindString(5, avatar);
         }
  
         String phone = entity.getPhone();
         if (phone != null) {
-            stmt.bindString(5, phone);
+            stmt.bindString(6, phone);
         }
  
         String gender = entity.getGender();
         if (gender != null) {
-            stmt.bindString(6, gender);
+            stmt.bindString(7, gender);
         }
  
         String noticeNum = entity.getNoticeNum();
         if (noticeNum != null) {
-            stmt.bindString(7, noticeNum);
+            stmt.bindString(8, noticeNum);
         }
  
         String pubNum = entity.getPubNum();
         if (pubNum != null) {
-            stmt.bindString(8, pubNum);
+            stmt.bindString(9, pubNum);
+        }
+ 
+        String company = entity.getCompany();
+        if (company != null) {
+            stmt.bindString(10, company);
         }
     }
 
@@ -164,11 +188,13 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userName
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // nickName
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // avatar
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // phone
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // gender
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // noticeNum
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // pubNum
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // realName
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // avatar
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // phone
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // gender
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // noticeNum
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // pubNum
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // company
         );
         return entity;
     }
@@ -178,11 +204,13 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUserName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setNickName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAvatar(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setPhone(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setGender(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setNoticeNum(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setPubNum(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setRealName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAvatar(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setPhone(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setGender(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setNoticeNum(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setPubNum(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCompany(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     @Override

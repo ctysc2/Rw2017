@@ -30,12 +30,12 @@ import butterknife.ButterKnife;
  * Created by cty on 2016/12/20.
  */
 
-public class RollMelistAdapter extends BaseRecyclerViewAdapter<RollMeEntity.DataEntity> {
+public class RollMelistAdapter extends BaseRecyclerViewAdapter<RollMeEntity.DataEntity.ResLst> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
-    public RollMelistAdapter(ArrayList<RollMeEntity.DataEntity> dataSource, Context context){
+    public RollMelistAdapter(ArrayList<RollMeEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.dataSource = dataSource;
         this.context = context;
@@ -89,11 +89,11 @@ public class RollMelistAdapter extends BaseRecyclerViewAdapter<RollMeEntity.Data
             final int mPosition = position;
             final RollViewHolder mHolder = (RollViewHolder)holder;
 
-            final RollMeEntity.DataEntity entity = dataSource.get(mPosition);
+            final RollMeEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
             mHolder.itemView.setTag(position);
-            mHolder.mSender.setText(entity.getSender());
-            mHolder.mTime.setText(entity.getSendTime());
-            mHolder.mDeadLine.setText(entity.getDeadLineTime());
+            mHolder.mSender.setText(entity.getAuthor());
+            mHolder.mTime.setText(entity.getBeginTime());
+            mHolder.mDeadLine.setText(entity.getEndTime());
             mHolder.mContent.setText(entity.getContent());
             mHolder.mContent.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);
             mHolder.mLine.setVisibility(entity.isExpand()?View.VISIBLE:View.GONE);

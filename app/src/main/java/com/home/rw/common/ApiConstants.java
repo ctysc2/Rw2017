@@ -23,6 +23,11 @@ public class ApiConstants {
 
     public static String WORK_LOG = BASE_URL+"work_log/";
 
+    public static String ROLL = BASE_URL+"work_item/";
+
+    public static String SIGN = BASE_URL+"sign_in/";
+
+    public static String CARD = BASE_URL+"timecard/";
         //获取接口类型
         public static String getHost(int hostType) {
 
@@ -41,6 +46,10 @@ public class ApiConstants {
                 case HostType.APPROVE_CHECKING:
                 case HostType.APPROVE_PASSED:
                 case HostType.APPROVE_REJECT:
+                case HostType.MODIFI_USER_INFO:
+                case HostType.VERIFI_CODE:
+                case HostType.MODIFI_PASSWORD:
+                case HostType.MY_FEEDBACK:
                     host = MY;
                     break;
                 case HostType.ADD_APPLY_EXPENSE:
@@ -72,8 +81,20 @@ public class ApiConstants {
                 case HostType.RECEIVE_LOG:
                     host = WORK_LOG;
                     break;
+                case HostType.SEND_ROLL:
+                case HostType.RECEIVE_ROLL:
+                    host = ROLL;
+                    break;
+                case HostType.SIGN:
+                case HostType.SIGN_LIST:
+                    host = SIGN;
+                    break;
+                case HostType.CARD:
+                case HostType.CARD_QUERY:
+                    host = CARD;
+                    break;
                 default:
-                    host = "";
+                    host="";
                     break;
             }
             return host;

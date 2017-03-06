@@ -5,6 +5,8 @@ import android.util.Log;
 import com.home.rw.application.App;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendao.gen.UserInfoDao;
+import com.home.rw.mvp.entity.UserInfoEntity;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.Map;
 
@@ -36,16 +38,17 @@ public class UserInfoDaoHelper {
     }
 
     public void insertUserInfo(UserInfo user){
-        dao.insertOrReplace(user);
+        long row = dao.insertOrReplace(user);
+        Log.i("GreenDao","插入完成 row:"+row);
     }
 
     public void deleteAdd(){
         dao.deleteAll();
     }
 
-    //根据用户名查询用户数据
+    //根据ID查询用户数据
     public  UserInfo getUserInfoById(long id){
-
+        Log.i("GreenDao","要查询的id:"+id);
         UserInfo user = dao.queryBuilder().where(UserInfoDao.Properties.Id.eq(id)).build().unique();
 
         if(user == null){
@@ -56,6 +59,17 @@ public class UserInfoDaoHelper {
         }
 
         return user;
+    }
+
+    public UserInfo parseEntity2UserInfo(UserInfoEntity.DataEntity entity){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(PreferenceUtils.getPrefLong(App.getAppContext(),"ID",0));
+        userInfo.setAvatar(entity.getAvatar());
+        userInfo.setGender(entity.getGender());
+        userInfo.setRealName(entity.getRealname());
+        userInfo.setPhone(entity.getPhone());
+        userInfo.setCompany(entity.getCompany().getName());
+        return userInfo;
     }
 
 }

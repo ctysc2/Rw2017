@@ -254,7 +254,7 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener,A
                 startPreviewWiped();
                 break;
             case R.id.rl_access:
-                if(photos.size() == 0)
+                if(photos.size() == 0 && entryType.equals("edit"))
                     startSelect();
                 break;
             case R.id.iv_update_wiped:
@@ -994,14 +994,14 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener,A
                     if(!TextUtils.isEmpty(headerPathTemp)){
                         String newPath = createNewFilePath(headerPathTemp);
                         Log.i("Retrofit","newPath head:"+newPath);
-                        CompressUtils.getInstance().compressAndGenImage(headerPathTemp,newPath,800,false);
+                        CompressUtils.getInstance().compressAndGenImage(headerPathTemp,newPath,500,false);
                         list.add(newPath);
                     }
                     if(photos.size()!=0){
                         for(int i = 0;i<photos.size();i++){
                             String newPath = createNewFilePath(photos.get(i).getOriginalPath());
                             Log.i("Retrofit","newPath photos:"+newPath);
-                            CompressUtils.getInstance().compressAndGenImage(photos.get(i).getOriginalPath(),newPath,800,false);
+                            CompressUtils.getInstance().compressAndGenImage(photos.get(i).getOriginalPath(),newPath,500,false);
                             list.add(newPath);
                         }
                     }

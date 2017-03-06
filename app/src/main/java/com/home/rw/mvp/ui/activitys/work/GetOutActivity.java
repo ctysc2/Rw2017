@@ -657,7 +657,7 @@ public class GetOutActivity extends BaseActivity implements AlertDialogListener 
                     if(!TextUtils.isEmpty(headerPathTemp)) {
                         String newPath = createNewFilePath(headerPathTemp);
                         Log.i("Retrofit", "newPath head:" + newPath);
-                        CompressUtils.getInstance().compressAndGenImage(headerPathTemp, newPath, 800, false);
+                        CompressUtils.getInstance().compressAndGenImage(headerPathTemp, newPath, 500, false);
                         list.add(newPath);
                     }
                 } catch (IOException e) {

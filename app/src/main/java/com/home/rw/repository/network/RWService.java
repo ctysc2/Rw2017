@@ -3,8 +3,11 @@ package com.home.rw.repository.network;
 import com.home.rw.mvp.entity.AddApplyEntity;
 import com.home.rw.mvp.entity.ApplyDetailEntity;
 import com.home.rw.mvp.entity.ApprovementListEntity;
+import com.home.rw.mvp.entity.CardQueryEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.entity.RollMeEntity;
+import com.home.rw.mvp.entity.SignEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
@@ -137,5 +140,76 @@ public interface RWService {
     Observable<LogEntity> receiveLogList(
             @Query("page") int page,
             @Query("size") int size
+    );
+
+    //发送若一若
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<BaseEntity> sendRoll(
+            @FieldMap HashMap<String,Object> input
+    );
+
+    //接受若一若列表
+    @GET("my_receive.json")
+    Observable<RollMeEntity> receiveRoll(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //签到
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<BaseEntity> sign(
+            @FieldMap HashMap<String,Object> input
+    );
+
+    //签到列表
+    @GET("list.json")
+    Observable<SignEntity> signList(
+            @Query("page") int page,
+            @Query("size") int size
+
+    );
+
+    //打卡
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<BaseEntity> card(
+            @FieldMap HashMap<String,Object> input
+    );
+
+    //打卡查询
+    @GET("curr_day.json")
+    Observable<CardQueryEntity> cardQuery();
+
+    //修改个人信息
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("set.json")
+    Observable<BaseEntity> modifiUserInfo(
+            @FieldMap HashMap<String,Object> input
+    );
+
+    //获取短信验证码
+    @GET("up_pwd_sms.json")
+    Observable<BaseEntity> sendVerifiCode();
+
+    //修改密码
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("up_pwd.json")
+    Observable<BaseEntity> modifiPassword(
+            @FieldMap HashMap<String,Object> input
+    );
+
+    //个人中心意见反馈
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("feedback.json")
+    Observable<BaseEntity> feedBack(
+            @Field("content") String content
     );
 }

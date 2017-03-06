@@ -146,6 +146,7 @@
     <string name="shangbanCardHint">上班请打卡</string>
     <string name="xiabanCardHint">下班请打卡</string>
     <string name="card">打卡</string>
+    <string name="carded">已打卡</string>
     <string name="sendLog">我发出的</string>
     <string name="receivedLog">我收到的</string>
 
@@ -269,7 +270,8 @@
     <string name="editExitHint1">退出页面内容将不会被保存</string>
     <string name="editExitHint2">确认退出?</string>
     <string name="noticedelHint1">是否删除这条公告?</string>
-
+    <string name="isClearCache">是否清空缓存?</string>
+    <string name="isLogOut">是否退出登录?</string>
     <string name="loadMore">正在加载...</string>
 
     <!--融云-->
@@ -285,6 +287,19 @@
     <string name="reRoadFailed">验证失败</string>
     <string name="getFailed">获取失败</string>
     <string name="checkinput">请检查输入信息</string>
+    <string name="gettingLocation">正在获取地理位置信息,请稍候...</string>
+    <string name="signSuccessed">签到成功</string>
+    <string name="signfailed">签到失败</string>
+    <string name="cardSuccessed">打卡成功</string>
+    <string name="cardFailed">打卡失败</string>
+    <string name="cardInfoFailed">获取打卡信息失败</string>
+    <string name="modifiSuccessed">修改成功</string>
+    <string name="modifiFailed">修改失败</string>
+    <string name="inputCannotBeEmpty">修改内容不能为空</string>
+    <string name="notSamePassword">2次密码输入不一致</string>
+    <string name="sendVerifiFailed">验证码发送失败</string>
+    <string name="modifiPassedFailed">修改失败</string>
+    <string name="modifiPassedSucceed">修改成功</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>

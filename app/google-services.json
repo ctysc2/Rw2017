@@ -1,0 +1,37 @@
+{
+  "project_info": {
+    "project_number": "958274409128",
+    "firebase_url": "https://rwhome-152715.firebaseio.com",
+    "project_id": "rwhome-152715",
+    "storage_bucket": "rwhome-152715.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958274409128:android:7a2dbcd3f52947b7",
+        "android_client_info": {
+          "package_name": "com.home.rw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7dvIFAvsD2hpszsD1x4uoTSHXhNEJ7I8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
