@@ -1,5 +1,6 @@
 package com.home.rw.mvp.entity;
 
+import com.home.rw.mvp.entity.base.BaseApprovementEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 
 import java.io.Serializable;
@@ -10,109 +11,130 @@ import java.util.ArrayList;
  */
 
 public class CommunicationEntity extends BaseEntity {
-    public ArrayList<CommunicationEntity.DataEntity> data;
+    public CommunicationEntity.DataEntity data;
 
-    public ArrayList<CommunicationEntity.DataEntity> getData() {
+    public CommunicationEntity.DataEntity getData() {
         return data;
     }
 
-    public void setData(ArrayList<CommunicationEntity.DataEntity> data) {
+    public void setData(CommunicationEntity.DataEntity data) {
         this.data = data;
     }
 
-    public static class DataEntity implements Serializable{
+    public static class DataEntity extends BaseApprovementEntity{
 
-        private static final long serialVersionUID = 1L;
+        private ArrayList<ResLst> resLst;
 
-        ArrayList<String> imgs = new ArrayList<>();
-        int type;
-        String header;
-        String name;
-        String title;
-        String  content;
-        long time;
-        int zanNum;
-        boolean isZaned;
-        boolean isFacused;
-
-        public long getType() {
-            return type;
+        public void setResLst(ArrayList<ResLst> resLst) {
+            this.resLst = resLst;
         }
 
-        public long getTime() {
-            return time;
+        public ArrayList<ResLst> getResLst() {
+            return resLst;
         }
 
-        public String getTitle() {
-            return title;
+        public static class ResLst implements Serializable{
+            String id;
+            String title;
+            String author;
+            String avatar;
+            String content;
+            String supportNum;
+            String imgs;
+            String createdBy;
+            String createdDate;
+            String focus;
+            String support;
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getAuthor() {
+                return author;
+            }
+
+            public void setAuthor(String author) {
+                this.author = author;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getSupportNum() {
+                return supportNum;
+            }
+
+            public void setSupportNum(String supportNum) {
+                this.supportNum = supportNum;
+            }
+
+            public String getImgs() {
+                return imgs;
+            }
+
+            public void setImgs(String imgs) {
+                this.imgs = imgs;
+            }
+
+            public String getCreatedBy() {
+                return createdBy;
+            }
+
+            public void setCreatedBy(String createdBy) {
+                this.createdBy = createdBy;
+            }
+
+            public String getCreatedDate() {
+                return createdDate;
+            }
+
+            public void setCreatedDate(String createdDate) {
+                this.createdDate = createdDate;
+            }
+
+            public String getFocus() {
+                return focus;
+            }
+
+            public void setFocus(String focus) {
+                this.focus = focus;
+            }
+
+            public String getSupport() {
+                return support;
+            }
+
+            public void setSupport(String support) {
+                this.support = support;
+            }
         }
 
-        public int getZanNum() {
-            return zanNum;
-        }
 
-        public String getName() {
-            return name;
-        }
-
-        public String getHeader() {
-            return header;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public ArrayList<String> getImgs() {
-            return imgs;
-        }
-
-        public boolean isFacused() {
-            return isFacused;
-        }
-
-        public boolean isZaned() {
-            return isZaned;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setHeader(String header) {
-            this.header = header;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public void setFacused(boolean facused) {
-            isFacused = facused;
-        }
-
-        public void setZaned(boolean zaned) {
-            isZaned = zaned;
-        }
-
-        public void setImgs(ArrayList<String> imgs) {
-            this.imgs = imgs;
-        }
-
-        public void setZanNum(int zanNum) {
-            this.zanNum = zanNum;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public void setTime(long time) {
-            this.time = time;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
     }
 }

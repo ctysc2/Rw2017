@@ -35,19 +35,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChangePassWord extends BaseActivity implements VerifiCodeView,ModifiPasswordView {
-    private int Second = 60;
+public class ChangePassWord extends BaseActivity implements ModifiPasswordView {
 
-    Timer mTimer;
 
     @BindView(R.id.back)
     ImageButton mback;
 
     @BindView(R.id.midText)
     TextView midText;
-
-    @BindView(R.id.bt_getVerifi)
-    Button mButton;
 
     @BindView(R.id.et1)
     EditText midText1;
@@ -58,23 +53,17 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
     @BindView(R.id.et3)
     EditText midText3;
 
-    @BindView(R.id.et4)
-    EditText midText4;
-
     @BindView(R.id.tv_phoneNum)
     TextView mTvPhone;
 
     @Inject
     ModifiPasswordPresenterImpl mModifiPasswordPresenterImpl;
 
-    @Inject
-    VerifiCodePresenterImpl mVerifiCodePresenterImpl;
 
     private String phone = "";
 
     @OnClick({
             R.id.back,
-            R.id.bt_getVerifi,
             R.id.iv1,
             R.id.iv2,
             R.id.iv3,
@@ -84,9 +73,6 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
         switch (v.getId()){
             case R.id.back:
                 finish();
-                break;
-            case R.id.bt_getVerifi:
-                mVerifiCodePresenterImpl.sendVerifiCode();
                 break;
             case R.id.iv1:
                 midText1.setText("");
@@ -103,7 +89,6 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
                     HashMap<String,Object> map = new HashMap<>();
                     map.put("oldPassword",midText1.getText().toString());
                     map.put("password",midText2.getText().toString());
-                    map.put("verifyCode",midText4.getText().toString());
                     mModifiPasswordPresenterImpl.modifiPassword(map);
                 }
                 break;
@@ -129,17 +114,16 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
         midText.setText(R.string.chagePsw);
         mback.setImageResource(R.drawable.btn_back);
         mModifiPasswordPresenterImpl.attachView(this);
-        mVerifiCodePresenterImpl.attachView(this);
         //首先从数据库获取数据
         UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(this,"ID",0));
         if(user!=null){
             phone = user.getPhone();
         }
-        if(!phone.equals("")){
+        if(phone!=null && !phone.equals("")){
             mTvPhone.setText(phone.substring(0,2)+"***"+phone.substring(5,phone.length()));
         }
         else{
-            mTvPhone.setText(phone);
+            mTvPhone.setText("");
         }
 
     }
@@ -150,44 +134,6 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
         initViews();
     }
 
-    private void countDownInSecond() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mButton.setEnabled(false);
-            }
-        });
-
-        if (mTimer == null) {
-            mTimer = new Timer();
-        }
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                checkTime();
-            }
-        }, 0, 1000);
-    }
-
-    private void checkTime() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(Second == 0) {
-                    if(mTimer != null) {
-                        mTimer.cancel();
-                        mTimer = null;
-                        mButton.setText(getString(R.string.verifiCode));
-                        mButton.setEnabled(true);
-                        Second = 60;
-                    }
-                    return;
-                }
-                mButton.setText(String.format(getString(R.string.verifiCodeRetry),Second));
-                Second--;
-            }
-        });
-    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -198,18 +144,11 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
 
         if(mModifiPasswordPresenterImpl!=null){
             mModifiPasswordPresenterImpl.onDestroy();
         }
 
-        if(mVerifiCodePresenterImpl!=null){
-            mVerifiCodePresenterImpl.onDestroy();
-        }
 
     }
     private boolean checkInput(){
@@ -218,8 +157,7 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
 
         if(midText1.getText().toString().equals("")||
            midText2.getText().toString().equals("")||
-           midText3.getText().toString().equals("")||
-           midText4.getText().toString().equals("") ){
+           midText3.getText().toString().equals("")){
             errorMsg = getString(R.string.inputCannotBeEmpty);
         }else if(!midText2.getText().toString().equals(midText3.getText().toString())){
             errorMsg = getString(R.string.notSamePassword);
@@ -238,15 +176,12 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
         if(data.getCode().equals("ok")){
             Toast.makeText(this,getString(R.string.modifiPassedSucceed),Toast.LENGTH_SHORT).show();
             finish();
+        }else if(data.getCode().equals("101")){
+            Toast.makeText(this,getString(R.string.oldPasswordWrong),Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
-    public void sendVerifiCodeCompleted(BaseEntity data) {
-        if(data.getCode().equals("ok")){
-            countDownInSecond();
-        }
-    }
+
 
     @Override
     public void showProgress(int reqType) {
@@ -267,9 +202,6 @@ public class ChangePassWord extends BaseActivity implements VerifiCodeView,Modif
     @Override
     public void showErrorMsg(int reqType, String msg) {
         switch (reqType){
-            case HostType.VERIFI_CODE:
-                Toast.makeText(this,getString(R.string.sendVerifiFailed),Toast.LENGTH_SHORT).show();
-                break;
             case HostType.MODIFI_PASSWORD:
                 Toast.makeText(this,getString(R.string.modifiPassedFailed),Toast.LENGTH_SHORT).show();
                 break;

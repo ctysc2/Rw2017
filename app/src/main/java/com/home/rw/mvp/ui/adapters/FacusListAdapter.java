@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/8.
  */
 
-public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.DataEntity> {
+public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.DataEntity.ResLst> {
 
     private Context context;
     private LayoutInflater inflater;
@@ -36,7 +36,7 @@ public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.Da
     private final int COMPRESS_WIDTH = 200;
     private final int COMPRESS_HEIGH = 200;
 
-    public FacusListAdapter(ArrayList<FacusListEntity.DataEntity> dataSource, Context context){
+    public FacusListAdapter(ArrayList<FacusListEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -98,11 +98,11 @@ public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.Da
             final int mPosition = position;
             final FacusHolder mHolder = (FacusHolder)holder;
 
-            FacusListEntity.DataEntity entity = dataSource.get(mPosition);
+            FacusListEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
             holder.itemView.setTag(position);
-            FrescoUtils.load(Uri.parse(entity.getHeader()),mHolder.mHeader,COMPRESS_WIDTH,COMPRESS_HEIGH);
-            mHolder.mName.setText(entity.getName());
-            mHolder.mNum.setText(""+entity.getNum());
+            FrescoUtils.load(Uri.parse(entity.getAvatar()),mHolder.mHeader,COMPRESS_WIDTH,COMPRESS_HEIGH);
+            mHolder.mName.setText(entity.getRealname());
+            mHolder.mNum.setText(""+entity.getPubNum());
         }
 
     }

@@ -15,10 +15,16 @@ import com.home.rw.mvp.entity.AddApplyEntity;
 import com.home.rw.mvp.entity.ApplyDetailEntity;
 import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.CardQueryEntity;
+import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.entity.FacusListEntity;
+import com.home.rw.mvp.entity.LinkedEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.entity.MainPageEntity;
+import com.home.rw.mvp.entity.MixFocusEntity;
 import com.home.rw.mvp.entity.RollMeEntity;
 import com.home.rw.mvp.entity.SignEntity;
+import com.home.rw.mvp.entity.TopicDetailEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
@@ -364,5 +370,93 @@ public class RetrofitManager {
     //个人中心意见反馈
     public Observable<BaseEntity> feedBack(String content){
         return  mRWService.feedBack(content);
+    }
+    //退出登录
+    public Observable<BaseEntity> logOut(){
+        return  mRWService.logOut();
+    }
+
+    //我关注的列表
+    public Observable<FacusListEntity> focusList (int page, int size){
+        return mRWService.focusList(page,size);
+    }
+
+    //发布帖子
+    public Observable<BaseEntity> publish(HashMap<String,Object> input){
+        return mRWService.publish(input);
+    }
+
+
+    //企业交流轮播
+    public Observable<LinkedEntity> link1(){
+        return mRWService.link1();
+    };
+
+    //发现轮播
+    public Observable<LinkedEntity> link2(){
+        return mRWService.link2();
+    };
+
+
+    //发现精选
+    public Observable<LinkedEntity> link3(){
+        return mRWService.link3();
+    };
+
+    //我的置业公告
+    public Observable<LinkedEntity> link4(){
+        return mRWService.link4();
+    };
+
+
+    //关注用户
+    public Observable<BaseEntity> foucs(String userId){
+        return mRWService.foucs(userId);
+    }
+
+    //取消关注用户
+    public Observable<BaseEntity> cancleFoucs(String userId){
+        return mRWService.cancleFocus(userId);
+    }
+    //我发布的列表
+
+    public Observable<CommunicationEntity> myPublish(int page, int size){
+        return mRWService.myPublish(page,size);
+    }
+
+    //4个帖子列表
+    public Observable<CommunicationEntity> publishList(String catId,int page, int size){
+        return mRWService.publishList(catId,page,size);
+    }
+
+    //关注混合列表
+    public Observable<MixFocusEntity> getMixFocusList(){
+        return mRWService.getMixFocusList();
+    }
+
+    //他人发布列表
+    public Observable<CommunicationEntity> otherPublish(String userId, int page, int size){
+        return mRWService.otherPublish(userId,page,size);
+    }
+    //帖子详情
+    public Observable<TopicDetailEntity> topicDetail(String id){
+        return mRWService.topicDetail(id);
+    }
+    //点赞
+    public Observable<BaseEntity> follow(String id){
+        return mRWService.follow(id);
+    }
+
+    //主页
+    public Observable<MainPageEntity> getMainPage(){
+        return mRWService.getMainPage();
+    }
+    //动态
+    public Observable<CommunicationEntity> getDynamics(int page,int size){
+        return mRWService.getDynamics(page,size);
+    }
+    //帖子评论
+    public Observable<CommunicationEntity> topicFeedBack(HashMap<String,Object> input){
+        return mRWService.topicFeedBack(input);
     }
 }

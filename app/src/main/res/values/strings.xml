@@ -173,8 +173,8 @@
     <string name="signList">列表</string>
     <string name="send">发送</string>
     <string name="writeLog">写日志</string>
-
     <string name="sender">发送人</string>
+    <string name="publishType">发布类型</string>
 
     <!--增值服务-->
     <string name="incrementService">增值服务</string>
@@ -300,6 +300,11 @@
     <string name="sendVerifiFailed">验证码发送失败</string>
     <string name="modifiPassedFailed">修改失败</string>
     <string name="modifiPassedSucceed">修改成功</string>
+    <string name="oldPasswordWrong">旧密码不正确</string>
+    <string name="userNotExisted">用户名不存在</string>
+    <string name="passWordError">密码错误</string>
+    <string name="focusSucceed">关注成功</string>
+    <string name="focusFailed">关注失败</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>

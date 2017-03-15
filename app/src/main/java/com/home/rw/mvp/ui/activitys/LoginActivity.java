@@ -59,9 +59,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mLoginPresenterImpl.beforeRequest();
                 //mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
                 if(mEtName.getText().toString().equals("1"))
-                    mLoginPresenterImpl.processLogin("oa1_user1","1234");
+                    mLoginPresenterImpl.processLogin("oa1_user1",mEtPsw.getText().toString());
                 else
-                    mLoginPresenterImpl.processLogin("oa_m","1234");
+                    mLoginPresenterImpl.processLogin("oa_m",mEtPsw.getText().toString());
 //                if(mEtName.getText().toString().equals("")){
 //                    Toast.makeText(this,"请输入用户名",Toast.LENGTH_SHORT).show();
 //                    return;
@@ -100,10 +100,25 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void loginCompleted(LoginEntity data) {
-        Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
-        containLoginData(data);
-        startActivity(new Intent(this,MainActivity.class));
-        finish();
+        switch (data.getCode()){
+            case "ok":
+                Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+                containLoginData(data);
+                startActivity(new Intent(this,MainActivity.class));
+                finish();
+                break;
+            case "9997":
+                Toast.makeText(this,getString(R.string.userNotExisted),Toast.LENGTH_SHORT).show();
+                break;
+            case "9998":
+                Toast.makeText(this,getString(R.string.passWordError),Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+
+
+        }
+
     }
     //保存登录信息
     private void containLoginData(LoginEntity data) {

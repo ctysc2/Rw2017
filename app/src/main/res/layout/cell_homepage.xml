@@ -76,12 +76,12 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
-        android:layout_height="65dp">
+        android:layout_height="75dp">
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_picture1"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="65dp"
+            android:layout_height="75dp"
             fresco:roundedCornerRadius="5dp"
             fresco:actualImageScaleType="centerCrop"
             />
@@ -90,7 +90,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="65dp"
+            android:layout_height="75dp"
             fresco:roundedCornerRadius="5dp"
             fresco:actualImageScaleType="centerCrop"
             />
@@ -99,7 +99,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="65dp"
+            android:layout_height="75dp"
             android:visibility="visible"
             fresco:roundedCornerRadius="5dp"
             fresco:actualImageScaleType="centerCrop"

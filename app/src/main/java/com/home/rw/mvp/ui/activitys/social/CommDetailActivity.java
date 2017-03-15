@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +14,41 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.common.Const;
+import com.home.rw.common.HostType;
 import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.entity.TopicDetailEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.FocusPresenterImpl;
+import com.home.rw.mvp.presenter.impl.TopicDetailPresenterImpl;
+import com.home.rw.mvp.presenter.impl.ZanPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.mineme.FeedBackActivity;
+import com.home.rw.mvp.view.FocusView;
+import com.home.rw.mvp.view.TopicDetailView;
+import com.home.rw.mvp.view.ZanView;
+import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.FrescoUtils;
+import com.home.rw.utils.PreferenceUtils;
 import com.photoselector.model.PhotoModel;
 import com.photoselector.ui.PhotoPreviewActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CommDetailActivity extends BaseActivity {
+public class CommDetailActivity extends BaseActivity implements TopicDetailView,FocusView,ZanView{
 
 
-    private CommunicationEntity.DataEntity data;
+    private CommunicationEntity.DataEntity.ResLst data;
 
     ArrayList<PhotoModel> photos = new ArrayList<>();
 
@@ -44,6 +60,18 @@ public class CommDetailActivity extends BaseActivity {
 
     private String entryType = "Common";
 
+    private String mMyID = "";
+
+    private String mTopicID = "";
+
+    @Inject
+    TopicDetailPresenterImpl mTopicDetailPresenterImpl;
+
+    @Inject
+    FocusPresenterImpl mFocusPresenterImpl;
+
+    @Inject
+    ZanPresenterImpl mZanPresenterImpl;
     @BindView(R.id.back)
     ImageButton mback;
 
@@ -117,18 +145,11 @@ public class CommDetailActivity extends BaseActivity {
                 startPreview();
                 break;
             case R.id.rightTextFacus:
-                rightTextFacus.setText(getString(R.string.Facused));
-                rightTextFacus.setTextColor(Color.WHITE);
-                rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
-                rightTextFacus.setEnabled(false);
-                data.setFacused(true);
+                mFocusPresenterImpl.setReqType(HostType.FOCUS);
+                mFocusPresenterImpl.doFocus(data.getCreatedBy());
                 break;
             case R.id.iv_zan:
-                mZan.setImageResource(R.drawable.icon_zaned);
-                mZan.setEnabled(false);
-                mNum.setText(""+(data.getZanNum()+1));
-                data.setZaned(true);
-                data.setZanNum(data.getZanNum()+1);
+                mZanPresenterImpl.zan(data.getId());
                 break;
             case R.id.iv_feed_back:
                 Intent intent1 = new Intent(this, FeedBackActivity.class);
@@ -155,15 +176,34 @@ public class CommDetailActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
     public void initViews() {
-        data = (CommunicationEntity.DataEntity)getIntent().getSerializableExtra("commData");
+        mTopicDetailPresenterImpl.attachView(this);
+        mFocusPresenterImpl.attachView(this);
+        mZanPresenterImpl.attachView(this);
+        mMyID = String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0));
+        mback.setImageResource(R.drawable.btn_back);
+        data = (CommunicationEntity.DataEntity.ResLst)getIntent().getSerializableExtra("commData");
+        mTopicID = getIntent().getStringExtra("id");
         entryType = getIntent().getStringExtra("entryType");
+        if(data == null){
+            //根据id获取帖子详情
+            if(mTopicID!=null){
+                mTopicDetailPresenterImpl.getTpoicDetial(mTopicID);
+            }
+            return;
+        }else{
+            resolveData(data);
+        }
 
-        if(data.getName().equals("钉宫理惠")){
+
+    }
+
+    private void resolveData(CommunicationEntity.DataEntity.ResLst data){
+        if(String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0)).equals(data.getCreatedBy())){
             rightTextFacus.setVisibility(View.GONE);
             mFeedBack.setVisibility(View.GONE);
         }else{
@@ -179,10 +219,10 @@ public class CommDetailActivity extends BaseActivity {
             mFeedBack.setVisibility(View.GONE);
             mNum.setVisibility(View.GONE);
         }
-        midText.setText(data.getName());
-        mback.setImageResource(R.drawable.btn_back);
+        midText.setText(data.getAuthor());
+
         rightText.setVisibility(View.GONE);
-        if(data.isFacused()){
+        if(data.getFocus().equals("1")){
             rightTextFacus.setText(getString(R.string.Facused));
             rightTextFacus.setTextColor(Color.WHITE);
             rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
@@ -194,58 +234,66 @@ public class CommDetailActivity extends BaseActivity {
             rightTextFacus.setEnabled(true);
         }
         mTitle.setText(data.getTitle());
-        mTime.setText("2小时前");
+        if(!TextUtils.isEmpty(data.getCreatedDate()))
+            mTime.setText(DateUtils.getTime(new Date(Long.parseLong(data.getCreatedDate()))));
+        else
+            mTime.setText("");
         mContent.setText(data.getContent());
-        mNum.setText(""+data.getZanNum());
-        if(data.isZaned()){
+        mNum.setText(""+data.getSupportNum());
+        if(data.getSupport().equals("1")){
             mZan.setImageResource(R.drawable.icon_zaned);
             mZan.setEnabled(false);
 
         }
-        switch (data.getImgs().size()){
-            case 0:
-                mContainer.setVisibility(View.GONE);
-                break;
-            case 1:
-                mPic1.setVisibility(View.VISIBLE);
-                FrescoUtils.load(Uri.parse(data.getImgs().get(0)),mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
 
-                mPic2.setVisibility(View.INVISIBLE);
+        if(!TextUtils.isEmpty(data.getImgs())){
+            String[] imgs = data.getImgs().split(",");
+            switch (imgs.length) {
+                case 0:
+                    mContainer.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    mPic1.setVisibility(View.VISIBLE);
+                    FrescoUtils.load(Uri.parse(imgs[0]), mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
 
-                mPic3.setVisibility(View.GONE);
-                photos.add(new PhotoModel(data.getImgs().get(0)));
-                break;
-            case 2:
-                mPic1.setVisibility(View.VISIBLE);
-                mPic2.setVisibility(View.VISIBLE);
+                    mPic2.setVisibility(View.INVISIBLE);
 
-                FrescoUtils.load(Uri.parse(data.getImgs().get(0)),mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                FrescoUtils.load(Uri.parse(data.getImgs().get(1)),mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    mPic3.setVisibility(View.GONE);
+                    photos.add(new PhotoModel(imgs[0]));
+                    break;
+                case 2:
+                    mPic1.setVisibility(View.VISIBLE);
+                    mPic2.setVisibility(View.VISIBLE);
 
-                mPic3.setVisibility(View.GONE);
+                    FrescoUtils.load(Uri.parse(imgs[0]), mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                    FrescoUtils.load(Uri.parse(imgs[1]), mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
 
-                photos.add(new PhotoModel(data.getImgs().get(0)));
-                photos.add(new PhotoModel(data.getImgs().get(1)));
-                break;
-            case 3:
-                mPic1.setVisibility(View.VISIBLE);
-                mPic2.setVisibility(View.VISIBLE);
-                mPic3.setVisibility(View.VISIBLE);
+                    mPic3.setVisibility(View.GONE);
 
-                FrescoUtils.load(Uri.parse(data.getImgs().get(0)),mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                FrescoUtils.load(Uri.parse(data.getImgs().get(1)),mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                FrescoUtils.load(Uri.parse(data.getImgs().get(2)),mPic3,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                    photos.add(new PhotoModel(imgs[0]));
+                    photos.add(new PhotoModel(imgs[1]));
+                    break;
+                case 3:
+                    mPic1.setVisibility(View.VISIBLE);
+                    mPic2.setVisibility(View.VISIBLE);
+                    mPic3.setVisibility(View.VISIBLE);
 
-                photos.add(new PhotoModel(data.getImgs().get(0)));
-                photos.add(new PhotoModel(data.getImgs().get(1)));
-                photos.add(new PhotoModel(data.getImgs().get(2)));
-                break;
-            default:
-                break;
+                    FrescoUtils.load(Uri.parse(imgs[0]), mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                    FrescoUtils.load(Uri.parse(imgs[1]), mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                    FrescoUtils.load(Uri.parse(imgs[2]), mPic3, COMPRESS_WIDTH, COMPRESS_HEIGH);
+
+                    photos.add(new PhotoModel(imgs[0]));
+                    photos.add(new PhotoModel(imgs[1]));
+                    photos.add(new PhotoModel(imgs[2]));
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            mContainer.setVisibility(View.GONE);
         }
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -264,10 +312,70 @@ public class CommDetailActivity extends BaseActivity {
     }
     protected void onDestroy() {
         Log.i("CommDetail","onDestroy");
-        FrescoUtils.clearCache();
-        FrescoUtils.clearImgMemory(mPic1);
-        FrescoUtils.clearImgMemory(mPic2);
-        FrescoUtils.clearImgMemory(mPic3);
+//        FrescoUtils.clearCache();
+//        FrescoUtils.clearImgMemory(mPic1);
+//        FrescoUtils.clearImgMemory(mPic2);
+//        FrescoUtils.clearImgMemory(mPic3);
+        if(mTopicDetailPresenterImpl!=null){
+            mTopicDetailPresenterImpl = null;
+        }
+        if(mFocusPresenterImpl!=null){
+            mFocusPresenterImpl = null;
+        }
+        if(mZanPresenterImpl!=null){
+            mZanPresenterImpl = null;
+        }
+
         super.onDestroy();
+    }
+
+    @Override
+    public void getTopicDetailCompleted(TopicDetailEntity data) {
+        if(data.getCode().equals("ok")){
+            this.data = data.getData();
+            resolveData(this.data);
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        if(reqType == HostType.FOCUS){
+            Toast.makeText(this,getString(R.string.focusFailed),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void doFocusCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            rightTextFacus.setText(getString(R.string.Facused));
+            rightTextFacus.setTextColor(Color.WHITE);
+            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
+            rightTextFacus.setEnabled(false);
+            this.data.setFocus("1");
+            Toast.makeText(this,getString(R.string.focusSucceed),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void zanCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            int supNum = Integer.parseInt(this.data.getSupportNum());
+            String newSupNum = String.valueOf(supNum+1);
+            mZan.setImageResource(R.drawable.icon_zaned);
+            mZan.setEnabled(false);
+            mNum.setText(newSupNum);
+            this.data.setSupport("1");
+            this.data.setSupportNum(newSupNum);
+        }
     }
 }

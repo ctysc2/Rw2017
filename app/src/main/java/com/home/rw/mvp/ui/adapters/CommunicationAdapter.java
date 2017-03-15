@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.home.rw.utils.FrescoUtils;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -29,21 +31,23 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/6.
  */
 
-public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationEntity.DataEntity> {
+public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationEntity.DataEntity.ResLst> {
 
     private Context context;
     private LayoutInflater inflater;
     private String entryType = "common";
     private OnItemClickListener mListener;
+    private OnItemClickListener mListenerFocus;
+    private OnItemClickListener mListenerZan;
     private final int COMPRESS_WIDTH = 200;
     private final int COMPRESS_HEIGH = 120;
-    public CommunicationAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, Context context){
+    public CommunicationAdapter(ArrayList<CommunicationEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.dataSource = dataSource;
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
-    public CommunicationAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, String type, Context context){
+    public CommunicationAdapter(ArrayList<CommunicationEntity.DataEntity.ResLst> dataSource, String type, Context context){
         super(dataSource);
         this.context = context;
         this.entryType = type;
@@ -82,6 +86,18 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
     public void setOnItemClickListener(OnItemClickListener mListener){
 
         this.mListener = mListener;
+    }
+
+    //设置关注监听事件
+    public void setOnItemFocusClickListener(OnItemClickListener mListenerFocus){
+
+        this.mListenerFocus = mListenerFocus;
+    }
+
+    //设置Zan监听事件
+    public void setOnItemZanClickListener(OnItemClickListener mListenerZan){
+
+        this.mListenerZan = mListenerZan;
     }
 
     @Override
@@ -145,15 +161,15 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
             final int mPosition = position;
             final CommViewHolder mHolder = (CommViewHolder)holder;
 
-            final CommunicationEntity.DataEntity entity = dataSource.get(mPosition);
+            final CommunicationEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
 
 
             mHolder.itemView.setTag(mPosition);
-            mHolder.mHeader.setImageURI(entity.getHeader());
-            mHolder.mName.setText(entity.getName());
-            mHolder.mZanNum.setText(String.valueOf(entity.getZanNum()));
+            mHolder.mHeader.setImageURI(entity.getAvatar());
+            mHolder.mName.setText(entity.getAuthor());
+            mHolder.mZanNum.setText(String.valueOf(entity.getSupportNum()));
             mHolder.content.setText(entity.getContent());
-            if (!entity.isFacused()) {
+            if (entity.getFocus().equals("0")) {
                 mHolder.mFacus.setEnabled(true);
                 mHolder.mFacus.setText(context.getString(R.string.addFacus));
             } else {
@@ -161,16 +177,20 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
                 mHolder.mFacus.setText(context.getString(R.string.Facused));
             }
 
-            if (!entity.isZaned()) {
+            if (entity.getSupport().equals("0")) {
                 mHolder.mZan.setImageResource(R.drawable.icon_zanlist);
                 mHolder.mZan.setEnabled(true);
+                mHolder.mZanContainer.setEnabled(true);
 
             } else {
                 mHolder.mZan.setImageResource(R.drawable.icon_zaned);
                 mHolder.mZan.setEnabled(false);
+                mHolder.mZanContainer.setEnabled(false);
 
             }
-            if (entity.getName().equals("钉宫理惠") || ((entryType != null) && (entryType.equals("other")))) {
+
+            if (String.valueOf(PreferenceUtils.getPrefLong(context,"ID",0)).equals(entity.getCreatedBy())
+                    || ((entryType != null) && (entryType.equals("other")))) {
                 mHolder.mFacus.setVisibility(View.GONE);
             } else {
                 mHolder.mFacus.setVisibility(View.VISIBLE);
@@ -179,60 +199,58 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
             mHolder.mFacus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!entity.isFacused()) {
-                        entity.setFacused(true);
-                        mHolder.mFacus.setText(context.getString(R.string.Facused));
-                        mHolder.mFacus.setEnabled(false);
-                    }
+                    mListenerFocus.onItemClick(mPosition);
                 }
             });
 
             mHolder.mZanContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!entity.isZaned()) {
-                        entity.setZaned(true);
-                        entity.setZanNum(entity.getZanNum() + 1);
-                        mHolder.mZan.setImageResource(R.drawable.icon_zaned);
-                        mHolder.mZanNum.setText("" + entity.getZanNum());
-                        mHolder.mZan.setEnabled(false);
-                    }
+                    mListenerZan.onItemClick(mPosition);
                 }
             });
 
-            switch (entity.getImgs().size()) {
-                case 0:
-                    mHolder.mContainer.setVisibility(View.GONE);
-                    break;
-                case 1:
-                    mHolder.mContainer.setVisibility(View.VISIBLE);
-                    mHolder.mPic1.setVisibility(View.VISIBLE);
-                    mHolder.mPic2.setVisibility(View.INVISIBLE);
-                    mHolder.mPic3.setVisibility(View.GONE);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
-                    break;
-                case 2:
-                    mHolder.mContainer.setVisibility(View.VISIBLE);
-                    mHolder.mPic1.setVisibility(View.VISIBLE);
-                    mHolder.mPic2.setVisibility(View.VISIBLE);
-                    mHolder.mPic3.setVisibility(View.GONE);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(1)), mHolder.mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
-                    break;
-                case 3:
-                    mHolder.mContainer.setVisibility(View.VISIBLE);
-                    mHolder.mPic1.setVisibility(View.VISIBLE);
-                    mHolder.mPic2.setVisibility(View.VISIBLE);
-                    mHolder.mPic3.setVisibility(View.VISIBLE);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(1)), mHolder.mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(2)), mHolder.mPic3, COMPRESS_WIDTH, COMPRESS_HEIGH);
 
-                    break;
-                default:
-                    break;
+            if(!TextUtils.isEmpty(entity.getImgs())){
+                String[] imgs = entity.getImgs().split(",");
+                switch (imgs.length) {
+                    case 0:
+                        mHolder.mContainer.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        mHolder.mContainer.setVisibility(View.VISIBLE);
+                        mHolder.mPic1.setVisibility(View.VISIBLE);
+                        mHolder.mPic2.setVisibility(View.INVISIBLE);
+                        mHolder.mPic3.setVisibility(View.GONE);
+                        FrescoUtils.load(Uri.parse(imgs[0]), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        break;
+                    case 2:
+                        mHolder.mContainer.setVisibility(View.VISIBLE);
+                        mHolder.mPic1.setVisibility(View.VISIBLE);
+                        mHolder.mPic2.setVisibility(View.VISIBLE);
+                        mHolder.mPic3.setVisibility(View.GONE);
+                        FrescoUtils.load(Uri.parse(imgs[0]), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        FrescoUtils.load(Uri.parse(imgs[1]), mHolder.mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        break;
+                    case 3:
+                        mHolder.mContainer.setVisibility(View.VISIBLE);
+                        mHolder.mPic1.setVisibility(View.VISIBLE);
+                        mHolder.mPic2.setVisibility(View.VISIBLE);
+                        mHolder.mPic3.setVisibility(View.VISIBLE);
+                        FrescoUtils.load(Uri.parse(imgs[0]), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        FrescoUtils.load(Uri.parse(imgs[1]), mHolder.mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        FrescoUtils.load(Uri.parse(imgs[2]), mHolder.mPic3, COMPRESS_WIDTH, COMPRESS_HEIGH);
 
+                        break;
+                    default:
+                        break;
+
+                }
+            }else{
+                mHolder.mContainer.setVisibility(View.GONE);
             }
+
+
 
         }
 

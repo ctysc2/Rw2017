@@ -8,22 +8,31 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.home.rw.R;
 import com.home.rw.common.HostType;
 import com.home.rw.listener.AlertDialogListener;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.LogOutPresenterImpl;
+import com.home.rw.mvp.ui.activitys.LoginActivity;
+import com.home.rw.mvp.ui.activitys.MainActivity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.LogOutView;
 import com.home.rw.utils.CacheUtils;
 import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.DialogUtils;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.text.DecimalFormat;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingActivity extends BaseActivity implements AlertDialogListener {
+public class SettingActivity extends BaseActivity implements AlertDialogListener,LogOutView {
 
     private boolean clean_flag = false;
     private int mDialogType = 0;
@@ -35,7 +44,9 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
 
     @BindView(R.id.tv_cache)
     TextView tvCacheSize;
-    
+
+    @Inject
+    LogOutPresenterImpl mLogOutPresenterImpl;
     @OnClick({
             R.id.back,
             R.id.rl_verson,
@@ -64,7 +75,7 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
                 break;
             case R.id.bt_logout:
                 mAlertDialog = DialogUtils.create(this,DialogUtils.TYPE_ALERT);
-                mAlertDialog.show(this,getString(R.string.isClearCache));
+                mAlertDialog.show(this,getString(R.string.isLogOut));
                 mDialogType = 2;
                 break;
             default:
@@ -82,7 +93,7 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -90,6 +101,7 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
         midText.setText(R.string.setting);
         mback.setImageResource(R.drawable.btn_back);
         caculate_cache_size(clean_flag,tvCacheSize);
+        mLogOutPresenterImpl.attachView(this);
     }
 
     @Override
@@ -142,11 +154,50 @@ public class SettingActivity extends BaseActivity implements AlertDialogListener
     }
 
     private void doLogOut() {
+        mLogOutPresenterImpl.logOut();
     }
 
     @Override
     public void onCancel() {
         mAlertDialog.dismiss();
 
+    }
+
+    @Override
+    public void logOutCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            PreferenceUtils.setPrefLong(this,"ID",0);
+            PreferenceUtils.setPrefString(this,"sessionID","");
+            PreferenceUtils.setPrefString(this,"userName","");
+            PreferenceUtils.setPrefString(this,"passWord","");
+            PreferenceUtils.setPrefString(this,"realname","");
+            PreferenceUtils.setPrefString(this,"avatar","");
+            PreferenceUtils.setPrefString(this,"token","");
+            Intent intent = new Intent(this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+        if(mLoadDialog == null){
+            mLoadDialog = DialogUtils.create(this, DialogUtils.TYPE_UPDATE);
+            mLoadDialog.show();
+        }
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        if(mLoadDialog != null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        Toast.makeText(this,getString(R.string.commitFailed),Toast.LENGTH_SHORT).show();
     }
 }

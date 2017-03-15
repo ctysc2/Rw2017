@@ -25,7 +25,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
             <TextView
-                android:id="@+id/tv_duration"
+                android:id="@+id/tv_title"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/title"
@@ -34,10 +34,10 @@
                 android:paddingLeft="10dp"
                 android:textColor="@color/black"/>
             <EditText
-                android:id="@+id/et_duration"
+                android:id="@+id/et_title"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/tv_duration"
+                android:layout_toRightOf="@+id/tv_title"
                 android:hint="@string/selectHint"
                 android:textColorHint="@color/text_color_A0A0A0"
                 android:textSize="16sp"
@@ -49,11 +49,45 @@
         </RelativeLayout>
     </LinearLayout>
     <RelativeLayout
+        android:id="@+id/rl_type"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/widowColor"
+        android:layout_marginBottom="13dp"
+        android:layout_below="@+id/ll_title">
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/publishType"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/tv_typeSelect"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/tv_type"
+            android:text="@string/selectHint"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_color_A0A0A0"/>
+        <ImageView
+            android:id="@+id/iv_1"
+            android:layout_width="13dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_right_more"/>
+    </RelativeLayout>
+    <RelativeLayout
         android:id="@+id/rl_detail"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@color/widowColor"
-        android:layout_below="@+id/ll_title">
+        android:layout_below="@+id/rl_type">
         <TextView
             android:id="@+id/tv_detail"
             android:layout_width="100dp"
@@ -163,16 +197,17 @@
     <RelativeLayout
         android:id="@+id/rl_bottom_parent"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="match_parent"
         android:background="@color/bac_color_EFEFF4"
         android:layout_below="@+id/rl_update_photo">
         <RelativeLayout
             android:id="@+id/rl_bottom_commit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_centerVertical="true"
             android:visibility="visible">
             <Button
+                android:id="@+id/bt_commit"
                 android:layout_width="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_height="40dp"

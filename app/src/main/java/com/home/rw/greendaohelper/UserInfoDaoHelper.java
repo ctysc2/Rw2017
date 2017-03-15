@@ -63,12 +63,14 @@ public class UserInfoDaoHelper {
 
     public UserInfo parseEntity2UserInfo(UserInfoEntity.DataEntity entity){
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(PreferenceUtils.getPrefLong(App.getAppContext(),"ID",0));
+        userInfo.setId(Long.parseLong(entity.getId()));
         userInfo.setAvatar(entity.getAvatar());
         userInfo.setGender(entity.getGender());
         userInfo.setRealName(entity.getRealname());
         userInfo.setPhone(entity.getPhone());
         userInfo.setCompany(entity.getCompany().getName());
+        userInfo.setPubNum(entity.getPubNum());
+        userInfo.setFocusNum(entity.getFocusNum());
         return userInfo;
     }
 

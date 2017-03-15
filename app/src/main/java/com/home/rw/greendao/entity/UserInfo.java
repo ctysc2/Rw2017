@@ -20,6 +20,13 @@ public class UserInfo {
     private String noticeNum;
     private String pubNum;
     private String company;
+    private String focusNum;
+    public String getFocusNum() {
+        return this.focusNum;
+    }
+    public void setFocusNum(String focusNum) {
+        this.focusNum = focusNum;
+    }
     public String getCompany() {
         return this.company;
     }
@@ -80,10 +87,10 @@ public class UserInfo {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 171358491)
+    @Generated(hash = 821443322)
     public UserInfo(Long id, String userName, String nickName, String realName,
             String avatar, String phone, String gender, String noticeNum,
-            String pubNum, String company) {
+            String pubNum, String company, String focusNum) {
         this.id = id;
         this.userName = userName;
         this.nickName = nickName;
@@ -94,10 +101,12 @@ public class UserInfo {
         this.noticeNum = noticeNum;
         this.pubNum = pubNum;
         this.company = company;
+        this.focusNum = focusNum;
     }
     @Generated(hash = 1279772520)
     public UserInfo() {
     }
+
 
 
 

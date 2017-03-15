@@ -119,6 +119,69 @@ public class HostType {
 
     //意见反馈
     public static final int MY_FEEDBACK= 35;
+
+    //退出登录
+    public static final int LOGOUT= 36;
+
+    //我关注列表
+    public static final int FOCUS_LIST= 37;
+
+    //发布帖子
+    public static final int TOPIC_PUBLISH= 38;
+
+    //企业工具轮播
+    public static final int OUT_LINK1= 39;
+
+    //发现轮播
+    public static final int OUT_LINK2= 40;
+
+    //发现精选
+    public static final int OUT_LINK3= 41;
+
+    //我的置业公告板
+    public static final int OUT_LINK4= 42;
+
+    //关注用户
+    public static final int FOCUS= 43;
+
+    //取消关注用户
+    public static final int CANCLE_FOCUS= 44;
+
+    //我发布的列表
+    public static final int MY_PUBLISH= 45;
+
+    //交流 列表
+    public static final int PUBLISH_LIST1= 46;
+
+    //活动 列表
+    public static final int PUBLISH_LIST2= 47;
+
+    //文化 列表
+    public static final int PUBLISH_LIST3= 48;
+
+    //合作 列表
+    public static final int PUBLISH_LIST4= 49;
+
+    //混合列表
+    public static final int MIX_FOCUS= 50;
+
+    //他人发布列表
+    public static final int OTHER_PUBLISH= 51;
+
+    //帖子详情
+    public static final int TOPIC_DETAIL= 52;
+
+    //点赞
+    public static final int ZAN= 53;
+
+    //主页
+    public static final int MAIN_PAGE= 54;
+
+    //动态
+    public static final int DYN= 55;
+
+    //帖子评论
+    public static final int TOPIC_FEEDBACK= 56;
     /**
      * 替代枚举的方案，使用IntDef保证类型安全
      */

@@ -68,6 +68,12 @@ public class ImageHelper {
 //        bitmapUtils.clearCache(url);  //不缓存
         bitmapUtils.display(container, url);
     }
+    public void displayWithoutPs(ImageView container, String url) {
+        if (container == null || TextUtils.isEmpty(url)) {
+            return;
+        }
+        bitmapUtils.display(container, url);
+    }
 
     /**
      * 不清除缓存

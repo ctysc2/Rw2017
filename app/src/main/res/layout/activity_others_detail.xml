@@ -125,6 +125,8 @@
                         android:layout_height="match_parent"
                         android:textColor="@color/widowColor"
                         android:text="若为置业有限公司"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:gravity="center"
                         android:layout_marginLeft="15dp"
                         android:textSize="16sp"/>

@@ -28,6 +28,14 @@ public class ApiConstants {
     public static String SIGN = BASE_URL+"sign_in/";
 
     public static String CARD = BASE_URL+"timecard/";
+
+    public static String TOPIC = BASE_URL+"topic/";
+
+    public static String FOCUS = BASE_URL+"focus/";
+
+    public static String BUSINESE = BASE_URL+"business/";
+
+    public static String COMMENT = BASE_URL+"Comment/";
         //获取接口类型
         public static String getHost(int hostType) {
 
@@ -35,9 +43,13 @@ public class ApiConstants {
 
             switch (hostType) {
                 case HostType.LOGIN:
-                    host = BASE_URL;
-                    break;
+                case HostType.LOGOUT:
                 case HostType.UPLOAD:
+                case HostType.OUT_LINK1:
+                case HostType.OUT_LINK2:
+                case HostType.OUT_LINK3:
+                case HostType.OUT_LINK4:
+                case HostType.TOPIC_DETAIL:
                     host = BASE_URL;
                     break;
                 case HostType.USER_INFO:
@@ -50,6 +62,9 @@ public class ApiConstants {
                 case HostType.VERIFI_CODE:
                 case HostType.MODIFI_PASSWORD:
                 case HostType.MY_FEEDBACK:
+                case HostType.FOCUS_LIST:
+                case HostType.MY_PUBLISH:
+                case HostType.ZAN:
                     host = MY;
                     break;
                 case HostType.ADD_APPLY_EXPENSE:
@@ -92,6 +107,26 @@ public class ApiConstants {
                 case HostType.CARD:
                 case HostType.CARD_QUERY:
                     host = CARD;
+                    break;
+                case HostType.TOPIC_PUBLISH:
+                    host = TOPIC;
+                    break;
+                case HostType.FOCUS:
+                case HostType.CANCLE_FOCUS:
+                    host = FOCUS;
+                    break;
+                case HostType.PUBLISH_LIST1:
+                case HostType.PUBLISH_LIST2:
+                case HostType.PUBLISH_LIST3:
+                case HostType.PUBLISH_LIST4:
+                case HostType.MIX_FOCUS:
+                case HostType.OTHER_PUBLISH:
+                case HostType.MAIN_PAGE:
+                case HostType.DYN:
+                    host = BUSINESE;
+                    break;
+                case HostType.TOPIC_FEEDBACK:
+                    host = COMMENT;
                     break;
                 default:
                     host="";

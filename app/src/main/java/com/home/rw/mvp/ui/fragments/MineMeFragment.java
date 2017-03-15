@@ -14,28 +14,37 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.application.App;
+import com.home.rw.common.HostType;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.mvp.entity.LinkedEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.LinkedPresenterImpl;
 import com.home.rw.mvp.presenter.impl.ModifiUserInfoPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
+import com.home.rw.mvp.ui.activitys.WebViewActivity;
+import com.home.rw.mvp.ui.activitys.message.LandMarkDetail;
 import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
 import com.home.rw.mvp.ui.activitys.mineme.SettingActivity;
 import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
+import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.LinkedView;
 import com.home.rw.mvp.view.ModifiUserInfoView;
 import com.home.rw.mvp.view.UploadView;
 import com.home.rw.mvp.view.UserInfoView;
@@ -65,7 +74,7 @@ import static com.home.rw.common.HostType.USER_INFO;
  * Created by cty on 2016/12/13.
  */
 
-public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView,ModifiUserInfoView{
+public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView,ModifiUserInfoView,LinkedView{
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
@@ -102,6 +111,10 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @BindView(R.id.tv_phone)
     TextView mPhoneNum;
 
+    @BindView(R.id.iv_ad)
+    ImageView mAD;
+
+
     @Inject
     Activity mActivity;
 
@@ -113,6 +126,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
 
     @Inject
     ModifiUserInfoPresenterImpl mModifiUserInfoPresenterImpl;
+
+    @Inject
+    LinkedPresenterImpl mLinkedPresenterImpl;
 
     //选择头像
     PicTakerPopWindow menuWindow;
@@ -133,6 +149,8 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     private  String headerPathTemp;
 
     private int mSettingType;
+
+    private String headNetUrl = "";
     //为弹出窗口实现监听类
     private View.OnClickListener itemsOnClick = new View.OnClickListener(){
 
@@ -219,7 +237,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
                 break;
             case R.id.ll_fabu:
                 Intent intent = new Intent(mActivity, CommListActivity.class);
-                intent.putExtra("startType","Mine");
+                intent.putExtra("startType",4);
                 startActivity(intent);
                 break;
             default:
@@ -241,6 +259,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
         mUploadPresenterImpl.attachView(this);
         mUserInfoPresenterImpl.attachView(this);
         mModifiUserInfoPresenterImpl.attachView(this);
+        mLinkedPresenterImpl.attachView(this);
+        mLinkedPresenterImpl.setReqType(HostType.OUT_LINK4);
+        mLinkedPresenterImpl.getLinked();
 
     }
 
@@ -367,7 +388,6 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             Log.i("cty","Mineme onHiddenChanged 隐藏");
         }else{
             Log.i("cty","Mineme onHiddenChanged 显示");
-
             //首先从数据库获取数据
             UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(mActivity,"ID",0));
             if(user!=null){
@@ -388,6 +408,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
                 map.put("avatar",data.getData().get(0));
                 mModifiUserInfoPresenterImpl.beforeRequest();
                 mModifiUserInfoPresenterImpl.modifiUserInfo(map);
+                headNetUrl = data.getData().get(0);
             }
 
         }
@@ -432,6 +453,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     public void getUserInfoCompleted(UserInfoEntity data) {
         Log.i("Retrofit","getUserInfoCompleted data:"+data.toString());
         updateViews(data.getData());
+        headNetUrl = data.getData().getAvatar();
         UserInfo user = UserInfoDaoHelper.getInstance().parseEntity2UserInfo(data.getData());
         UserInfoDaoHelper.getInstance().insertUserInfo(user);
 
@@ -439,8 +461,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     private void updateViewsByCache(UserInfo user){
         mUserName.setText(user.getRealName());
         mtvGender.setText(user.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
+        //if(!headNetUrl.equals(user.getAvatar()))
         mHeaderView.setImageURI(user.getAvatar());
-        mFocus.setText(user.getNoticeNum());
+        mFocus.setText(user.getFocusNum());
         mPublish.setText(user.getPubNum());
         mComp.setText(user.getCompany());
         String phone = user.getPhone();
@@ -452,8 +475,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     private void updateViews(UserInfoEntity.DataEntity data){
         mUserName.setText(data.getRealname());
         mtvGender.setText(data.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
+       // if(!headNetUrl.equals(data.getAvatar()))
         mHeaderView.setImageURI(data.getAvatar());
-        mFocus.setText(data.getNoticeNum());
+        mFocus.setText(data.getFocusNum());
         mPublish.setText(data.getPubNum());
         mComp.setText(data.getCompany().getName());
         String phone = data.getPhone();
@@ -461,8 +485,6 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             mPhoneNum.setText(phone.substring(0,2)+"***"+phone.substring(5,phone.length()));
         }else
             mPhoneNum.setText("");
-
-
 
     }
     @Override
@@ -476,6 +498,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
 
         if(mModifiUserInfoPresenterImpl!=null)
             mModifiUserInfoPresenterImpl.onDestroy();
+
+        if(mLinkedPresenterImpl!=null)
+            mLinkedPresenterImpl.onDestroy();
     }
 
     @Override
@@ -508,5 +533,37 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             }
         }
 
+    }
+
+    @Override
+    public void getLinkedCompleted(int reqType, LinkedEntity data) {
+        if(data.getCode().equals("ok")){
+
+            if(data.getData().size() == 0)
+                return;
+
+            final LinkedEntity.DataEntity entity = data.getData().get(0);
+            Glide.with(this).load(data.getData().get(0).getImgs()).into(mAD);
+            mAD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    if(entity.getType().equals("0")){
+                        intent = new Intent(mActivity, WebViewActivity.class);
+                        intent.putExtra("title",entity.getTitle());
+                        intent.putExtra("url",entity.getToLink());
+                        startActivity(intent);
+                    }else if(entity.getType().equals("1")){
+                        intent = new Intent(mActivity, LandMarkDetail.class);
+                        intent.putExtra("id",entity.getId());
+                        startActivity(intent);
+                    }else {
+                        intent = new Intent(mActivity, CommDetailActivity.class);
+                        intent.putExtra("id",entity.getId());
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
     }
 }

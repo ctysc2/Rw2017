@@ -4,10 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/bac_color_EFEFF4"
     tools:context="com.home.rw.mvp.ui.fragments.social.FindFragment">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/sw_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:scrollbars="none"
@@ -194,6 +190,6 @@
                     android:id="@+id/iv_ad"/>
         </LinearLayout>
     </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </RelativeLayout>

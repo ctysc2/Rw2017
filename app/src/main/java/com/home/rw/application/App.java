@@ -51,13 +51,14 @@ public class App extends MultiDexApplication {
                     .build();
             Fresco.initialize(this, config);
             //注册GCM推送
-            try {
-                RongPushClient.registerGCM(this);
 
-            } catch (RongException e) {
-                Log.i("RongYun", "GCM失败:" + e.getMessage());
-                e.printStackTrace();
-            }
+//            try {
+//                RongPushClient.registerGCM(this);
+//
+//            } catch (RongException e) {
+//                Log.i("RongYun", "GCM失败:" + e.getMessage());
+//                e.printStackTrace();
+//            }
             RongIM.init(this);
             RongCloudAppContext.init(this);
             setDataBase();

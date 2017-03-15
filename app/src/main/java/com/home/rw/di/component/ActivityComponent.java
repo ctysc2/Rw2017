@@ -13,7 +13,13 @@ import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
 import com.home.rw.mvp.ui.activitys.mineme.ChangePassWord;
 import com.home.rw.mvp.ui.activitys.mineme.FeedBackActivity;
 import com.home.rw.mvp.ui.activitys.mineme.OrderActivity;
+import com.home.rw.mvp.ui.activitys.mineme.SettingActivity;
 import com.home.rw.mvp.ui.activitys.mineme.WalletActivity;
+import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
+import com.home.rw.mvp.ui.activitys.social.CommListActivity;
+import com.home.rw.mvp.ui.activitys.social.CommPublishActivity;
+import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
+import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovedByMeActivity;
 import com.home.rw.mvp.ui.activitys.work.AskForLeaveActivity;
 import com.home.rw.mvp.ui.activitys.work.CardActivity;
@@ -65,6 +71,14 @@ public interface ActivityComponent {
     void inject(CardActivity cardActivity);
     void inject(FeedBackActivity feedBackActivity);
     void inject(ChangePassWord changePassWord);
+    void inject(SettingActivity settingActivity);
+    void inject(FocusListActivity focusListActivity);
+    void inject(CommPublishActivity commPublishActivity);
+    void inject(CommDetailActivity commDetailActivity);
+    void inject(OthersDetailActivity othersDetailActivity);
+    void inject(CommListActivity commListActivity);
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.home.rw.mvp.ui.activitys;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -15,6 +16,7 @@ import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.utils.PreferenceUtils;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class WebViewActivity extends BaseActivity {
 
@@ -31,6 +33,17 @@ public class WebViewActivity extends BaseActivity {
 
     private String url;
 
+    @OnClick({R.id.back})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.back:
+                finish();
+                break;
+            default:
+                break;
+        }
+
+    }
     @Override
     public int getLayoutId() {
         return R.layout.activity_web_view;
@@ -43,19 +56,20 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        //midText.setText(R.string.cardLabel);
+
         mback.setImageResource(R.drawable.btn_back);
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
         url = intent.getStringExtra("url");
-        url = "http://www.baidu.com";
+        midText.setText(title);
         mWebView.loadUrl(url);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         //设置可以访问文件
         webSettings.setAllowFileAccess(true);
         //设置支持缩放
-        webSettings.setBuiltInZoomControls(true);
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setSupportZoom(false);
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

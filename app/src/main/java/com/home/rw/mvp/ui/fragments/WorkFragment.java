@@ -1,6 +1,7 @@
 package com.home.rw.mvp.ui.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,8 +16,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
+import com.home.rw.common.HostType;
 import com.home.rw.mvp.entity.CarouselResponseEntity;
+import com.home.rw.mvp.entity.LinkedEntity;
+import com.home.rw.mvp.presenter.impl.LinkedPresenterImpl;
 import com.home.rw.mvp.ui.activitys.WebViewActivity;
+import com.home.rw.mvp.ui.activitys.message.LandMarkDetail;
+import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovementActivity;
 import com.home.rw.mvp.ui.activitys.work.CardActivity;
 import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
@@ -25,6 +31,7 @@ import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.LinkedView;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.ImageHelper;
 import com.home.rw.utils.SystemTool;
@@ -41,7 +48,7 @@ import butterknife.OnClick;
  * Created by cty on 2016/12/13.
  */
 
-public class WorkFragment extends BaseFragment {
+public class WorkFragment extends BaseFragment implements LinkedView {
 
     @BindView(R.id.back)
     ImageButton mBack;
@@ -58,6 +65,8 @@ public class WorkFragment extends BaseFragment {
     @BindView(R.id.viewPagerIndicator)
     LinearLayout viewPagerIndicator;
 
+    @Inject
+    LinkedPresenterImpl mLinkedPresenterImpl;
 
     @Inject
     Activity mActivity;
@@ -69,11 +78,7 @@ public class WorkFragment extends BaseFragment {
     private ArrayList<CarouselResponseEntity.DataEntity> mScrollImgDataList = new ArrayList<>();
 
     //轮播图测试数据源
-    private String[] testData = {
-            "http://img3.12349.net/13a4/12349.net_3y0kllulrxl.jpg",
-            "http://shouyouph.onlyzhu.com/uploadfile/2013/0617/20130617032023116.jpg",
-            "http://i0.wp.com/gearnuke.com/wp-content/uploads/2014/02/starcraft2_logo_cinematic.jpg?resize=798%2C350"
-    };
+    private ArrayList<LinkedEntity.DataEntity> data;
 
     @Override
     public void initInjector() {
@@ -83,7 +88,9 @@ public class WorkFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         midText.setText(R.string.compWork);
-        initAutoScrollViewPager();
+        mLinkedPresenterImpl.attachView(this);
+        mLinkedPresenterImpl.setReqType( HostType.OUT_LINK1);
+        mLinkedPresenterImpl.getLinked();
 
     }
 
@@ -126,6 +133,13 @@ public class WorkFragment extends BaseFragment {
         if (mScrollImageViews != null)
             mScrollImageViews.clear();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mLinkedPresenterImpl!=null)
+            mLinkedPresenterImpl.onDestroy();
     }
 
     @OnClick({R.id.ll_signin,R.id.ll_dairy,R.id.ll_approve,R.id.ll_check,R.id.ll_roll})
@@ -193,7 +207,7 @@ public class WorkFragment extends BaseFragment {
             }
         });
         //for test
-        addScrollImage(testData.length);
+        addScrollImage(data.size());
 
     }
     /**
@@ -248,7 +262,7 @@ public class WorkFragment extends BaseFragment {
         public int getCount()
         {
             //return mScrollImgDataList.size();
-            return testData.length;
+            return data.size();
         }
 
         @Override
@@ -264,19 +278,34 @@ public class WorkFragment extends BaseFragment {
             //final ImageView view = new ImageView(container.getContext());
 
             final ImageView imageView = new ImageView(container.getContext());
+            final LinkedEntity.DataEntity entity = data.get(position);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            ImageHelper.getInstance().display(
+            ImageHelper.getInstance().displayWithoutPs(
                     imageView,
-                    testData[position],R.drawable.test_ad);
+                    entity.getImgs());
             container.addView(imageView);
             Log.i("lunbo","instantiateItem");
+
             imageView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    Intent intent = new Intent(mActivity, WebViewActivity.class);
-                    startActivity(intent);
+                    Intent intent;
+                    if(entity.getType().equals("0")){
+                        intent = new Intent(mActivity, WebViewActivity.class);
+                        intent.putExtra("title",entity.getTitle());
+                        intent.putExtra("url",entity.getToLink());
+                        startActivity(intent);
+                    }else if(entity.getType().equals("1")){
+                        intent = new Intent(mActivity, LandMarkDetail.class);
+                        intent.putExtra("id",entity.getId());
+                        startActivity(intent);
+                    }else {
+                        intent = new Intent(mActivity, CommDetailActivity.class);
+                        intent.putExtra("id",entity.getId());
+                        startActivity(intent);
+                    }
                 }
 
             });
@@ -290,4 +319,27 @@ public class WorkFragment extends BaseFragment {
             container.removeView((View) object);
         }
     };
+
+    @Override
+    public void getLinkedCompleted(int reqType,LinkedEntity data) {
+        if(data.getCode().equals("ok")){
+            this.data = data.getData();
+            initAutoScrollViewPager();
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
+    }
 }

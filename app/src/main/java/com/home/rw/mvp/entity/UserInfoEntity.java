@@ -22,6 +22,7 @@ public class UserInfoEntity extends BaseEntity{
 
     public static class DataEntity{
         String code;
+        String id;
         String realname;
         String avatar;
         String phone;
@@ -31,8 +32,24 @@ public class UserInfoEntity extends BaseEntity{
         String followNum;
         String followCompanyNum;
         String noticeNum;
+        String focusNum;
         String pubNum;
 
+        public void setFocusNum(String focusNum) {
+            this.focusNum = focusNum;
+        }
+
+        public String getFocusNum() {
+            return focusNum;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
 
         public String getCode() {
             return code;

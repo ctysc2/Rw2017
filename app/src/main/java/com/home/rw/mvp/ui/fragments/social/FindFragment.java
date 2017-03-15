@@ -19,6 +19,12 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
+import com.home.rw.common.HostType;
+import com.home.rw.mvp.entity.LinkedEntity;
+import com.home.rw.mvp.presenter.impl.LinkedPresenterImpl;
+import com.home.rw.mvp.ui.activitys.WebViewActivity;
+import com.home.rw.mvp.ui.activitys.message.LandMarkDetail;
+import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.work.ApprovementActivity;
 import com.home.rw.mvp.ui.activitys.work.CardActivity;
@@ -26,6 +32,7 @@ import com.home.rw.mvp.ui.activitys.work.DailyLogActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.activitys.work.SignInActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.LinkedView;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.ImageHelper;
 import com.home.rw.widget.AutoScrollViewPager;
@@ -42,9 +49,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class FindFragment extends BaseFragment {
-
-
+public class FindFragment extends BaseFragment implements LinkedView {
     @Inject
     Activity mActivity;
 
@@ -54,19 +59,20 @@ public class FindFragment extends BaseFragment {
     @BindView(R.id.viewPagerIndicator)
     LinearLayout viewPagerIndicator;
 
-    @BindView(R.id.sw_refresh)
-    SwipeRefreshLayout mRefresh;
+    @BindView(R.id.iv_ad)
+    ImageView mAD;
+
     //indicate
     private ArrayList<View> mScrollImageViews = new ArrayList<>();
 
     //轮播图测试数据源
-    private String[] testData = {
-            "http://img9.cache.hxsd.com/game/2012/01/17/647054_1326796795_20.jpg",
-            "http://img3.12349.net/13a4/12349.net_3y0kllulrxl.jpg",
-            "http://shouyouph.onlyzhu.com/uploadfile/2013/0617/20130617032023116.jpg",
-            "http://i0.wp.com/gearnuke.com/wp-content/uploads/2014/02/starcraft2_logo_cinematic.jpg?resize=798%2C350"
-    };
+    private ArrayList<LinkedEntity.DataEntity> data;
 
+    @Inject
+    LinkedPresenterImpl mLinkedPresenterImpl;
+
+    @Inject
+    LinkedPresenterImpl mLinkedPresenterImpl2;
     @OnClick({R.id.ll_proj,R.id.ll_activity,R.id.ll_culture,R.id.ll_coop})
     public void onClick(View v){
         Intent intent;
@@ -74,22 +80,22 @@ public class FindFragment extends BaseFragment {
 
             case R.id.ll_proj:
                 intent = new Intent(mActivity, CommListActivity.class);
-                intent.putExtra("startType","Proj");
+                intent.putExtra("startType",0);
                 startActivity(intent);
                 break;
             case R.id.ll_activity:
                 intent = new Intent(mActivity, CommListActivity.class);
-                intent.putExtra("startType","Activity");
+                intent.putExtra("startType",1);
                 startActivity(intent);
                 break;
             case R.id.ll_culture:
                 intent = new Intent(mActivity, CommListActivity.class);
-                intent.putExtra("startType","Culture");
+                intent.putExtra("startType",2);
                 startActivity(intent);
                 break;
             case R.id.ll_coop:
                 intent = new Intent(mActivity, CommListActivity.class);
-                intent.putExtra("startType","Coop");
+                intent.putExtra("startType",3);
                 startActivity(intent);
                 break;
             default:
@@ -113,34 +119,13 @@ public class FindFragment extends BaseFragment {
 
     @Override
     public void initViews(View view) {
-        
-        mRefresh.setColorSchemeResources(R.color.colorPrimary);
-        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //下拉刷新
-                Observable.timer(2, TimeUnit.SECONDS).
-                        observeOn(AndroidSchedulers.mainThread()).
-                        subscribe(new Observer<Long>() {
-                            @Override
-                            public void onCompleted() {
-                                mRefresh.setRefreshing(false);
-                            }
+        mLinkedPresenterImpl.attachView(this);
+        mLinkedPresenterImpl2.attachView(this);
+        mLinkedPresenterImpl.setReqType(HostType.OUT_LINK2);
+        mLinkedPresenterImpl.getLinked();
 
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-                        });
-            }
-        });
-
-        initAutoScrollViewPager();
+        mLinkedPresenterImpl2.setReqType(HostType.OUT_LINK3);
+        mLinkedPresenterImpl2.getLinked();
     }
 
     @Override
@@ -149,14 +134,15 @@ public class FindFragment extends BaseFragment {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        if(hidden){
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
             if (autoScrollViewPager!=null) {
-                autoScrollViewPager.stopAutoScroll();
+                autoScrollViewPager.startAutoScroll();
             }
         }else{
             if (autoScrollViewPager!=null) {
-                autoScrollViewPager.startAutoScroll();
+                autoScrollViewPager.stopAutoScroll();
             }
         }
     }
@@ -164,11 +150,19 @@ public class FindFragment extends BaseFragment {
     @Override
     public void onDestroyView()
     {
-//        if (viewPagerIndicator != null)
-//            viewPagerIndicator.removeAllViews();
-//        if (mScrollImageViews != null)
-//            mScrollImageViews.clear();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(mLinkedPresenterImpl!=null)
+            mLinkedPresenterImpl.onDestroy();
+
+        if(mLinkedPresenterImpl2!=null)
+            mLinkedPresenterImpl2.onDestroy();
+
     }
 
     /**
@@ -205,7 +199,7 @@ public class FindFragment extends BaseFragment {
             }
         });
         //for test
-        addScrollImage(testData.length);
+        addScrollImage(data.size());
 
     }
     /**
@@ -259,8 +253,7 @@ public class FindFragment extends BaseFragment {
         @Override
         public int getCount()
         {
-            //return mScrollImgDataList.size();
-            return testData.length;
+            return data.size();
         }
 
         @Override
@@ -273,20 +266,33 @@ public class FindFragment extends BaseFragment {
         public Object instantiateItem(final ViewGroup container,
                                       final int position)
         {
-//            final SimpleDraweeView imageView = new SimpleDraweeView(container.getContext());
-//            imageView.setImageURI(testData[position]);
             final ImageView imageView = new ImageView(container.getContext());
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            ImageHelper.getInstance().display(
+            final LinkedEntity.DataEntity entity = data.get(position);
+            ImageHelper.getInstance().displayWithoutPs(
                     imageView,
-                    testData[position],R.drawable.test_ad);
+                    entity.getImgs());
             container.addView(imageView);
             imageView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-
+                    Intent intent;
+                    if(entity.getType().equals("0")){
+                        intent = new Intent(mActivity, WebViewActivity.class);
+                        intent.putExtra("title",entity.getTitle());
+                        intent.putExtra("url",entity.getToLink());
+                        startActivity(intent);
+                    }else if(entity.getType().equals("1")){
+                        intent = new Intent(mActivity, LandMarkDetail.class);
+                        intent.putExtra("id",entity.getId());
+                        startActivity(intent);
+                    }else {
+                        intent = new Intent(mActivity, CommDetailActivity.class);
+                        intent.putExtra("id",entity.getId());
+                        startActivity(intent);
+                    }
                 }
 
             });
@@ -300,4 +306,60 @@ public class FindFragment extends BaseFragment {
             container.removeView((View) object);
         }
     };
+
+    @Override
+    public void getLinkedCompleted(int reqType,LinkedEntity data) {
+        if(data.getCode().equals("ok")){
+
+            if(data.getData().size() == 0)
+                return;
+
+            switch (reqType){
+                case HostType.OUT_LINK2:
+                    this.data = data.getData();
+                    initAutoScrollViewPager();
+                    break;
+                case HostType.OUT_LINK3:
+                    final LinkedEntity.DataEntity entity = data.getData().get(0);
+                    Glide.with(this).load(data.getData().get(0).getImgs()).into(mAD);
+                    mAD.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent;
+                            if(entity.getType().equals("0")){
+                                intent = new Intent(mActivity, WebViewActivity.class);
+                                intent.putExtra("title",entity.getTitle());
+                                intent.putExtra("url",entity.getToLink());
+                                startActivity(intent);
+                            }else if(entity.getType().equals("1")){
+                                intent = new Intent(mActivity, LandMarkDetail.class);
+                                intent.putExtra("id",entity.getId());
+                                startActivity(intent);
+                            }else {
+                                intent = new Intent(mActivity, CommDetailActivity.class);
+                                intent.putExtra("id",entity.getId());
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    break;
+            }
+
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
+    }
 }

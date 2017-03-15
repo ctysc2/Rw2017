@@ -11,18 +11,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.FacusListEntity;
+import com.home.rw.mvp.presenter.impl.ApprovementListPresenterImpl;
+import com.home.rw.mvp.presenter.impl.FoucsListPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
 import com.home.rw.mvp.ui.adapters.FacusListAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewDivider;
+import com.home.rw.mvp.view.FocusListView;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,14 +36,21 @@ import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class FocusListActivity extends BaseActivity {
+public class FocusListActivity extends BaseActivity implements FocusListView{
 
     private boolean mIsLoadingMore;
 
-    private ArrayList<FacusListEntity.DataEntity> datasource = new ArrayList<>();
+    private ArrayList<FacusListEntity.DataEntity.ResLst> datasource = new ArrayList<>();
 
     private FacusListAdapter mAdapterFacus;
 
+    private int mTotalPage = 0;
+
+    private int mCurrentPage = 0;
+
+    private final int PAGE_SIZE = 15;
+
+    private int requestPos = 0;
     @BindView(R.id.sw_refresh)
     SwipeRefreshLayout mRefresh;
 
@@ -49,6 +62,10 @@ public class FocusListActivity extends BaseActivity {
 
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
+
+    @Inject
+    FoucsListPresenterImpl mFoucsListPresenterImpl;
+
 
     @OnClick({
             R.id.back
@@ -72,7 +89,7 @@ public class FocusListActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -85,88 +102,33 @@ public class FocusListActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //下拉刷新
-                Observable.timer(1, TimeUnit.SECONDS).
-                        observeOn(AndroidSchedulers.mainThread()).
-                        subscribe(new Observer<Long>() {
-                            @Override
-                            public void onCompleted() {
-                                mRefresh.setRefreshing(false);
-                            }
+                mCurrentPage = 0;
+                mFoucsListPresenterImpl.getFocusList(mCurrentPage,PAGE_SIZE);
 
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-                        });
             }
         });
+        mFoucsListPresenterImpl.attachView(this);
+        mFoucsListPresenterImpl.beforeRequest();
+        mFoucsListPresenterImpl.getFocusList(mCurrentPage,PAGE_SIZE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void initRecycleView() {
-        FacusListEntity.DataEntity entity1 = new FacusListEntity.DataEntity();
-        entity1.setHeader("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=a31bf4b58fd6277ffd1f3a6a49517455/b90e7bec54e736d10b34ec0693504fc2d562699c.jpg");
-        entity1.setName("藤原龙也");
-        entity1.setNum(365);
 
-        FacusListEntity.DataEntity entity2 = new FacusListEntity.DataEntity();
-        entity2.setHeader("http://h.hiphotos.baidu.com/baike/w%3D268%3Bg%3D0/sign=7a27eb6de21190ef01fb95d9f620fa2b/4bed2e738bd4b31c7813af3b82d6277f9e2ff807.jpg");
-        entity2.setName("松重丰");
-        entity1.setNum(467);
-
-        FacusListEntity.DataEntity entity3 = new FacusListEntity.DataEntity();
-        entity3.setHeader("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=a3536492d8a20cf4529df68d17602053/1ad5ad6eddc451da7b1aeffebefd5266d0163233.jpg");
-        entity3.setName("小栗旬");
-        entity3.setNum(908);
-
-        FacusListEntity.DataEntity entity4 = new FacusListEntity.DataEntity();
-        entity4.setHeader("https://imgsa.baidu.com/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=a87330b7880a19d8df0e8c575293e9ee/cc11728b4710b912ac309ff8cbfdfc03934522c6.jpg");
-        entity4.setName("木村拓哉");
-        entity4.setNum(420);
-
-        FacusListEntity.DataEntity entity5 = new FacusListEntity.DataEntity();
-        entity5.setHeader("http://b.hiphotos.baidu.com/baike/w%3D268%3Bg%3D0/sign=22dd700b0123dd542173a06ee932d4e3/562c11dfa9ec8a138ae95b8fff03918fa1ecc0ea.jpg");
-        entity5.setName("小田切让");
-        entity5.setNum(420);
-
-        FacusListEntity.DataEntity entity6 = new FacusListEntity.DataEntity();
-        entity6.setHeader("https://imgsa.baidu.com/baike/crop%3D0%2C70%2C1600%2C1058%3Bc0%3Dbaike180%2C5%2C5%2C180%2C60/sign=38a87614b099a9012f7a017620a5264c/c2fdfc039245d688f3a718a4acc27d1ed21b240c.jpg");
-        entity6.setName("户田惠梨香");
-        entity6.setNum(420);
-
-        datasource.add(entity1);
-        datasource.add(entity2);
-        datasource.add(entity3);
-        datasource.add(entity4);
-        datasource.add(entity2);
-        datasource.add(entity3);
-        datasource.add(entity5);
-        datasource.add(entity6);
-        datasource.add(entity2);
-        datasource.add(entity3);
-        datasource.add(entity4);
-        datasource.add(entity5);
-        datasource.add(entity4);
-        datasource.add(entity5);
-        datasource.add(entity5);
-        datasource.add(entity2);
-        datasource.add(entity3);
-        datasource.add(entity4);
-        datasource.add(entity5);
-        datasource.add(entity6);
         //关注的人列表
         mAdapterFacus = new FacusListAdapter(datasource,this);
 
         mAdapterFacus.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                requestPos = position;
                 Intent intent = new Intent(FocusListActivity.this,OthersDetailActivity.class);
                 intent.putExtra("data",datasource.get(position));
-                startActivity(intent);
+                startActivityForResult(intent,0);
 
             }
         });
@@ -190,48 +152,15 @@ public class FocusListActivity extends BaseActivity {
                 if (!mIsLoadingMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItemPosition >= totalItemCount - 1) {
                     Log.i("mRecycleView","end");
-                    mAdapterFacus.showFooter();
-                    mIsLoadingMore = true;
-                    mRecycleView.scrollToPosition(mAdapterFacus.getItemCount() - 1);
-                    Observable.timer(2, TimeUnit.SECONDS).
-                            observeOn(AndroidSchedulers.mainThread()).
-                            subscribe(new Observer<Long>() {
-                                @Override
-                                public void onCompleted() {
-                                    mAdapterFacus.hideFooter();
-                                    mIsLoadingMore = false;
-                                    FacusListEntity.DataEntity entity5 = new FacusListEntity.DataEntity();
-                                    entity5.setHeader("http://b.hiphotos.baidu.com/baike/w%3D268%3Bg%3D0/sign=22dd700b0123dd542173a06ee932d4e3/562c11dfa9ec8a138ae95b8fff03918fa1ecc0ea.jpg");
-                                    entity5.setName("小田切让");
-                                    entity5.setNum(420);
+                    mCurrentPage++;
+                    if(mCurrentPage<mTotalPage){
+                        mAdapterFacus.showFooter();
+                        mIsLoadingMore = true;
+                        mRecycleView.scrollToPosition(mAdapterFacus.getItemCount() - 1);
+                        mFoucsListPresenterImpl.getFocusList(mCurrentPage,PAGE_SIZE);
 
-                                    ArrayList<FacusListEntity.DataEntity> temp  = new ArrayList<>();
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    temp.add(entity5);
-                                    mAdapterFacus.addMore(temp);
-                                }
+                    }
 
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(Long aLong) {
-
-                                }
-                            });
                 }
             }
 
@@ -243,5 +172,60 @@ public class FocusListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initViews();
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 0:
+                if(resultCode == RESULT_OK){
+                    boolean isFocused =data.getBooleanExtra("isFocus",true);
+                    if(!isFocused){
+                        datasource.remove(requestPos);
+                        mAdapterFacus.notifyDataSetChanged();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    @Override
+    public void getFocusList(FacusListEntity data) {
+        if(data.getCode().equals("ok")){
+            mTotalPage = data.getData().getTotalPages();
+            if(mCurrentPage == 0){
+                datasource = data.getData().getResLst();
+                mAdapterFacus.setList(datasource);
+            }
+            else
+                mAdapterFacus.addMore(data.getData().getResLst());
+        }else{
+            Toast.makeText(this,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    @Override
+    public void showProgress(int reqType) {
+        mRefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        mRefresh.setRefreshing(false);
+        if(mIsLoadingMore){
+            mAdapterFacus.hideFooter();
+            mIsLoadingMore = false;
+        }
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+        mRefresh.setRefreshing(false);
+        if(mIsLoadingMore){
+            mAdapterFacus.hideFooter();
+            mIsLoadingMore = false;
+        }
+        Toast.makeText(this,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+
+    }
 }

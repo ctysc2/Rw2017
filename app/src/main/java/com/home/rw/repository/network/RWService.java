@@ -4,10 +4,16 @@ import com.home.rw.mvp.entity.AddApplyEntity;
 import com.home.rw.mvp.entity.ApplyDetailEntity;
 import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.CardQueryEntity;
+import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.entity.FacusListEntity;
+import com.home.rw.mvp.entity.LinkedEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.entity.MainPageEntity;
+import com.home.rw.mvp.entity.MixFocusEntity;
 import com.home.rw.mvp.entity.RollMeEntity;
 import com.home.rw.mvp.entity.SignEntity;
+import com.home.rw.mvp.entity.TopicDetailEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
@@ -211,5 +217,115 @@ public interface RWService {
     @POST("feedback.json")
     Observable<BaseEntity> feedBack(
             @Field("content") String content
+    );
+
+    //退出登录
+    @GET("logout.json")
+    Observable<BaseEntity> logOut();
+
+
+    //关注人列表
+    @GET("focus.json")
+    Observable<FacusListEntity> focusList(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //提交帖子
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<BaseEntity> publish(
+            @FieldMap HashMap<String,Object> input
+    );
+
+    //企业交流轮播
+    @GET("work_loop_ad.json")
+    Observable<LinkedEntity> link1();
+
+    //发现轮播
+    @GET("ac_loop_ad.json")
+    Observable<LinkedEntity> link2();
+
+
+    //发现精选
+    @GET("winnow.json")
+    Observable<LinkedEntity> link3();
+
+    //我的置业公告
+    @GET("rw_notice_new.json")
+    Observable<LinkedEntity> link4();
+
+
+    //关注用户
+    @GET("add.json")
+    Observable<BaseEntity> foucs(
+            @Query("userId") String userId
+    );
+
+    //取消关注用户
+    @GET("remove.json")
+    Observable<BaseEntity> cancleFocus(
+            @Query("userId") String userId
+    );
+
+    //我发布的列表
+    @GET("publish.json")
+    Observable<CommunicationEntity> myPublish(
+            @Query("page") int page,
+            @Query("size") int size
+
+    );
+    //4个帖子列表
+    @GET("cat.json")
+    Observable<CommunicationEntity> publishList(
+            @Query("catId") String catId,
+            @Query("page") int page,
+            @Query("size") int size
+
+    );
+
+    //关注混合列表
+    @GET("focus.json")
+    Observable<MixFocusEntity> getMixFocusList();
+
+    //他人发布列表
+    @GET("publish.json")
+    Observable<CommunicationEntity> otherPublish(
+            @Query("createdBy") String userId,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //帖子详情
+    @GET("topic_item.json")
+    Observable<TopicDetailEntity> topicDetail(
+            @Query("id") String id
+
+    );
+
+    //点赞
+    @GET("support.json")
+    Observable<BaseEntity> follow(
+            @Query("topicId") String id
+
+    );
+    //主页
+    @GET("main.json")
+    Observable<MainPageEntity> getMainPage();
+
+    //动态
+    @GET("dynamics.json")
+    Observable<CommunicationEntity> getDynamics(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //帖子评论
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<CommunicationEntity> topicFeedBack(
+            @FieldMap HashMap<String,Object> input
     );
 }

@@ -72,15 +72,19 @@ public class LandMarkDetail extends BaseActivity {
 
     @Override
     public void initViews() {
-        GrandEntity.DataEntity entity = (GrandEntity.DataEntity)getIntent().getSerializableExtra("data");
-        midText.setText(entity.getDetailTitle());
         mback.setImageResource(R.drawable.btn_back);
-        mTitle.setText(entity.getTitle());
-        mContent.setText(entity.getContent());
-        mDate.setText(entity.getDate());
-        mImg.setImageURI(entity.getImg());
-        photos.add(new PhotoModel(entity.getImg()));
-
+        GrandEntity.DataEntity entity = (GrandEntity.DataEntity)getIntent().getSerializableExtra("data");
+        String id;
+        if(entity!=null){
+            midText.setText(entity.getDetailTitle());
+            mTitle.setText(entity.getTitle());
+            mContent.setText(entity.getContent());
+            mDate.setText(entity.getDate());
+            mImg.setImageURI(entity.getImg());
+            photos.add(new PhotoModel(entity.getImg()));
+        }else if((id = getIntent().getStringExtra("id")) != null){
+            //根据id获取详情
+        }
     }
 
     @Override

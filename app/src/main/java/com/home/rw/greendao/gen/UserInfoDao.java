@@ -34,6 +34,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property NoticeNum = new Property(7, String.class, "noticeNum", false, "NOTICE_NUM");
         public final static Property PubNum = new Property(8, String.class, "pubNum", false, "PUB_NUM");
         public final static Property Company = new Property(9, String.class, "company", false, "COMPANY");
+        public final static Property FocusNum = new Property(10, String.class, "focusNum", false, "FOCUS_NUM");
     };
 
 
@@ -58,7 +59,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"GENDER\" TEXT," + // 6: gender
                 "\"NOTICE_NUM\" TEXT," + // 7: noticeNum
                 "\"PUB_NUM\" TEXT," + // 8: pubNum
-                "\"COMPANY\" TEXT);"); // 9: company
+                "\"COMPANY\" TEXT," + // 9: company
+                "\"FOCUS_NUM\" TEXT);"); // 10: focusNum
     }
 
     /** Drops the underlying database table. */
@@ -120,6 +122,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         if (company != null) {
             stmt.bindString(10, company);
         }
+ 
+        String focusNum = entity.getFocusNum();
+        if (focusNum != null) {
+            stmt.bindString(11, focusNum);
+        }
     }
 
     @Override
@@ -175,6 +182,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         if (company != null) {
             stmt.bindString(10, company);
         }
+ 
+        String focusNum = entity.getFocusNum();
+        if (focusNum != null) {
+            stmt.bindString(11, focusNum);
+        }
     }
 
     @Override
@@ -194,7 +206,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // gender
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // noticeNum
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // pubNum
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // company
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // company
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // focusNum
         );
         return entity;
     }
@@ -211,6 +224,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setNoticeNum(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setPubNum(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setCompany(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setFocusNum(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override

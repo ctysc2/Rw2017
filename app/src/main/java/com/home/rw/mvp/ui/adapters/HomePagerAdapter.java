@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/10.
  */
 
-public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntity.DataEntity> {
+public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntity.DataEntity.ResLst> {
     //private ArrayList<CommunicationEntity.DataEntity> dataSource;
     private Context context;
     private LayoutInflater inflater;
@@ -37,13 +37,13 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
     private OnItemClickListener mListener;
     private final int COMPRESS_WIDTH = 200;
     private final int COMPRESS_HEIGH = 120;
-    public HomePagerAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, Context context){
+    public HomePagerAdapter(ArrayList<CommunicationEntity.DataEntity.ResLst> dataSource, Context context){
         super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
 
     }
-    public HomePagerAdapter(ArrayList<CommunicationEntity.DataEntity> dataSource, String type, Context context){
+    public HomePagerAdapter(ArrayList<CommunicationEntity.DataEntity.ResLst> dataSource, String type, Context context){
         super(dataSource);
         this.context = context;
         this.entryType = type;
@@ -104,11 +104,11 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
             final int mPosition = position;
 
             final HomePageViewHolder mHolder = (HomePageViewHolder)holder;
-            final CommunicationEntity.DataEntity entity = dataSource.get(mPosition);
+            final CommunicationEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
 
             holder.itemView.setTag(mPosition);
 
-            if(entity.getType() == 0){
+            if(mPosition == 0){
                 mHolder.mCompType.setText(context.getString(R.string.compIntroduction));
                 mHolder.mCompTypeEn.setText(context.getString(R.string.compIntroductionEn));
                 mHolder.mTitle.setText(entity.getTitle());
@@ -123,41 +123,44 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
                 mHolder.mContent2.setVisibility(View.VISIBLE);
                 mHolder.mContent2.setText(entity.getContent());
             }
+            if(!TextUtils.isEmpty(entity.getImgs())) {
+                String[] imgs = entity.getImgs().split(",");
+                switch (imgs.length) {
+                    case 0:
+                        mHolder.mContainer.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        mHolder.mContainer.setVisibility(View.VISIBLE);
+                        mHolder.mPic1.setVisibility(View.VISIBLE);
+                        mHolder.mPic2.setVisibility(View.INVISIBLE);
+                        mHolder.mPic3.setVisibility(View.GONE);
+                        FrescoUtils.load(Uri.parse(imgs[0]), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        break;
+                    case 2:
+                        mHolder.mContainer.setVisibility(View.VISIBLE);
+                        mHolder.mPic1.setVisibility(View.VISIBLE);
+                        mHolder.mPic2.setVisibility(View.VISIBLE);
+                        mHolder.mPic3.setVisibility(View.GONE);
+                        FrescoUtils.load(Uri.parse(imgs[0]), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        FrescoUtils.load(Uri.parse(imgs[1]), mHolder.mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        break;
+                    case 3:
+                        mHolder.mContainer.setVisibility(View.VISIBLE);
+                        mHolder.mPic1.setVisibility(View.VISIBLE);
+                        mHolder.mPic2.setVisibility(View.VISIBLE);
+                        mHolder.mPic3.setVisibility(View.VISIBLE);
+                        FrescoUtils.load(Uri.parse(imgs[0]), mHolder.mPic1, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        FrescoUtils.load(Uri.parse(imgs[1]), mHolder.mPic2, COMPRESS_WIDTH, COMPRESS_HEIGH);
+                        FrescoUtils.load(Uri.parse(imgs[2]), mHolder.mPic3, COMPRESS_WIDTH, COMPRESS_HEIGH);
 
-            switch (entity.getImgs().size()){
-                case 0:
-                    mHolder.mContainer.setVisibility(View.GONE);
-                    break;
-                case 1:
-                    mHolder.mContainer.setVisibility(View.VISIBLE);
-                    mHolder.mPic1.setVisibility(View.VISIBLE);
-                    mHolder.mPic2.setVisibility(View.INVISIBLE);
-                    mHolder.mPic3.setVisibility(View.GONE);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),mHolder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                    break;
-                case 2:
-                    mHolder.mContainer.setVisibility(View.VISIBLE);
-                    mHolder.mPic1.setVisibility(View.VISIBLE);
-                    mHolder.mPic2.setVisibility(View.VISIBLE);
-                    mHolder.mPic3.setVisibility(View.GONE);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),mHolder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(1)),mHolder.mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                    break;
-                case 3:
-                    mHolder.mContainer.setVisibility(View.VISIBLE);
-                    mHolder.mPic1.setVisibility(View.VISIBLE);
-                    mHolder.mPic2.setVisibility(View.VISIBLE);
-                    mHolder.mPic3.setVisibility(View.VISIBLE);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(0)),mHolder.mPic1,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(1)),mHolder.mPic2,COMPRESS_WIDTH,COMPRESS_HEIGH);
-                    FrescoUtils.load(Uri.parse(entity.getImgs().get(2)),mHolder.mPic3,COMPRESS_WIDTH,COMPRESS_HEIGH);
+                        break;
+                    default:
+                        break;
 
-                    break;
-                default:
-                    break;
-
+                }
+            }else{
+                mHolder.mContainer.setVisibility(View.GONE);
             }
-
         }
 
 

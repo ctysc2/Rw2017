@@ -298,11 +298,9 @@ public class MessageFragment extends BaseFragment {
             public void onItemClick(int position) {
                 mSelectedPosition = position;
                 FacusListEntity.DataEntity entity = new FacusListEntity.DataEntity();
-                entity.setName(dataSource.get(position).getTitle());
-                entity.setHeader("http://imgsrc.baidu.com/baike/pic/item/bd315c6034a85edf6b717e174b540923dd547501.jpg");
-                entity.setNum(120);
+
                 Intent intent = new Intent(mActivity, OthersDetailActivity.class);
-                intent.putExtra("data",entity);
+
                 startActivity(intent);
             }
         });

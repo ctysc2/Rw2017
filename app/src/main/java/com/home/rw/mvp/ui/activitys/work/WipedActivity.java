@@ -1127,7 +1127,7 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener,A
     @Override
     protected void onDestroy() {
         Log.i("Wiped","onDestroy");
-        clearCache();
+        //clearCache();
         if(mAddApplyPresenterImpl!=null){
             mAddApplyPresenterImpl.onDestroy();
         }
