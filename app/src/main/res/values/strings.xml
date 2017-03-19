@@ -283,8 +283,8 @@
     <string name="commitFailed">提交失败,请重试</string>
     <string name="loadFailed">加载失败</string>
     <string name="reRoad">用户验证失败,正在重新验证</string>
-    <string name="reRoadSuccess">验证成功</string>
-    <string name="reRoadFailed">验证失败</string>
+    <string name="reRoadSuccess">身份验证成功</string>
+    <string name="reRoadFailed">身份验证失败</string>
     <string name="getFailed">获取失败</string>
     <string name="checkinput">请检查输入信息</string>
     <string name="gettingLocation">正在获取地理位置信息,请稍候...</string>

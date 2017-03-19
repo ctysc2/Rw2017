@@ -37,7 +37,9 @@ public class UserInfoPresenterImpl extends BasePresenterImpl<UserInfoView,UserIn
         mSubscription = mUserInfoInteractorImpl.getUserInfo(this);
 
     }
-
+    public void getOtherUserInfo(String userId){
+        mSubscription = mUserInfoInteractorImpl.getOtherUserInfo(this,userId);
+    }
     @Override
     public void success(UserInfoEntity data) {
         super.success(data);

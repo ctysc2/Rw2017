@@ -182,6 +182,48 @@ public class HostType {
 
     //帖子评论
     public static final int TOPIC_FEEDBACK= 56;
+
+    //消息首页
+    public static final int MAIN_MESSAGE = 57;
+
+    //商务电话
+    public static final int BUSINESS_CALL = 58;
+
+    //我的好友列表
+    public static final int MY_FRIEND_LIST = 59;
+
+    //添加好友
+    public static final int ADD_FRIEND = 60;
+
+    //同意添加好友
+    public static final int ACCEPT_FRIEND = 61;
+
+    //新的好友
+    public static final int NEW_FRIEND = 62;
+
+    //置业公告列表
+    public static final int RW_NOTICE = 63;
+
+    //公司公告列表
+    public static final int COMPANY_NOTICE = 64;
+
+    //设置公告已读
+    public static final int COMPANY_NOTICE_READ = 65;
+
+    //我的群组
+    public static final int MY_GROUP = 66;
+
+    //添加群组
+    public static final int ADD_GROUP = 67;
+
+    //企业通讯录
+    public static final int DEPARTMENT = 68;
+
+    //修改备注
+    public static final int REMARK = 69;
+
+    //他人信息
+    public static final int OTHER_USER = 70;
     /**
      * 替代枚举的方案，使用IntDef保证类型安全
      */

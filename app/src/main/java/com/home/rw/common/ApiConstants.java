@@ -36,6 +36,14 @@ public class ApiConstants {
     public static String BUSINESE = BASE_URL+"business/";
 
     public static String COMMENT = BASE_URL+"Comment/";
+
+    public static String FRIEND = BASE_URL+"friend/";
+
+    public static String RW_NOTICE = BASE_URL+"rw_notice/";
+
+    public static String COMPANY = BASE_URL+"company/";
+
+    public static String GROUP = BASE_URL+"group/";
         //获取接口类型
         public static String getHost(int hostType) {
 
@@ -65,6 +73,11 @@ public class ApiConstants {
                 case HostType.FOCUS_LIST:
                 case HostType.MY_PUBLISH:
                 case HostType.ZAN:
+                case HostType.BUSINESS_CALL:
+                case HostType.MY_FRIEND_LIST:
+                case HostType.ACCEPT_FRIEND:
+                case HostType.NEW_FRIEND:
+                case HostType.MY_GROUP:
                     host = MY;
                     break;
                 case HostType.ADD_APPLY_EXPENSE:
@@ -123,10 +136,29 @@ public class ApiConstants {
                 case HostType.OTHER_PUBLISH:
                 case HostType.MAIN_PAGE:
                 case HostType.DYN:
+                case HostType.MAIN_MESSAGE:
                     host = BUSINESE;
                     break;
                 case HostType.TOPIC_FEEDBACK:
                     host = COMMENT;
+                    break;
+                case HostType.ADD_FRIEND:
+                case HostType.REMARK:
+                    host = FRIEND;
+                    break;
+                case HostType.RW_NOTICE:
+                    host = RW_NOTICE;
+                    break;
+                case HostType.COMPANY_NOTICE:
+                case HostType.COMPANY_NOTICE_READ:
+                case HostType.DEPARTMENT:
+                    host = COMPANY;
+                    break;
+                case HostType.ADD_GROUP:
+                    host = GROUP;
+                    break;
+                case HostType.OTHER_USER:
+                    host = USER;
                     break;
                 default:
                     host="";

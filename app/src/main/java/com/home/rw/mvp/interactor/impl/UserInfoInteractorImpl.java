@@ -57,4 +57,34 @@ public class UserInfoInteractorImpl implements UserInfoInteractor{
 
                 });
     }
+
+    @Override
+    public Subscription getOtherUserInfo(final RequestCallBack callback, String userId) {
+        return RetrofitManager.getInstance(HostType.OTHER_USER).getOtherInfo(userId)
+
+                .compose(TransformUtils.<UserInfoEntity>defaultSchedulers())
+                .subscribe(new Observer<UserInfoEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(UserInfoEntity data) {
+                        if(data!=null && data.getCode().equals("9999")){
+                            callback.onError(App.getAppContext().getString(R.string.reRoad));
+                            RxBus.getInstance().post(new ReLoginEvent());
+                        }
+                        else{
+                            callback.success(data);
+                        }
+
+                    }
+
+                });
+    }
 }

@@ -5,6 +5,7 @@ import com.home.rw.mvp.entity.ApplyDetailEntity;
 import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.CardQueryEntity;
 import com.home.rw.mvp.entity.CommunicationEntity;
+import com.home.rw.mvp.entity.CompanyNoticeEntity;
 import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.entity.LinkedEntity;
 import com.home.rw.mvp.entity.LogEntity;
@@ -17,6 +18,13 @@ import com.home.rw.mvp.entity.TopicDetailEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.BusineseCallEntity;
+import com.home.rw.mvp.entity.message.DepartmentEntity;
+import com.home.rw.mvp.entity.message.MainBusinessEntity;
+import com.home.rw.mvp.entity.message.MyFriendEntity;
+import com.home.rw.mvp.entity.message.MyGroupEntity;
+import com.home.rw.mvp.entity.message.NewFriendEntity;
+import com.home.rw.mvp.entity.message.RwNoticeEntity;
 import com.home.rw.utils.CacheUtils;
 
 import java.util.HashMap;
@@ -327,5 +335,84 @@ public interface RWService {
     @POST("add.json")
     Observable<CommunicationEntity> topicFeedBack(
             @FieldMap HashMap<String,Object> input
+    );
+
+    //消息首页
+    @GET("center.json")
+    Observable<MainBusinessEntity> mainMessage();
+
+    //商务电话列表
+    @GET("bi_phones.json")
+    Observable<BusineseCallEntity> businessCall();
+
+    //我的朋友列表
+    @GET("friends.json")
+    Observable<MyFriendEntity> getMyFriend();
+    //添加好友
+    @GET("add.json")
+    Observable<BaseEntity> addFriend(
+            @Query("userId") String userId
+    );
+    //同意添加好友
+    @GET("friend_accept.json")
+    Observable<BaseEntity> acceptFriend(
+            @Query("userId") String userId
+    );
+
+    //新的好友
+    @GET("new_friends.json")
+    Observable<NewFriendEntity> getNewFriend(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //置业公告列表
+    @GET("list.json")
+    Observable<RwNoticeEntity> getRwNotice(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //公司公告列表
+    @GET("notice_list.json")
+    Observable<CompanyNoticeEntity> getCompanyNotice(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    //公司公告已读
+    @GET("notice_read.json")
+    Observable<BaseEntity> readCompanyNotice(
+            @Query("ID") String id
+    );
+
+    //我的群组
+    @GET("groups.json")
+    Observable<MyGroupEntity> getGroupList(
+            @Query("page") int page,
+            @Query("size") int size
+    );
+    //添加群组
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("add.json")
+    Observable<BaseEntity> addGroup(
+            @Field("name") String name,
+            @Field("receiveUsers") String users
+    );
+    //企业通讯录列表
+    @GET("dept_info_list.json")
+    Observable<DepartmentEntity> getDepartmentList();
+
+    //添加备注
+    @GET("edit_nickname.json")
+    Observable<BaseEntity> remark(
+            @Query("userId") String userId,
+            @Query("nickname") String nickname
+    );
+    //他人信息
+    @GET("edit_nickname.json")
+    Observable<UserInfoEntity> getOtherInfo(
+            @Query("userId") String userId
     );
 }

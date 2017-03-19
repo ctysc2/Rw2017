@@ -12,4 +12,5 @@ import rx.Subscription;
 
 public interface UserInfoInteractor<T> {
     Subscription getUserInfo(RequestCallBack<T> callback);
+    Subscription getOtherUserInfo(RequestCallBack<T> callback,String userId);
 }
