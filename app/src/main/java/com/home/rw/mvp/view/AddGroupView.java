@@ -1,6 +1,7 @@
 package com.home.rw.mvp.view;
 
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.CreatGroupEntity;
 import com.home.rw.mvp.view.base.BaseView;
 
 /**
@@ -8,5 +9,5 @@ import com.home.rw.mvp.view.base.BaseView;
  */
 
 public interface AddGroupView extends BaseView{
-    void addGroupCompleted(BaseEntity data);
+    void addGroupCompleted(CreatGroupEntity data);
 }

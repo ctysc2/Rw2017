@@ -40,6 +40,15 @@ public class FacusListEntity extends BaseEntity {
             String pubNum;
             String supportNum;
             String company;
+            String focus;
+
+            public void setFocus(String focus) {
+                this.focus = focus;
+            }
+
+            public String getFocus() {
+                return focus;
+            }
 
             public void setCompany(String company) {
                 this.company = company;

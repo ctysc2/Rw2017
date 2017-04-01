@@ -65,6 +65,12 @@ public class FocusFragment extends BaseFragment implements MixFocusView,FocusVie
     private int requestPos = 0;
     private int focusPos = 0;
     private int zanPos = 0;
+
+    private boolean isFragmentVisible = false;
+
+    private boolean isViewCreated = false;
+
+    private boolean isFirstLoad = true;
     @Inject
     Activity mActivity;
 
@@ -180,13 +186,38 @@ public class FocusFragment extends BaseFragment implements MixFocusView,FocusVie
         mRvList.setItemAnimator(new DefaultItemAnimator());
         mRvList.setAdapter(mAdapterFacus);
         mRvList.setNestedScrollingEnabled(false);
+
+        isViewCreated = true;
+
+        isViewCreated = true;
+        if(isFirstLoad && isFragmentVisible && isViewCreated){
+            mMixFocusPresenterImpl.beforeRequest();
+            mMixFocusPresenterImpl.getMixFocus();
+            isFirstLoad = false;
+        }
+
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isFragmentVisible = isVisibleToUser;
+        if(isFirstLoad && isFragmentVisible && isViewCreated){
+            mMixFocusPresenterImpl.beforeRequest();
+            mMixFocusPresenterImpl.getMixFocus();
+            isFirstLoad = false;
+        }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mMixFocusPresenterImpl.beforeRequest();
-        mMixFocusPresenterImpl.getMixFocus();
+        if(isFragmentVisible){
+            mMixFocusPresenterImpl.beforeRequest();
+            mMixFocusPresenterImpl.getMixFocus();
+        }
     }
 
     @Override
@@ -232,7 +263,7 @@ public class FocusFragment extends BaseFragment implements MixFocusView,FocusVie
     @Override
     public void showErrorMsg(int reqType, String msg) {
         mRefresh.setRefreshing(false);
-        Toast.makeText(mActivity,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mActivity,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }else{
                 mHolder.mHeaderText.setVisibility(View.VISIBLE);
                 mHolder.mHeader.setVisibility(View.INVISIBLE);
+                if(!TextUtils.isEmpty(entity.getTitle()))
                 mHolder.mHeaderText.setText(entity.getTitle().substring(0,1));
                 mHolder.mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             }
@@ -114,6 +116,7 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
+                if(!TextUtils.isEmpty(entity.getTitle()))
                 mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
                 mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             } else {
@@ -150,6 +153,7 @@ public class MyTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
+                if(!TextUtils.isEmpty(entity.getTitle()))
                 mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
                 mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
             } else {

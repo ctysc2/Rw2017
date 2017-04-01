@@ -40,6 +40,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected FragmentComponent mFragmentComponent;
     protected T mPresenter;
     protected DialogUtils mAlertDialog;
+    protected DialogUtils mLoadDialog;
     private View mFragmentView;
 
     public abstract void initInjector();

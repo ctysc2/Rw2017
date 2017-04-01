@@ -224,6 +224,24 @@ public class HostType {
 
     //他人信息
     public static final int OTHER_USER = 70;
+
+    //语音拨出
+    public static final int TELEPHONE = 71;
+
+    //获取注册用户
+    public static final int REGISTERED_USER = 72;
+
+    //删除公司公告
+    public static final int DEL_NOTICE = 73;
+
+    //置业公告详情
+    public static final int RW_NOTICE_DETAIL = 74;
+
+    //我的团队
+    public static final int MY_TEAM = 75;
+
+    //获取钥匙
+    public static final int DOOR_KEY = 76;
     /**
      * 替代枚举的方案，使用IntDef保证类型安全
      */

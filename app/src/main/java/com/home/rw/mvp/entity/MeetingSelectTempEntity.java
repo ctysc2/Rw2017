@@ -10,6 +10,15 @@ public class MeetingSelectTempEntity implements Serializable{
     private int id;
     private String avatar;
     private String name;
+    private String phone;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;

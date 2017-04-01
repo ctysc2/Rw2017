@@ -11,10 +11,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
+import com.home.rw.greendao.entity.Friends;
+import com.home.rw.greendaohelper.FriendsDaoHelper;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.entity.message.MyFriendEntity;
+import com.home.rw.mvp.presenter.impl.MyFriendPresenterImpl;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.MyFriendView;
 import com.home.rw.utils.PreferenceUtils;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,7 +34,7 @@ import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
-public class ConversationListActivity extends BaseActivity {
+public class ConversationListActivity extends BaseActivity{
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -65,7 +75,7 @@ public class ConversationListActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -152,4 +162,5 @@ public class ConversationListActivity extends BaseActivity {
         super.onResume();
         //mConversationListFragment.onRestoreUI();
     }
+
 }

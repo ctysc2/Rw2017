@@ -16,11 +16,28 @@ public class DateUtils {
         return format.format(date);
     }
 
+    public static String getYDM(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        return format.format(date);
+    }
+
     public static String getCardTime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
         return format.format(date);
     }
 
+    public static String getRw(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        return format.format(date);
+    }
+    public static String getMessageMain(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+        return format.format(date);
+    }
+    public static String getBusinessTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return format.format(date);
+    }
     public static Date getDate(String sTime) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         try {

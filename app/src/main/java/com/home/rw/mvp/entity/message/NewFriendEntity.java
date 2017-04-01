@@ -22,15 +22,26 @@ public class NewFriendEntity extends BaseEntity{
 
     public static class DataEntity extends BaseApprovementEntity{
 
-        private ArrayList<MessageCommonEntity> resLst;
+        private ArrayList<ResLst> resLst;
 
-        public void setResLst(ArrayList<MessageCommonEntity> resLst) {
+        public void setResLst(ArrayList<ResLst> resLst) {
             this.resLst = resLst;
         }
 
-        public ArrayList<MessageCommonEntity> getResLst() {
+        public ArrayList<ResLst> getResLst() {
             return resLst;
         }
 
+        public static class ResLst extends MessageCommonEntity{
+            String remark;
+
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
+
+            public String getRemark() {
+                return remark;
+            }
+        }
     }
 }

@@ -24,7 +24,49 @@ public class DepartmentEntity extends BaseEntity{
         String id;
         String personNum;
         String name;
+        String logo;
         ArrayList<Employees> employees;
+
+        public void setLogo(String logo) {
+            this.logo = logo;
+        }
+
+        public String getLogo() {
+            return logo;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getPersonNum() {
+            return personNum;
+        }
+
+        public void setPersonNum(String personNum) {
+            this.personNum = personNum;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public ArrayList<Employees> getEmployees() {
+            return employees;
+        }
+
+        public void setEmployees(ArrayList<Employees> employees) {
+            this.employees = employees;
+        }
+
         public static class Employees{
             String id;
             String username;
@@ -32,12 +74,38 @@ public class DepartmentEntity extends BaseEntity{
             String avatar;
             String phone;
             String gender;
+            String lastSpeakingTime;
+            String nickname;
             Company company;
             Dept dept;
             String focusNum;
             String noticeNum;
             String pubNum;
+            String isFriend;
 
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
+            public void setIsFriend(String isFriend) {
+                this.isFriend = isFriend;
+            }
+
+            public String getIsFriend() {
+                return isFriend;
+            }
+
+            public void setLastSpeakingTime(String lastSpeakingTime) {
+                this.lastSpeakingTime = lastSpeakingTime;
+            }
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public String getLastSpeakingTime() {
+                return lastSpeakingTime;
+            }
             public String getId() {
                 return id;
             }

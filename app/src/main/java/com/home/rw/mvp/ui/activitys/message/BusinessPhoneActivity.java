@@ -12,31 +12,41 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.home.rw.R;
+import com.home.rw.greendao.entity.UserInfo;
+import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.BusinessMeetingPhoneEntity;
 import com.home.rw.mvp.entity.CallListEntity;
+import com.home.rw.mvp.entity.message.BusineseCallEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.presenter.impl.BusinessCallPrensenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.social.CommDetailActivity;
 import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.adapters.BusinessMeetingAdapter;
 import com.home.rw.mvp.ui.adapters.CommunicationAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewSperate;
+import com.home.rw.mvp.view.BusinessCallView;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 
 import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
 import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
 import static com.home.rw.common.Const.SEARCH_RECENT;
 import static com.home.rw.common.Const.TYPE_ADD;
 
-public class BusinessPhoneActivity extends BaseActivity {
+public class BusinessPhoneActivity extends BaseActivity implements BusinessCallView{
 
     private BusinessMeetingAdapter mAdapter;
 
-    private ArrayList<BusinessMeetingPhoneEntity.DataEntity> dataSource  = new ArrayList<>();
+    private ArrayList<MessageCommonEntity> dataSource  = new ArrayList<>();
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -47,6 +57,8 @@ public class BusinessPhoneActivity extends BaseActivity {
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
 
+    @Inject
+    BusinessCallPrensenterImpl mBusinessCallPrensenterImpl;
     @OnClick({R.id.back,
             R.id.bt_meeting,
             R.id.search,
@@ -79,56 +91,58 @@ public class BusinessPhoneActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
     public void initViews() {
         midText.setText(getString(R.string.shangWu));
         mback.setImageResource(R.drawable.btn_back);
+        mBusinessCallPrensenterImpl.attachView(this);
         initRecycleView();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBusinessCallPrensenterImpl.getBusinessCall();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mBusinessCallPrensenterImpl!=null)
+            mBusinessCallPrensenterImpl.onDestroy();
     }
 
     private void initRecycleView() {
-        BusinessMeetingPhoneEntity.DataEntity entity1 = new BusinessMeetingPhoneEntity.DataEntity();
-        entity1.setAvatar("http://imgsrc.baidu.com/forum/w%3D580/sign=34aec2faf8edab6474724dc8c737af81/5fbf2f2eb9389b50df635c638635e5dde6116ed5.jpg");
-        entity1.setTitle("波波先生");
-        entity1.setDate("11-11");
-        entity1.setSubTitle("语音07-23");
 
-        BusinessMeetingPhoneEntity.DataEntity entity2 = new BusinessMeetingPhoneEntity.DataEntity();
-        entity2.setTitle("李洛克");
-        entity2.setDate("11-07");
-        entity2.setSubTitle("语音07-23");
-
-        BusinessMeetingPhoneEntity.DataEntity entity3 = new BusinessMeetingPhoneEntity.DataEntity();
-        entity3.setAvatar("http://tv03.tgbusdata.cn/v2/thumb/jpg/MkQ0RSw1MDAsMTAwLDQsMywxLC0xLDAscms1MA==/u/ol.tgbus.com/news/UploadFiles_2374/201412/2014121110060659.jpg");
-        entity3.setTitle("茂茂");
-        entity3.setDate("11-01");
-        entity3.setSubTitle("语音07-23");
-        dataSource.add(entity1);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity2);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity1);
-        dataSource.add(entity1);
-        dataSource.add(entity1);
-        dataSource.add(entity3);
 
         mAdapter = new BusinessMeetingAdapter(dataSource,this);
 
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                BusinessMeetingPhoneEntity.DataEntity entity = dataSource.get(position);
-                CallListEntity.DataEntity data = new CallListEntity.DataEntity();
-                data.setName(entity.getTitle());
-                data.setAvatar(entity.getAvatar());
-                Intent intent = new Intent(BusinessPhoneActivity.this,PreviewCallActivity.class);
-                intent.putExtra("data",data);
-                startActivity(intent);
+                if(dataSource.get(position).getIsFriend() !=null && dataSource.get(position).getIsFriend().equals("1")){
+                    UserInfo user = new UserInfo();
+                    user.setAvatar(dataSource.get(position).getAvatar());
+                    user.setId(Long.parseLong(dataSource.get(position).getUserId()));
+                    user.setPhone(dataSource.get(position).getPhone());
+                    user.setRealName(dataSource.get(position).getRealname());
+                    user.setNickName(dataSource.get(position).getNickname());
+                    UserInfoDaoHelper.getInstance().insertUserInfo(user);
+                    RongIM.getInstance().startConversation(BusinessPhoneActivity.this, Conversation.ConversationType.PRIVATE,String.valueOf(dataSource.get(position).getUserId()),dataSource.get(position).getNickname()==null?dataSource.get(position).getRealname():dataSource.get(position).getNickname());
+                }else{
+                    MessageCommonEntity entity = dataSource.get(position);
+                    CallListEntity.DataEntity data = new CallListEntity.DataEntity();
+                    data.setName(entity.getNickname() == null ?entity.getRealname():entity.getNickname());
+                    data.setAvatar(entity.getAvatar());
+                    Intent intent = new Intent(BusinessPhoneActivity.this,PreviewCallActivity.class);
+                    intent.putExtra("data",data);
+                    startActivity(intent);
+                }
+
             }
         });
         mRecycleView.setHasFixedSize(true);
@@ -142,5 +156,29 @@ public class BusinessPhoneActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+    }
+
+    @Override
+    public void getBusinessCallCompleted(BusineseCallEntity data) {
+        if(data.getCode().equals("ok")){
+            dataSource = data.getData();
+            mAdapter.setList(dataSource);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
     }
 }

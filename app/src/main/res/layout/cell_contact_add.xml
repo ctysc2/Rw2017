@@ -41,6 +41,7 @@
             android:textColor="@color/widowColor"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:visibility="invisible"
             android:layout_gravity="center_vertical"
             />
         <com.facebook.drawee.view.SimpleDraweeView
@@ -52,7 +53,7 @@
             fresco:placeholderImageScaleType="centerCrop"
             fresco:roundAsCircle="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             />

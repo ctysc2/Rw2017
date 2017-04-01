@@ -2,6 +2,7 @@ package com.home.rw.utils;
 
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.text.TextUtils;
 
 import com.home.rw.R;
 
@@ -54,7 +55,9 @@ public class DrawableUtils {
     }
 
     public static int getRandomBackgroundResource(String name){
-
+        if(TextUtils.isEmpty(name)){
+            return R.drawable.shape_circle_green;
+        }
         int d = 0;
         char lastSpell = name.charAt(name.length()-1);
         String spell = CharacterParser.getInstance().getSpelling((String.valueOf(lastSpell)));

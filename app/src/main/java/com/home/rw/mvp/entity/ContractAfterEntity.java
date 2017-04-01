@@ -11,8 +11,17 @@ public class ContractAfterEntity implements Serializable{
     private String name;
     private String avatar;
     private String letter;
+    private String phone;
     boolean isSelected;
     boolean isAdded;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 
     public void setLetter(String letter) {
         this.letter = letter;

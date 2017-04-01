@@ -6,10 +6,12 @@
     android:layout_height="wrap_content"
     android:background="@drawable/selector_layoutbac">
     <LinearLayout
+        android:id="@+id/ll_dra_container"
         android:layout_width="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_height="50dp">
+        android:orientation="horizontal"
+        android:layout_height="52dp">
         <TextView
             android:id="@+id/tv_comptype"
             android:layout_width="wrap_content"
@@ -20,16 +22,16 @@
             android:textColor="@color/black"/>
         <TextView
             android:id="@+id/tv_comptypeEn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:gravity="center_vertical"
             android:textSize="15sp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="18dp"
             android:text="@string/compIntroductionEn"
             android:textColor="@color/text_color_8D8D8C"/>
-
     </LinearLayout>
     <View
+        android:id="@+id/sperate"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/text_color_E4E4E4"/>

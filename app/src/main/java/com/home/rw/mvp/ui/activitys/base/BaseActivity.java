@@ -29,6 +29,8 @@ import com.home.rw.utils.RxBus;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -57,6 +59,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public ActivityComponent getActivityComponent() {
         return mActivityComponent;
     }
+
 
 
     @Override

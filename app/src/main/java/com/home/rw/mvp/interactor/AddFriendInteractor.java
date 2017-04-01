@@ -9,5 +9,5 @@ import rx.Subscription;
  */
 
 public interface AddFriendInteractor<T> {
-    Subscription addFriend(RequestCallBack<T> callback, String userId);
+    Subscription addFriend(RequestCallBack<T> callback, String userId,String remark);
 }

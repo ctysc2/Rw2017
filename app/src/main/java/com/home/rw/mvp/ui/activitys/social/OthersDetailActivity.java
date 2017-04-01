@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -170,6 +171,12 @@ public class OthersDetailActivity extends BaseActivity implements CommListView,F
         receiveData = (FacusListEntity.DataEntity.ResLst)getIntent().getSerializableExtra("data");
         mback.setImageResource(R.drawable.btn_back);
         mToolBar.setBackgroundResource(R.color.transparent);
+
+        if(TextUtils.isEmpty(receiveData.getFocus()) ||
+                receiveData.getFocus().equals("1"))
+            isFacused = true;
+        else
+            isFacused = false;
 
         if(isFacused){
             mFocus.setText(getString(R.string.cancleFacus));
@@ -376,6 +383,7 @@ public class OthersDetailActivity extends BaseActivity implements CommListView,F
         if(data.getCode().equals("ok")){
             isFacused = !isFacused;
             if(isFacused){
+                Toast.makeText(this,getString(R.string.focusSucceed),Toast.LENGTH_SHORT).show();
                 mFocus.setText(getString(R.string.cancleFacus));
             }else{
                 mFocus.setText(getString(R.string.addFacus));

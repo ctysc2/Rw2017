@@ -1,6 +1,7 @@
 package com.home.rw.mvp.presenter.impl;
 
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.CreatGroupEntity;
 import com.home.rw.mvp.interactor.AddFriendInteractor;
 import com.home.rw.mvp.interactor.AddGroupInteractor;
 import com.home.rw.mvp.interactor.impl.AddFriendInteractorImpl;
@@ -14,7 +15,7 @@ import javax.inject.Inject;
  * Created by cty on 2017/3/18.
  */
 
-public class AddGroupPresenterImpl extends BasePresenterImpl<AddGroupView,BaseEntity>{
+public class AddGroupPresenterImpl extends BasePresenterImpl<AddGroupView,CreatGroupEntity>{
     private AddGroupInteractor mAddGroupInteractorImpl;
 
     @Inject
@@ -30,13 +31,13 @@ public class AddGroupPresenterImpl extends BasePresenterImpl<AddGroupView,BaseEn
         super.onCreate();
     }
 
-    public void addFriend(String name,String receiveUsers){
+    public void addGroup(String name,String receiveUsers){
         mSubscription = mAddGroupInteractorImpl.addGroup(this,name,receiveUsers);
 
     }
 
     @Override
-    public void success(BaseEntity data) {
+    public void success(CreatGroupEntity data) {
         super.success(data);
         mView.addGroupCompleted(data);
     }

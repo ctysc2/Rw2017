@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.ReceiveFriendEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.entity.message.NewFriendEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.home.rw.utils.DrawableUtils;
 
@@ -25,17 +28,20 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/2/2.
  */
 
-public class ReceiveFriendAdapter extends BaseRecyclerViewAdapter<ReceiveFriendEntity.DataEntity> {
+public class ReceiveFriendAdapter extends BaseRecyclerViewAdapter<NewFriendEntity.DataEntity.ResLst> {
 
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
+    private OnItemClickListener mListener2;
 
-    public ReceiveFriendAdapter(List<ReceiveFriendEntity.DataEntity> list, Context context) {
+
+    public ReceiveFriendAdapter(List<NewFriendEntity.DataEntity.ResLst> list, Context context) {
         super(list);
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder  holder = null;
@@ -79,36 +85,45 @@ public class ReceiveFriendAdapter extends BaseRecyclerViewAdapter<ReceiveFriendE
 
             final int mPosition = position;
             ReceiveViewHolder mHolder = (ReceiveViewHolder)holder;
-            ReceiveFriendEntity.DataEntity entity = dataSource.get(mPosition);
-
+            NewFriendEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
+            String name = TextUtils.isEmpty(entity.getNickname())?entity.getRealname():entity.getNickname();
             if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
+
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
-                mHolder.mTvHeader.setText(entity.getTitle().substring(0,1));
-                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
+                if(!TextUtils.isEmpty(name))
+                    mHolder.mTvHeader.setText(name.substring(0,1));
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(name));
             } else {
                 mHolder.mIvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mIvHeader.setImageURI(entity.getAvatar());
             }
-            mHolder.mTitle.setText(entity.getTitle());
-            if(entity.getSubTitle() == null || entity.getSubTitle().equals("")){
+
+            mHolder.mTitle.setText(name);
+
+            if(entity.getRemark() == null || entity.getRemark().equals("")){
                 mHolder.msubTitle.setText(context.getString(R.string.addFriendHint));
             }else{
-                mHolder.msubTitle.setText(entity.getSubTitle());
+                mHolder.msubTitle.setText(entity.getRemark());
             }
 
-
-            if(entity.isApproved()){
+            if(!entity.getIsFriend().equals("0")){
                 mHolder.mApprove.setVisibility(View.GONE);
                 mHolder.mApproved.setVisibility(View.VISIBLE);
+                mHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick(mPosition);
+                    }
+                });
             }else{
                 mHolder.mApprove.setVisibility(View.VISIBLE);
                 mHolder.mApproved.setVisibility(View.GONE);
                 mHolder.mApprove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListener.onItemClick(mPosition);
+                        mListener2.onItemClick(mPosition);
                     }
                 });
             }
@@ -127,6 +142,11 @@ public class ReceiveFriendAdapter extends BaseRecyclerViewAdapter<ReceiveFriendE
     public void setOnItemClickListener(OnItemClickListener mListener){
 
         this.mListener = mListener;
+    }
+    //设置item监听事件
+    public void setOnAcceptClickListener(OnItemClickListener mListener){
+
+        this.mListener2 = mListener;
     }
     class ReceiveViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_header)

@@ -12,15 +12,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.home.rw.R;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.presenter.impl.AddFriendPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
+import com.home.rw.mvp.view.AddFriendView;
+import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SendFriendVerifiAvtivity extends BaseActivity {
+public class SendFriendVerifiAvtivity extends BaseActivity implements AddFriendView{
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -37,6 +44,11 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
     @BindView(R.id.iv_del)
     ImageView mDelete;
 
+    @Inject
+    AddFriendPresenterImpl mAddFriendPresenterImpl;
+
+    private String userId;
+
     @OnClick({R.id.back,
             R.id.iv_del,
             R.id.rightText
@@ -47,7 +59,8 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rightText:
-                finish();
+                mAddFriendPresenterImpl.beforeRequest();
+                mAddFriendPresenterImpl.addFriend(userId,mEt1.getText().toString());
                 break;
             case R.id.iv_del:
                 mEt1.setText("");
@@ -64,14 +77,16 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
     public void initViews() {
         midText.setText(getString(R.string.friendVerifi));
         rightText.setText(getString(R.string.send));
+        mAddFriendPresenterImpl.attachView(this);
         mback.setImageResource(R.drawable.btn_back);
+        userId = getIntent().getStringExtra("userId");
         getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
@@ -89,4 +104,34 @@ public class SendFriendVerifiAvtivity extends BaseActivity {
         return super.dispatchTouchEvent(event);
     }
 
+    @Override
+    public void addFriendCompleted(BaseEntity data) {
+        if(data.getCode().equals("ok")){
+            Toast.makeText(this,getString(R.string.sentAddFriend),Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+        if(mLoadDialog == null){
+            mLoadDialog = DialogUtils.create(this,DialogUtils.TYPE_ADD);
+            mLoadDialog.show();
+        }
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+            mLoadDialog = null;
+        }
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
+    }
 }

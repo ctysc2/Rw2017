@@ -23,6 +23,8 @@ import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.MainPageEntity;
 import com.home.rw.mvp.entity.MixFocusEntity;
+import com.home.rw.mvp.entity.message.DoorKeyEntity;
+import com.home.rw.mvp.entity.message.MyTeamEntity;
 import com.home.rw.mvp.entity.RollMeEntity;
 import com.home.rw.mvp.entity.SignEntity;
 import com.home.rw.mvp.entity.TopicDetailEntity;
@@ -30,11 +32,15 @@ import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 import com.home.rw.mvp.entity.message.BusineseCallEntity;
+import com.home.rw.mvp.entity.message.CompNoticeEntity;
+import com.home.rw.mvp.entity.message.ContactListEntity;
+import com.home.rw.mvp.entity.message.CreatGroupEntity;
 import com.home.rw.mvp.entity.message.DepartmentEntity;
 import com.home.rw.mvp.entity.message.MainBusinessEntity;
 import com.home.rw.mvp.entity.message.MyFriendEntity;
 import com.home.rw.mvp.entity.message.MyGroupEntity;
 import com.home.rw.mvp.entity.message.NewFriendEntity;
+import com.home.rw.mvp.entity.message.RwNoticeDetailEntity;
 import com.home.rw.mvp.entity.message.RwNoticeEntity;
 import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.utils.RxBus;
@@ -476,14 +482,13 @@ public class RetrofitManager {
     public Observable<BusineseCallEntity> businessCall(){
         return mRWService.businessCall();
     }
-
     //我的朋友列表
     public Observable<MyFriendEntity> getMyFriend(){
         return mRWService.getMyFriend();
     }
     //添加好友
-    public Observable<BaseEntity> addFriend(String userId){
-        return mRWService.addFriend(userId);
+    public Observable<BaseEntity> addFriend(String userId,String remark){
+        return mRWService.addFriend(userId,remark);
     }
 
     //同意添加好友
@@ -499,19 +504,19 @@ public class RetrofitManager {
         return mRWService.getRwNotice(page,size);
     }
     //公司公告列表
-    public Observable<CompanyNoticeEntity> getCompanyNotice(int page,int size){
-        return mRWService.getCompanyNotice(page,size);
+    public Observable<CompNoticeEntity> getCompanyNotice(int page, int size, int type){
+        return mRWService.getCompanyNotice(page,size,type);
     }
     //公司公告已读
     public Observable<BaseEntity> readCompanyNotice(String id){
         return mRWService.readCompanyNotice(id);
     }
     //我的群组
-    public Observable<MyGroupEntity> getGroupList(int page, int size){
-        return mRWService.getGroupList(page,size);
+    public Observable<MyGroupEntity> getGroupList(){
+        return mRWService.getGroupList();
     }
     //添加群组
-    public Observable<BaseEntity> addGroup(String name, String users){
+    public Observable<CreatGroupEntity> addGroup(String name, String users){
         return mRWService.addGroup(name,users);
     }
     //企业通讯录列表
@@ -523,8 +528,34 @@ public class RetrofitManager {
         return mRWService.remark(userId,nickname);
     }
     //他人信息
-
     public Observable<UserInfoEntity> getOtherInfo(String userId){
         return mRWService.getOtherInfo(userId);
+    }
+    //拨出语音通话
+    public Observable<BaseEntity> dialOut(String userId){
+        return mRWService.dialOut(userId);
+    }
+
+    //删除公司公告
+    public Observable<BaseEntity> delNotice(String id){
+        return mRWService.delNotice(id);
+    }
+
+    //通讯录注册用户列表
+    public Observable<ContactListEntity> getUsersByPhone(String phones){
+        return mRWService.getUsersByPhone(phones);
+    }
+    //置业公告详情
+    public Observable<RwNoticeDetailEntity> getRwNoticeDetailById(String id){
+        return mRWService.getRwNoticeDetailById(id);
+    }
+    //我的团队
+    public Observable<MyTeamEntity> myTeam(){
+        return mRWService.myTeam();
+    }
+
+    //获取钥匙
+    public Observable<DoorKeyEntity> getDoorKey(){
+        return mRWService.getDoorKey();
     }
 }

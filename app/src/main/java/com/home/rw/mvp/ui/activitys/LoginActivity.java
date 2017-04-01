@@ -57,11 +57,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
         switch (view.getId()){
             case R.id.bt_login:
                 mLoginPresenterImpl.beforeRequest();
-                //mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
-                if(mEtName.getText().toString().equals("1"))
-                    mLoginPresenterImpl.processLogin("oa1_user1",mEtPsw.getText().toString());
-                else
-                    mLoginPresenterImpl.processLogin("oa_m",mEtPsw.getText().toString());
+                mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
+
 //                if(mEtName.getText().toString().equals("")){
 //                    Toast.makeText(this,"请输入用户名",Toast.LENGTH_SHORT).show();
 //                    return;
@@ -89,6 +86,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         mPresenter = mLoginPresenterImpl;
         mPresenter.attachView(this);
+        mEtName.setText("oa1_user1");
+        mEtPsw.setText("1234");
     }
 
     @Override

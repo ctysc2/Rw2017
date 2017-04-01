@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.rw.R;
+import com.home.rw.greendao.entity.UserInfo;
+import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CallListEntity;
 import com.home.rw.mvp.entity.MeetingSelectTempEntity;
@@ -129,22 +131,10 @@ public class PreviewCallActivity extends BaseActivity {
                 }else{
 
                     ArrayList<String> userIds = new ArrayList<>();
-                    switch (PreferenceUtils.getPrefString(this,"userName","3")){
-                        case "1":
-                            userIds.add("2");
-                            userIds.add("3");
-                            break;
-                        case "2":
-                            userIds.add("1");
-                            userIds.add("3");
-                            break;
-                        case "3":
-                        default:
-                            userIds.add("1");
-                            userIds.add("2");
-                            break;
-                    }
 
+                    for(CallListEntity.DataEntity ids:dataSource){
+                        userIds.add(String.valueOf(ids.getId()));
+                    }
                     final ArrayList<String> userlist = userIds;
                     RongIM.getInstance().createDiscussion("temp", userIds, new RongIMClient.CreateDiscussionCallback() {
                         @Override
@@ -167,7 +157,7 @@ public class PreviewCallActivity extends BaseActivity {
                 }else if(callListLength >4){
                     Toast.makeText(this,getString(R.string.onlyOneOp),Toast.LENGTH_SHORT).show();
                 }else{
-                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + "15502145237"));
+                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + receiveData.getPhone()));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
@@ -182,10 +172,18 @@ public class PreviewCallActivity extends BaseActivity {
         receiveData = (CallListEntity.DataEntity)(getIntent().getSerializableExtra("data"));
 
         CallListEntity.DataEntity entity1 = new CallListEntity.DataEntity();
-        entity1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=e5082defe4cd7b89fd6132d16e4d29c2/6a600c338744ebf82b43491adbf9d72a6059a7e0.jpg");
-        entity1.setName("泽拉图");
-        entity1.setId(999);
-        entity1.setPhone("13636315569");
+        UserInfo info = UserInfoDaoHelper.getInstance().getUserInfoById(PreferenceUtils.getPrefLong(this,"ID",0));
+        if(info !=null){
+            entity1.setAvatar(info.getAvatar());
+            entity1.setName(info.getRealName());
+            long id = info.getId();
+            entity1.setId((int)id);
+
+        }else{
+            entity1.setName(PreferenceUtils.getPrefString(this,"realname",""));
+            entity1.setAvatar(PreferenceUtils.getPrefString(this,"avatar",""));
+            entity1.setId((int)PreferenceUtils.getPrefLong(this,"ID",0));
+        }
         entity1.setEditing(false);
 
         CallListEntity.DataEntity entityAdd = new CallListEntity.DataEntity();
@@ -300,6 +298,7 @@ public class PreviewCallActivity extends BaseActivity {
             data.setId(dataSource.get(i).getId());
             data.setAvatar(dataSource.get(i).getAvatar());
             data.setName(dataSource.get(i).getName());
+            data.setPhone(dataSource.get(i).getPhone());
 
             newData.add(data);
         }
@@ -325,6 +324,7 @@ public class PreviewCallActivity extends BaseActivity {
             entity.setName(data.get(i).getName());
             entity.setId(data.get(i).getId());
             entity.setAvatar(data.get(i).getAvatar());
+            entity.setPhone(data.get(i).getPhone());
             newData.add(entity);
         }
         if(newData!=null &&

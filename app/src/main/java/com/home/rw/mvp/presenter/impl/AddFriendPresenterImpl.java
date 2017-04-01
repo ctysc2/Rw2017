@@ -32,8 +32,8 @@ public class AddFriendPresenterImpl extends BasePresenterImpl<AddFriendView,Base
         super.onCreate();
     }
 
-    public void addFriend(String userId){
-        mSubscription = mAddFriendInteractorImpl.addFriend(this,userId);
+    public void addFriend(String userId,String remark){
+        mSubscription = mAddFriendInteractorImpl.addFriend(this,userId,remark);
 
     }
 

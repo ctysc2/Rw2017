@@ -7,6 +7,7 @@ import com.home.rw.event.ReLoginEvent;
 import com.home.rw.listener.RequestCallBack;
 import com.home.rw.mvp.entity.CompanyNoticeEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.CompNoticeEntity;
 import com.home.rw.mvp.interactor.CompanyNoticeInteractor;
 import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.RxBus;
@@ -21,16 +22,16 @@ import rx.Subscription;
  * Created by cty on 2017/3/17.
  */
 
-public class CompanyNoticeInteractorImpl implements CompanyNoticeInteractor<CompanyNoticeEntity> {
+public class CompanyNoticeInteractorImpl implements CompanyNoticeInteractor<CompNoticeEntity> {
     @Inject
     public CompanyNoticeInteractorImpl(){
 
     }
     @Override
-    public Subscription getCompanyNotice(final RequestCallBack<CompanyNoticeEntity> callback, int page, int size) {
-        return RetrofitManager.getInstance(HostType.COMPANY_NOTICE).getCompanyNotice(page,size)
-                .compose(TransformUtils.<CompanyNoticeEntity>defaultSchedulers())
-                .subscribe(new Observer<CompanyNoticeEntity>() {
+    public Subscription getCompanyNotice(final RequestCallBack<CompNoticeEntity> callback, int page, int size,int type) {
+        return RetrofitManager.getInstance(HostType.COMPANY_NOTICE).getCompanyNotice(page,size,type)
+                .compose(TransformUtils.<CompNoticeEntity>defaultSchedulers())
+                .subscribe(new Observer<CompNoticeEntity>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -41,7 +42,7 @@ public class CompanyNoticeInteractorImpl implements CompanyNoticeInteractor<Comp
                     }
 
                     @Override
-                    public void onNext(CompanyNoticeEntity data) {
+                    public void onNext(CompNoticeEntity data) {
                         if(data!=null && data.getCode().equals("9999")){
                             callback.onError(App.getAppContext().getString(R.string.reRoad));
                             RxBus.getInstance().post(new ReLoginEvent());

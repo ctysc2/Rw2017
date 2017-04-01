@@ -116,12 +116,12 @@
         "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_item_list_selector.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_pb_file_download_progress.xml",
-        "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_pb_file_download_progress.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_cs_evaluate_selector.xml",
         "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_cs_evaluate_selector.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_pb_file_download_progress.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_pb_file_download_progress.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_emotion_toggle_selector.xml",

@@ -22,23 +22,28 @@ public class MainBusinessEntity extends BaseEntity{
         return data;
     }
 
-    public static class BiPhone{
-
-    }
-
-    public static class LastRwNoticeTime{
-
-    }
-
-    public static class LastCoNoticeTime{
-
-    }
 
     public static class DataEntity{
         private BiPhone biPhones;
-        private LastRwNoticeTime lastRwNoticeTime;
-        private LastCoNoticeTime lastCoNoticeTime;
-        private ArrayList<MessageMoreActivity> favorites;
+        private String lastRwNoticeTime;
+        private String lastCoNoticeTime;
+        private ArrayList<MessageCommonEntity> favorites;
+
+        public void setLastCoNoticeTime(String lastCoNoticeTime) {
+            this.lastCoNoticeTime = lastCoNoticeTime;
+        }
+
+        public void setLastRwNoticeTime(String lastRwNoticeTime) {
+            this.lastRwNoticeTime = lastRwNoticeTime;
+        }
+
+        public String getLastCoNoticeTime() {
+            return lastCoNoticeTime;
+        }
+
+        public String getLastRwNoticeTime() {
+            return lastRwNoticeTime;
+        }
 
         public BiPhone getBiPhones() {
             return biPhones;
@@ -48,28 +53,35 @@ public class MainBusinessEntity extends BaseEntity{
             this.biPhones = biPhones;
         }
 
-        public LastRwNoticeTime getLastRwNoticeTime() {
-            return lastRwNoticeTime;
-        }
 
-        public void setLastRwNoticeTime(LastRwNoticeTime lastRwNoticeTime) {
-            this.lastRwNoticeTime = lastRwNoticeTime;
-        }
 
-        public LastCoNoticeTime getLastCoNoticeTime() {
-            return lastCoNoticeTime;
-        }
-
-        public void setLastCoNoticeTime(LastCoNoticeTime lastCoNoticeTime) {
-            this.lastCoNoticeTime = lastCoNoticeTime;
-        }
-
-        public ArrayList<MessageMoreActivity> getFavorites() {
+        public ArrayList<MessageCommonEntity> getFavorites() {
             return favorites;
         }
 
-        public void setFavorites(ArrayList<MessageMoreActivity> favorites) {
+        public void setFavorites(ArrayList<MessageCommonEntity> favorites) {
             this.favorites = favorites;
+        }
+
+        public static class BiPhone{
+            String speakName;
+            String speakTime;
+
+            public void setSpeakName(String speakName) {
+                this.speakName = speakName;
+            }
+
+            public void setSpeakTime(String speakTime) {
+                this.speakTime = speakTime;
+            }
+
+            public String getSpeakName() {
+                return speakName;
+            }
+
+            public String getSpeakTime() {
+                return speakTime;
+            }
         }
     }
 

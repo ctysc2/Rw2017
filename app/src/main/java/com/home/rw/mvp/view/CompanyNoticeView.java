@@ -1,6 +1,7 @@
 package com.home.rw.mvp.view;
 
 import com.home.rw.mvp.entity.CompanyNoticeEntity;
+import com.home.rw.mvp.entity.message.CompNoticeEntity;
 import com.home.rw.mvp.view.base.BaseView;
 
 /**
@@ -8,5 +9,5 @@ import com.home.rw.mvp.view.base.BaseView;
  */
 
 public interface CompanyNoticeView extends BaseView {
-    void getCompanyNoticeCompleted(CompanyNoticeEntity data);
+    void getCompanyNoticeCompleted(CompNoticeEntity data);
 }

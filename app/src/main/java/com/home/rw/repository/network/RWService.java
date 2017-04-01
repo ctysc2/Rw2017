@@ -12,6 +12,8 @@ import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.MainPageEntity;
 import com.home.rw.mvp.entity.MixFocusEntity;
+import com.home.rw.mvp.entity.message.DoorKeyEntity;
+import com.home.rw.mvp.entity.message.MyTeamEntity;
 import com.home.rw.mvp.entity.RollMeEntity;
 import com.home.rw.mvp.entity.SignEntity;
 import com.home.rw.mvp.entity.TopicDetailEntity;
@@ -19,11 +21,15 @@ import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 import com.home.rw.mvp.entity.message.BusineseCallEntity;
+import com.home.rw.mvp.entity.message.CompNoticeEntity;
+import com.home.rw.mvp.entity.message.ContactListEntity;
+import com.home.rw.mvp.entity.message.CreatGroupEntity;
 import com.home.rw.mvp.entity.message.DepartmentEntity;
 import com.home.rw.mvp.entity.message.MainBusinessEntity;
 import com.home.rw.mvp.entity.message.MyFriendEntity;
 import com.home.rw.mvp.entity.message.MyGroupEntity;
 import com.home.rw.mvp.entity.message.NewFriendEntity;
+import com.home.rw.mvp.entity.message.RwNoticeDetailEntity;
 import com.home.rw.mvp.entity.message.RwNoticeEntity;
 import com.home.rw.utils.CacheUtils;
 
@@ -349,9 +355,10 @@ public interface RWService {
     @GET("friends.json")
     Observable<MyFriendEntity> getMyFriend();
     //添加好友
-    @GET("add.json")
+    @GET("apply.json")
     Observable<BaseEntity> addFriend(
-            @Query("userId") String userId
+            @Query("userId") String userId,
+            @Query("remark") String remark
     );
     //同意添加好友
     @GET("friend_accept.json")
@@ -375,28 +382,28 @@ public interface RWService {
 
     //公司公告列表
     @GET("notice_list.json")
-    Observable<CompanyNoticeEntity> getCompanyNotice(
+    Observable<CompNoticeEntity> getCompanyNotice(
             @Query("page") int page,
-            @Query("size") int size
+            @Query("size") int size,
+            @Query("readed") int type
+
     );
 
     //公司公告已读
     @GET("notice_read.json")
     Observable<BaseEntity> readCompanyNotice(
-            @Query("ID") String id
+            @Query("Id") String id
     );
 
     //我的群组
     @GET("groups.json")
     Observable<MyGroupEntity> getGroupList(
-            @Query("page") int page,
-            @Query("size") int size
     );
     //添加群组
     @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
     @FormUrlEncoded
     @POST("add.json")
-    Observable<BaseEntity> addGroup(
+    Observable<CreatGroupEntity> addGroup(
             @Field("name") String name,
             @Field("receiveUsers") String users
     );
@@ -411,8 +418,39 @@ public interface RWService {
             @Query("nickname") String nickname
     );
     //他人信息
-    @GET("edit_nickname.json")
+    @GET("user_info.json")
     Observable<UserInfoEntity> getOtherInfo(
             @Query("userId") String userId
     );
+    //拨出语音通话
+    @GET("telephone.json")
+    Observable<BaseEntity> dialOut(
+            @Query("userId") String userId
+    );
+
+    //删除公司公告
+    @GET("notice_remove.json")
+    Observable<BaseEntity> delNotice(
+            @Query("Id") String id
+    );
+    //通讯录注册用户列表
+    @GET("find_users_by_phone.json")
+    Observable<ContactListEntity> getUsersByPhone(
+            @Query("phones") String phones
+    );
+
+    //置业公告详情
+    @GET("details.json")
+    Observable<RwNoticeDetailEntity> getRwNoticeDetailById(
+            @Query("id") String id
+    );
+
+    //我的团队
+    @GET("team.json")
+    Observable<MyTeamEntity> myTeam();
+
+    //获取钥匙
+    @GET("open_door.json")
+    Observable<DoorKeyEntity> getDoorKey();
+
 }

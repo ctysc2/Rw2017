@@ -52,21 +52,11 @@
             android:layout_height="match_parent"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:layout_marginLeft="60dp"
+            android:layout_centerHorizontal="true"
             android:text="@string/help"
             android:paddingTop="25dp"
             android:gravity="center_horizontal"/>
-        <TextView
-            android:id="@+id/tv_temp_key"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:text="@string/tempKey"
-            android:layout_marginRight="60dp"
-            android:paddingTop="25dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_horizontal"/>
+
     </RelativeLayout>
     <ImageView
         android:id="@+id/iv_help"
@@ -74,15 +64,7 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="32dp"
-        android:layout_marginLeft="72dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/icon_help"/>
-    <ImageView
-        android:id="@+id/iv_temp_key"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginRight="72dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="32dp"
-        android:src="@drawable/icon_temp_key"/>
+
 </RelativeLayout>

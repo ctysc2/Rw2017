@@ -23,12 +23,18 @@ import com.home.rw.mvp.entity.ContractAfterEntity;
 import com.home.rw.mvp.entity.ContractInitialEntity;
 import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
+import com.home.rw.mvp.entity.message.ContactListEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.interactor.impl.UserByPhoneInteractorImpl;
+import com.home.rw.mvp.presenter.impl.UserByPhonePresenterImpl;
+import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.ContactAdapter;
 import com.home.rw.mvp.ui.adapters.ContactAdapterAdd;
 import com.home.rw.mvp.ui.adapters.ContactAdapterSelect;
 import com.home.rw.mvp.ui.adapters.base.BaseListViewAdapter;
+import com.home.rw.mvp.view.UserByPhoneView;
 import com.home.rw.utils.CharacterParser;
 import com.home.rw.utils.PinyinComparator;
 import com.home.rw.widget.SideBar;
@@ -37,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,7 +55,7 @@ import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
 import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
 import static com.home.rw.common.Const.TYPE_ADD;
 
-public class ContactsActivity extends BaseActivity {
+public class ContactsActivity extends BaseActivity implements UserByPhoneView{
 
     @BindView(R.id.back)
     ImageButton mback;
@@ -69,6 +77,9 @@ public class ContactsActivity extends BaseActivity {
 
     @BindView(R.id.bt_confirm)
     Button mConfirm;
+
+    @Inject
+    UserByPhonePresenterImpl mUserByPhonePresenterImpl;
 
     private String entry;
 
@@ -128,7 +139,7 @@ public class ContactsActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
     private void initListViewAdd(){
         mAdapter = new ContactAdapterAdd(this, datasource);
@@ -136,6 +147,7 @@ public class ContactsActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(ContactsActivity.this,SendFriendVerifiAvtivity.class);
+                intent.putExtra("userId",String.valueOf(datasource.get(position).getId()));
                 startActivity(intent);
             }
         });
@@ -191,12 +203,12 @@ public class ContactsActivity extends BaseActivity {
     public void initViews() {
         midText.setText(R.string.phoneContacts);
         mback.setImageResource(R.drawable.btn_back);
+        mUserByPhonePresenterImpl.attachView(this);
         entry = getIntent().getStringExtra("entry");
         mCharacterParser = CharacterParser.getInstance();
         mPinyinComparator = PinyinComparator.getInstance();
         entryType = getIntent().getStringExtra("type");
         getPhoneNumberFromMobile();
-        shiftDataSource();
         mSidBar.setTextView(mDialogTextView);
         //设置右侧触摸监听
         mSidBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
@@ -213,13 +225,28 @@ public class ContactsActivity extends BaseActivity {
         });
     }
 
-    private void shiftDataSource() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mUserByPhonePresenterImpl!=null)
+            mUserByPhonePresenterImpl.onDestroy();
+    }
+
+    private void shiftDataSource(ArrayList<MessageCommonEntity> sourceList) {
         datasource = new ArrayList<>();
-        for(int i = 0;i<initContacts.size();i++){
+        for(int i = 0;i<sourceList.size();i++){
+
             ContractAfterEntity entity = new ContractAfterEntity();
-            entity.setId(i+120);
-            entity.setName(initContacts.get(i).getName());
-            entity.setLetter(mCharacterParser.getSpelling(initContacts.get(i).getName()));
+            MessageCommonEntity source = sourceList.get(i);
+
+            if(TextUtils.isEmpty(source.getRealname()))
+                continue;
+
+            entity.setId(Integer.parseInt(source.getUserId()));
+            entity.setName(source.getRealname());
+            entity.setLetter(mCharacterParser.getSpelling(source.getRealname()));
+            entity.setAdded(source.getIsFriend().equals("0")?false:true);
+            entity.setPhone(source.getPhone());
             datasource.add(entity);
         }
         Collections.sort(datasource,mPinyinComparator);
@@ -256,13 +283,13 @@ public class ContactsActivity extends BaseActivity {
                 }
 
                 mBottomBar.setVisibility(View.VISIBLE);
-                checkInitSelect();
                 initListViewSelect();
 
                 break;
             default:
                 break;
         }
+
     }
 
 
@@ -270,10 +297,13 @@ public class ContactsActivity extends BaseActivity {
     public void getPhoneNumberFromMobile() {
         // TODO Auto-generated constructor stub
         initContacts = new ArrayList();
+        String phones = "";
         Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, null, null, null);
         //moveToNext方法返回的是一个boolean类型的数据
         while (cursor.moveToNext()) {
+            if(!phones.equals(""))
+                phones+=",";
             //读取通讯录的姓名
             String name = cursor.getString(cursor
                     .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
@@ -282,7 +312,10 @@ public class ContactsActivity extends BaseActivity {
                     .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             ContractInitialEntity phoneInfo = new ContractInitialEntity(name, number);
             initContacts.add(phoneInfo);
+            phones+=number;
         }
+
+        mUserByPhonePresenterImpl.getUserByPhone(phones);
     }
 
     private String replaceFirstCharacterWithUppercase(String spelling) {
@@ -329,6 +362,7 @@ public class ContactsActivity extends BaseActivity {
         data.setId(entity.getId());
         data.setAvatar(entity.getAvatar());
         data.setName(entity.getName());
+        data.setPhone(entity.getPhone());
         selectedData.add(data);
 
     }
@@ -374,5 +408,32 @@ public class ContactsActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void getUserByPhoneCompleted(ContactListEntity data) {
+        if(data.getCode().equals("ok")){
+            shiftDataSource(data.getData().getFriends());
+            mAdapter.setDataSource(datasource);
+            if(entryType.equals(Const.TYPE_SELECT)){
+                checkInitSelect();
+            }
+
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
     }
 }

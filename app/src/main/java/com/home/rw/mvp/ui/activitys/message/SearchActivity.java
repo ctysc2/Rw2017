@@ -34,6 +34,7 @@ import com.home.rw.mvp.entity.MeetingSelectEntity;
 import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
 import com.home.rw.mvp.entity.OrgEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.BusinessMeetingAdapter;
@@ -97,8 +98,8 @@ public class SearchActivity extends BaseActivity {
     private ArrayList<ContractAfterEntity> mContactFilterData = new ArrayList<>();
 
     private BusinessMeetingAdapter mRecentAdapter;
-    private ArrayList<BusinessMeetingPhoneEntity.DataEntity> mRecentAllData = new ArrayList<>();
-    private ArrayList<BusinessMeetingPhoneEntity.DataEntity> mRecentFilterData = new ArrayList<>();
+    private ArrayList<MessageCommonEntity> mRecentAllData = new ArrayList<>();
+    private ArrayList<MessageCommonEntity> mRecentFilterData = new ArrayList<>();
 
     private MeetingSelectedAdapter mMeetingAdapter;
     private ArrayList<MeetingSelectEntity.DataEntity> mMeetingAllData = new ArrayList<>();
@@ -281,6 +282,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onItemClick(int position) {
                         Intent intent = new Intent(SearchActivity.this,SendFriendVerifiAvtivity.class);
+                        intent.putExtra("userId",String.valueOf(mContactFilterData.get(position).getId()));
                         startActivity(intent);
                     }
                 });
@@ -340,6 +342,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onItemClick(int position) {
                         Intent intent = new Intent(SearchActivity.this,SendFriendVerifiAvtivity.class);
+                        intent.putExtra("userId",String.valueOf(mOrgFilterData.get(position).getId()));
                         startActivity(intent);
                     }
                 });
@@ -418,6 +421,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onItemClick(int position) {
                         Intent intent = new Intent(SearchActivity.this,SendFriendVerifiAvtivity.class);
+                        intent.putExtra("userId",String.valueOf(mTeamFilterData.get(position).getId()));
                         startActivity(intent);
                     }
                 });
@@ -472,14 +476,14 @@ public class SearchActivity extends BaseActivity {
                 mAdapter = mTeamAdapter;
                 break;
             case SEARCH_RECENT:
-                mRecentAllData = (ArrayList<BusinessMeetingPhoneEntity.DataEntity>)(getIntent().getSerializableExtra("data"));
+                mRecentAllData = (ArrayList<MessageCommonEntity>)(getIntent().getSerializableExtra("data"));
                 mRecentAdapter = new BusinessMeetingAdapter(mRecentFilterData,this);
                 mRecentAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-                        BusinessMeetingPhoneEntity.DataEntity entity = mRecentFilterData.get(position);
+                        MessageCommonEntity entity = mRecentFilterData.get(position);
                         CallListEntity.DataEntity data = new CallListEntity.DataEntity();
-                        data.setName(entity.getTitle());
+                        data.setName(entity.getNickname() == null ?entity.getRealname():entity.getNickname());
                         data.setAvatar(entity.getAvatar());
                         Intent intent = new Intent(SearchActivity.this,PreviewCallActivity.class);
                         intent.putExtra("data",data);
@@ -550,7 +554,7 @@ public class SearchActivity extends BaseActivity {
         mContactFilterData = new ArrayList<>();
         for(int i = 0;i<mContactAllData.size();i++){
             ContractAfterEntity entity = mContactAllData.get(i);
-            if(entity.getName().contains(name)){
+            if(entity.getName() != null && entity.getName().contains(name)){
                 mContactFilterData.add(entity);
             }
         }
@@ -570,7 +574,7 @@ public class SearchActivity extends BaseActivity {
             if(entity.getSubData()!=null){
                 for(int j = 0;j<entity.getSubData().size();j++){
                     OrgEntity.DataEntity subEntity = entity.getSubData().get(j);
-                    if(subEntity.getTitle().contains(name) &&
+                    if(subEntity.getTitle()!=null && subEntity.getTitle().contains(name) &&
                             !mOrgFilterData.contains(subEntity)){
                         mOrgFilterData.add(subEntity);
                     }
@@ -589,7 +593,7 @@ public class SearchActivity extends BaseActivity {
         mTeamFilterData = new ArrayList<>();
         for(int i = 0;i<mTeamAllData.size();i++){
             MyTeamEntity.DataEntity entity = mTeamAllData.get(i);
-            if(entity.getTitle().contains(name)){
+            if(entity.getTitle()!=null && entity.getTitle().contains(name)){
                 mTeamFilterData.add(entity);
             }
         }
@@ -609,7 +613,7 @@ public class SearchActivity extends BaseActivity {
             if(entity.getSubData()!=null){
                 for(int j = 0;j<entity.getSubData().size();j++){
                     MeetingSelectEntity.DataEntity subEntity = entity.getSubData().get(j);
-                    if(subEntity.getTitle().contains(name) &&
+                    if(subEntity.getTitle()!= null && subEntity.getTitle().contains(name) &&
                             !mMeetingFilterData.contains(subEntity)){
                         mMeetingFilterData.add(subEntity);
                     }
@@ -627,8 +631,9 @@ public class SearchActivity extends BaseActivity {
     private void filterRecentData(String name){
         mRecentFilterData = new ArrayList<>();
         for(int i = 0;i<mRecentAllData.size();i++){
-            BusinessMeetingPhoneEntity.DataEntity entity = mRecentAllData.get(i);
-            if(entity.getTitle().contains(name)){
+            MessageCommonEntity entity = mRecentAllData.get(i);
+            if((entity.getRealname()!=null &&entity.getRealname().contains(name) )||
+                    (entity.getNickname()!=null && entity.getNickname().contains(name))){
                 mRecentFilterData.add(entity);
             }
         }

@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,9 +160,25 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
         } else if (holder instanceof SubViewHolder){
-            ((SubViewHolder)holder).mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
-            ((SubViewHolder)holder).mHeader.setText(entity.getTitle().substring(0,1));
-            ((SubViewHolder)holder).mtitle.setText(entity.getTitle());
+            if(!TextUtils.isEmpty(entity.getAvatar())){
+                ((SubViewHolder)holder).mHeader.setVisibility(View.INVISIBLE);
+                ((SubViewHolder)holder).mHeader2.setVisibility(View.VISIBLE);
+                ((SubViewHolder)holder).mHeader2.setImageURI(entity.getAvatar());
+            }else{
+                ((SubViewHolder)holder).mHeader.setVisibility(View.VISIBLE);
+                ((SubViewHolder)holder).mHeader2.setVisibility(View.INVISIBLE);
+                ((SubViewHolder)holder).mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
+
+                if(!TextUtils.isEmpty(entity.getTitle()))
+                    ((SubViewHolder)holder).mHeader.setText(entity.getTitle().substring(0,1));
+            }
+
+            if(!TextUtils.isEmpty(entity.getNickName())){
+                ((SubViewHolder)holder).mtitle.setText(entity.getNickName());
+            }else{
+                ((SubViewHolder)holder).mtitle.setText(entity.getTitle());
+            }
+
             ((SubViewHolder)holder).mSubTitle.setText(entity.getSubTitle());
             ((SubViewHolder)holder).mContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

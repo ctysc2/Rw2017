@@ -3,13 +3,8 @@
     android:layout_width="match_parent"
     android:id="@+id/bottomBar"
     android:layout_alignParentBottom="true"
-    android:background="@color/bac_color_EFEFF4"
+    android:background="#F8F8FF"
     android:layout_height="40dp">
-    <View
-        android:id="@+id/sperate"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/widowColor"/>
     <TextView
         android:layout_width="100dp"
         android:layout_height="match_parent"

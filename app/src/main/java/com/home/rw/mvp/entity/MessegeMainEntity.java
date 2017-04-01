@@ -20,11 +20,20 @@ public class MessegeMainEntity extends BaseEntity{
         int id;
         int type = 0;
         String title;
+        String nickName;
         String subTitle;
         String avatar;
         String date;
         boolean isExpanded;
+        String isFriend;
+        String focus;
+        String supportNum;
+        String company;
         public ArrayList<DataEntity> childs;
+
+        public DataEntity(){
+
+        }
 
         public DataEntity(int id,int type,String title,String subTitle,String date,ArrayList<DataEntity> childs,boolean isExpanded){
             this.id = id;
@@ -34,6 +43,44 @@ public class MessegeMainEntity extends BaseEntity{
             this.date = date;
             this.childs = childs;
             this.isExpanded = isExpanded;
+        }
+
+        public void setSupportNum(String supportNum) {
+            this.supportNum = supportNum;
+        }
+
+        public String getSupportNum() {
+            return supportNum;
+        }
+
+        public void setCompany(String company) {
+            this.company = company;
+        }
+
+        public String getCompany() {
+            return company;
+        }
+
+        public void setFocus(String focus) {
+            this.focus = focus;
+        }
+
+        public String getFocus() {
+            return focus;
+        }
+        public void setNickName(String nickName) {
+            this.nickName = nickName;
+        }
+        public String getNickName() {
+            return nickName;
+        }
+
+        public void setIsFriend(String isFriend) {
+            this.isFriend = isFriend;
+        }
+
+        public String getIsFriend() {
+            return isFriend;
         }
 
         public void setAvatar(String avatar) {

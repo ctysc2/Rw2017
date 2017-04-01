@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 public class MyGroupPresenterImpl extends BasePresenterImpl<MyGroupView,MyGroupEntity>{
     private MyGroupInteractor mMyGroupInteractorImpl;
-
+    private String id = "";
     @Inject
     public MyGroupPresenterImpl(MyGroupInteractorImpl myGroupInteractor){
         mMyGroupInteractorImpl = myGroupInteractor;
@@ -31,8 +31,14 @@ public class MyGroupPresenterImpl extends BasePresenterImpl<MyGroupView,MyGroupE
         super.onCreate();
     }
 
-    public void getMyGroupList(int page,int size){
-        mSubscription = mMyGroupInteractorImpl.getMyGroupList(this,page,size);
+    public void setCurrentGroupId(String id){
+        this.id = id;
+    }
+    public String  getCurrentGroupId(){
+        return id;
+    }
+    public void getMyGroupList(){
+        mSubscription = mMyGroupInteractorImpl.getMyGroupList(this);
 
     }
 

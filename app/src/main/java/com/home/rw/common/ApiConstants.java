@@ -58,6 +58,7 @@ public class ApiConstants {
                 case HostType.OUT_LINK3:
                 case HostType.OUT_LINK4:
                 case HostType.TOPIC_DETAIL:
+                case HostType.DOOR_KEY:
                     host = BASE_URL;
                     break;
                 case HostType.USER_INFO:
@@ -78,6 +79,9 @@ public class ApiConstants {
                 case HostType.ACCEPT_FRIEND:
                 case HostType.NEW_FRIEND:
                 case HostType.MY_GROUP:
+                case HostType.TELEPHONE:
+                case HostType.REGISTERED_USER:
+                case HostType.MY_TEAM:
                     host = MY;
                     break;
                 case HostType.ADD_APPLY_EXPENSE:
@@ -147,11 +151,13 @@ public class ApiConstants {
                     host = FRIEND;
                     break;
                 case HostType.RW_NOTICE:
+                case HostType.RW_NOTICE_DETAIL:
                     host = RW_NOTICE;
                     break;
                 case HostType.COMPANY_NOTICE:
                 case HostType.COMPANY_NOTICE_READ:
                 case HostType.DEPARTMENT:
+                case HostType.DEL_NOTICE:
                     host = COMPANY;
                     break;
                 case HostType.ADD_GROUP:

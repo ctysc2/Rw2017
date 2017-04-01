@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.ApprovementListEntity;
 import com.home.rw.mvp.entity.GroupChatEntity;
+import com.home.rw.mvp.entity.message.MyGroupEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.home.rw.utils.DrawableUtils;
 
@@ -30,15 +32,17 @@ public class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
-    private ArrayList<GroupChatEntity.DataEntity> dataSource;
+    private ArrayList<MyGroupEntity.DataEntity> dataSource;
 
-    public GroupChatAdapter(ArrayList<GroupChatEntity.DataEntity> dataSource, Context context){
+    public GroupChatAdapter(ArrayList<MyGroupEntity.DataEntity> dataSource, Context context){
         this.dataSource = dataSource;
         this.context = context;
         inflater = LayoutInflater.from(context);
 
     }
-
+    public void setList(ArrayList<MyGroupEntity.DataEntity> dataSource){
+        this.dataSource = dataSource;
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder  holder = null;
@@ -68,11 +72,12 @@ public class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         GroupChatViewHolder mHolder = (GroupChatViewHolder)holder;
-        GroupChatEntity.DataEntity entity = dataSource.get(position);
+        MyGroupEntity.DataEntity entity = dataSource.get(position);
         mHolder.itemView.setTag(position);
-        mHolder.mHeader.setText(entity.getName().substring(0,1));
+        if(!TextUtils.isEmpty(entity.getName()))
+            mHolder.mHeader.setText(entity.getName().substring(0,1));
         mHolder.mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getName()));
-        mHolder.mTitle.setText(entity.getName()+String.format(context.getString(R.string.orgNum),entity.getNum()));
+        mHolder.mTitle.setText(entity.getName()+String.format(context.getString(R.string.orgNum),entity.getPersonNum()));
 
         if(position == dataSource.size()-1){
             mHolder.mSperate.setVisibility(View.GONE);

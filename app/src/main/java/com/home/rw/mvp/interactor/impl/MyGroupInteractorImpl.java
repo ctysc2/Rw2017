@@ -28,8 +28,8 @@ public class MyGroupInteractorImpl implements MyGroupInteractor<MyGroupEntity> {
 
     }
     @Override
-    public Subscription getMyGroupList(final RequestCallBack<MyGroupEntity> callback, int page, int size) {
-        return RetrofitManager.getInstance(HostType.MY_GROUP).getGroupList(page,size)
+    public Subscription getMyGroupList(final RequestCallBack<MyGroupEntity> callback) {
+        return RetrofitManager.getInstance(HostType.MY_GROUP).getGroupList()
                 .compose(TransformUtils.<MyGroupEntity>defaultSchedulers())
                 .subscribe(new Observer<MyGroupEntity>() {
                     @Override

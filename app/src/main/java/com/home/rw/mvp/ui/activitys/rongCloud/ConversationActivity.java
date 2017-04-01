@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,9 +21,13 @@ import android.widget.TextView;
 
 import com.home.rw.R;
 import com.home.rw.annotation.BindValues;
+import com.home.rw.greendao.entity.Friends;
 import com.home.rw.greendao.entity.UserInfo;
+import com.home.rw.greendaohelper.FriendsDaoHelper;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.entity.CallListEntity;
+import com.home.rw.mvp.entity.UserInfoEntity;
+import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
@@ -30,12 +35,15 @@ import com.home.rw.mvp.ui.activitys.message.AddFriendIndex;
 import com.home.rw.mvp.ui.activitys.message.MyNewFriendActivity;
 import com.home.rw.mvp.ui.activitys.message.PreviewCallActivity;
 import com.home.rw.mvp.ui.activitys.work.RollMeActivity;
+import com.home.rw.mvp.view.UserInfoView;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.PreferenceUtils;
 
 import java.util.Date;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,7 +57,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.push.notification.PushMessageReceiver;
 
 @BindValues(mIsStatusTranslucent = false)
-public class ConversationActivity extends BaseActivity {
+public class ConversationActivity extends BaseActivity implements UserInfoView{
     /**
      * 对方id
      */
@@ -77,6 +85,9 @@ public class ConversationActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
+    @Inject
+    UserInfoPresenterImpl mUserInfoPresenterImpl;
+
     private ConversationFragment mFragment;
     @OnClick({R.id.back,
             R.id.rightText,
@@ -88,10 +99,14 @@ public class ConversationActivity extends BaseActivity {
                 break;
             case R.id.rightText:
                 Intent intent = new Intent(this,PreviewCallActivity.class);
+                com.home.rw.greendao.entity.UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(Long.parseLong(mTargetId));
                 CallListEntity.DataEntity entity = new CallListEntity.DataEntity();
                 entity.setId(Integer.parseInt(mTargetId));
-                entity.setAvatar("http://juqing.9duw.com/UploadPic/2016-8/20168261027734857.jpg");
+                entity.setAvatar("");
                 entity.setName(mTitle);
+                if(user != null){
+                    entity.setAvatar(user.getAvatar());
+                }
                 intent.putExtra("data",entity);
                 startActivity(intent);
                 break;
@@ -107,7 +122,7 @@ public class ConversationActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -126,14 +141,18 @@ public class ConversationActivity extends BaseActivity {
     public void initViews() {
 
         Intent intent = getIntent();
+        mUserInfoPresenterImpl.attachView(this);
         mTitle = intent.getData().getQueryParameter("title");
         midText.setText(mTitle);
         mback.setImageResource(R.drawable.btn_back);
-        rightText.setText(R.string.doPhone);
+
         mConversationType = Conversation.ConversationType.valueOf(intent.getData()
                 .getLastPathSegment().toUpperCase(Locale.getDefault()));
         mTargetId = intent.getData().getQueryParameter("targetId");
-
+        if(!mConversationType.equals(Conversation.ConversationType.GROUP))
+            rightText.setText(R.string.doPhone);
+        else
+            rightText.setText("");
         if (mTargetId != null && (mTargetId.equals("1001")||(mTargetId.equals("1000")))) {
             Intent friendIntent = new Intent(ConversationActivity.this, MyNewFriendActivity.class);
             friendIntent.putExtra("mTargetId",mTargetId);
@@ -153,6 +172,25 @@ public class ConversationActivity extends BaseActivity {
             finish();
             return;
         }
+        if(mConversationType == Conversation.ConversationType.PRIVATE){
+            Friends friends = FriendsDaoHelper.getInstance().getFriendById(Long.parseLong(mTargetId));
+            if(friends == null){
+                Intent previewIntent = new Intent(this,PreviewCallActivity.class);
+                CallListEntity.DataEntity entity = new CallListEntity.DataEntity();
+                UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(Long.parseLong(mTargetId));
+                if(user!=null){
+                    entity.setId(Integer.parseInt(mTargetId));
+                    entity.setAvatar(user.getAvatar());
+                    entity.setName(!TextUtils.isEmpty(user.getNickName())?user.getNickName():user.getRealName());
+                    entity.setPhone(user.getPhone());
+                }
+                previewIntent.putExtra("data",entity);
+                startActivity(previewIntent);
+                finish();
+                return;
+            }
+        }
+
         isPushMessage(intent);
     }
 
@@ -273,4 +311,26 @@ public class ConversationActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void getUserInfoCompleted(UserInfoEntity data) {
+        if(data.getCode().equals("ok")){
+            com.home.rw.greendao.entity.UserInfo user = UserInfoDaoHelper.getInstance().parseEntity2UserInfo(data.getData());
+            UserInfoDaoHelper.getInstance().insertUserInfo(user);
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
+    }
 }

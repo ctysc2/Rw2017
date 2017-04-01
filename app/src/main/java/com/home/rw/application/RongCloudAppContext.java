@@ -4,15 +4,32 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 
 import com.home.rw.event.UnReadMessageEvent;
+import com.home.rw.greendaohelper.GroupDaoHelper;
+import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.mvp.entity.UserInfoEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.MyGroupEntity;
+import com.home.rw.mvp.interactor.impl.DialOutInteractorImpl;
+import com.home.rw.mvp.interactor.impl.MyGroupInteractorImpl;
+import com.home.rw.mvp.interactor.impl.UserInfoInteractorImpl;
+import com.home.rw.mvp.presenter.impl.DialOutPresenterImpl;
+import com.home.rw.mvp.presenter.impl.MyGroupPresenterImpl;
+import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
 import com.home.rw.mvp.ui.activitys.message.ContactsActivity;
 import com.home.rw.mvp.ui.activitys.rongCloud.MyExtensionModule;
+import com.home.rw.mvp.view.DialOutView;
+import com.home.rw.mvp.view.MyGroupView;
+import com.home.rw.mvp.view.UserInfoView;
+import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.utils.RxBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.rong.calllib.IRongCallListener;
@@ -56,6 +73,79 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
         return mRongCloudInstance;
     }
 
+    private UserInfoPresenterImpl mUserInfoPresenterImpl;
+
+    private MyGroupPresenterImpl mMyGroupPresenterImpl;
+    private  UserInfoView mUserInfoView = new UserInfoView() {
+        @Override
+        public void getUserInfoCompleted(UserInfoEntity data) {
+            if(data.getCode().equals("ok") &&
+                    data.getData()!=null){
+
+                com.home.rw.greendao.entity.UserInfo user = UserInfoDaoHelper.getInstance().parseEntity2UserInfo(data.getData());
+
+                UserInfoDaoHelper.getInstance().insertUserInfo(user);
+
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(
+                        String.valueOf(user.getId()),
+                        user.getRealName(),
+                        !TextUtils.isEmpty(user.getAvatar())?Uri.parse(user.getAvatar()):null));
+                Log.i("Retrofit","异步更新他人信息成功");
+            }
+        }
+
+        @Override
+        public void showProgress(int reqType) {
+
+        }
+
+        @Override
+        public void hideProgress(int reqType) {
+
+        }
+
+        @Override
+        public void showErrorMsg(int reqType, String msg) {
+
+        }
+    };
+
+    private MyGroupView mMyGroupview = new MyGroupView() {
+        @Override
+        public void getMyGroupCompleted(MyGroupEntity data) {
+            if(data.getCode().equals("ok") &&
+                    data.getData()!=null){
+                ArrayList<com.home.rw.greendao.entity.Group> groupList = new ArrayList<>();
+                for(int i = 0;i<data.getData().size();i++){
+                    com.home.rw.greendao.entity.Group group = new com.home.rw.greendao.entity.Group();
+                    group.setId(Long.parseLong(data.getData().get(i).getId()));
+                    group.setGroupName(data.getData().get(i).getName());
+                    groupList.add(group);
+                    RongIM.getInstance().refreshGroupInfoCache(new Group(data.getData().get(i).getId(),
+                            data.getData().get(i).getName(),
+                            null));
+                }
+
+                GroupDaoHelper.getInstance().insertGroups(groupList);
+
+            }
+        }
+
+        @Override
+        public void showProgress(int reqType) {
+
+        }
+
+        @Override
+        public void hideProgress(int reqType) {
+
+        }
+
+        @Override
+        public void showErrorMsg(int reqType, String msg) {
+
+        }
+    };
     public Context getContext(){
         return mContext;
     }
@@ -86,60 +176,10 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
         RongIM.setConversationListBehaviorListener(this);
         RongIM.setConnectionStatusListener(this);
         RongIM.setUserInfoProvider(this,true);
+        RongIM.setGroupUserInfoProvider(this,true);
         setReadReceiptConversationType();
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
-//        RongCallClient.getInstance().setVoIPCallListener(new IRongCallListener() {
-//            @Override
-//            public void onCallOutgoing(RongCallSession rongCallSession, SurfaceView surfaceView) {
-//                Log.i("RongCloud","onCallOutgoing targetId:"+rongCallSession.getTargetId());
-//            }
-//
-//            @Override
-//            public void onCallConnected(RongCallSession rongCallSession, SurfaceView surfaceView) {
-//                Log.i("RongCloud","onCallConnected targetId:"+rongCallSession.getTargetId());
-//            }
-//
-//            @Override
-//            public void onCallDisconnected(RongCallSession rongCallSession, RongCallCommon.CallDisconnectedReason callDisconnectedReason) {
-//                Log.i("RongCloud","onCallDisconnected targetId:"+rongCallSession.getTargetId());
-//            }
-//
-//            @Override
-//            public void onRemoteUserRinging(String s) {
-//                Log.i("RongCloud","onRemoteUserRinging s"+s);
-//            }
-//
-//            @Override
-//            public void onRemoteUserJoined(String s, RongCallCommon.CallMediaType callMediaType, SurfaceView surfaceView) {
-//                Log.i("RongCloud","onRemoteUserJoined s"+s);
-//            }
-//
-//            @Override
-//            public void onRemoteUserInvited(String s, RongCallCommon.CallMediaType callMediaType) {
-//
-//            }
-//
-//            @Override
-//            public void onRemoteUserLeft(String s, RongCallCommon.CallDisconnectedReason callDisconnectedReason) {
-//
-//            }
-//
-//            @Override
-//            public void onMediaTypeChanged(String s, RongCallCommon.CallMediaType callMediaType, SurfaceView surfaceView) {
-//
-//            }
-//
-//            @Override
-//            public void onError(RongCallCommon.CallErrorCode callErrorCode) {
-//
-//            }
-//
-//            @Override
-//            public void onRemoteCameraDisabled(String s, boolean b) {
-//
-//            }
-//        });
         setInputProvider();
 
     }
@@ -218,7 +258,20 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
 
     @Override
     public Group getGroupInfo(String s) {
-        return null;
+        Group RGroup = null;
+        com.home.rw.greendao.entity.Group group = GroupDaoHelper.getInstance().getGroupById(Long.parseLong(s));
+        if(group!=null){
+             RGroup = new Group(String.valueOf(group.getId()),group.getGroupName(),null);
+        }
+        //异步获取
+        if(mMyGroupPresenterImpl == null){
+            mMyGroupPresenterImpl = new MyGroupPresenterImpl(new MyGroupInteractorImpl());
+            mMyGroupPresenterImpl.attachView(mMyGroupview);
+        }
+        Log.i("Retrofit","异步获取群组信息");
+        mMyGroupPresenterImpl.getMyGroupList();
+
+        return RGroup;
     }
 
     @Override
@@ -241,43 +294,26 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
                     "若为置业",
                     Uri.parse("http://img1.mp.oeeee.com/201702/03/04f372705ced49eb.jpg")
             );
-        }else if(s.equals("1")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    s,
-                    "孙悟空",
-                    Uri.parse("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2636222877,2825274081&fm=23&gp=0.jpg")
-            );
-        }else if(s.equals("1001")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    s,
-                    "若为置业",
-                    Uri.parse("http://juqing.9duw.com/UploadPic/2016-8/201682610271922903.jpg")
-            );
-        }
-        else if(s.equals("2")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    s,
-                    "猪八戒",
-                    Uri.parse("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=50088fe8d3ca7bcb6976cf7ddf600006/b2de9c82d158ccbf4e8703111dd8bc3eb13541e5.jpg")
-            );
-        }else if(s.equals("3")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    s,
-                    "沙和尚",
-                    Uri.parse("https://imgsa.baidu.com/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=f5e2a401dac451dae2fb04b9d7943903/b219ebc4b74543a96c11c69319178a82b9011462.jpg"));
-
-        }else if(s.equals("4")){
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    s,
-                    "白龙马",
-                    Uri.parse("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1487750183704&di=c241129fbe42167014cc19a1c73877a9&imgtype=0&src=http%3A%2F%2Fkibey-echo.b0.upaiyun.com%2Fd90252fcbe11a6b02bf95d4708e74513.jpg"));
-
         }else{
-            userInfo = new io.rong.imlib.model.UserInfo(
-                    s,
-                    "其他用户",
-                    null
-            );
+
+            //先从数据库获取数据
+            com.home.rw.greendao.entity.UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(Long.parseLong(s));
+            if(user != null){
+                userInfo = new io.rong.imlib.model.UserInfo(
+                        s,
+                        user.getRealName(),
+                        !TextUtils.isEmpty(user.getAvatar())?Uri.parse(user.getAvatar()):null
+                );
+                Log.i("Retrofit","数据库更新融云数据");
+            }
+            //异步获取
+            if(mUserInfoPresenterImpl == null){
+                mUserInfoPresenterImpl = new UserInfoPresenterImpl(new UserInfoInteractorImpl());
+                mUserInfoPresenterImpl.attachView(mUserInfoView);
+            }
+            Log.i("Retrofit","异步获取他人信息");
+            mUserInfoPresenterImpl.getOtherUserInfo(s);
+
         }
        return userInfo;
     }

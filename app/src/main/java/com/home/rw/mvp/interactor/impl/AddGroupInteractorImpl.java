@@ -6,6 +6,7 @@ import com.home.rw.common.HostType;
 import com.home.rw.event.ReLoginEvent;
 import com.home.rw.listener.RequestCallBack;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.CreatGroupEntity;
 import com.home.rw.mvp.interactor.AddGroupInteractor;
 import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.RxBus;
@@ -20,17 +21,17 @@ import rx.Subscription;
  * Created by cty on 2017/3/18.
  */
 
-public class AddGroupInteractorImpl implements AddGroupInteractor<BaseEntity> {
+public class AddGroupInteractorImpl implements AddGroupInteractor<CreatGroupEntity> {
 
     @Inject
     public AddGroupInteractorImpl(){
 
     }
     @Override
-    public Subscription addGroup(final RequestCallBack<BaseEntity> callback, String name, String receiveUsers) {
+    public Subscription addGroup(final RequestCallBack<CreatGroupEntity> callback, String name, String receiveUsers) {
         return RetrofitManager.getInstance(HostType.ADD_GROUP).addGroup(name,receiveUsers)
-                .compose(TransformUtils.<BaseEntity>defaultSchedulers())
-                .subscribe(new Observer<BaseEntity>() {
+                .compose(TransformUtils.<CreatGroupEntity>defaultSchedulers())
+                .subscribe(new Observer<CreatGroupEntity>() {
                     @Override
                     public void onCompleted() {
 
@@ -42,7 +43,7 @@ public class AddGroupInteractorImpl implements AddGroupInteractor<BaseEntity> {
                     }
 
                     @Override
-                    public void onNext(BaseEntity data) {
+                    public void onNext(CreatGroupEntity data) {
                         if(data!=null && data.getCode().equals("9999")){
                             callback.onError(App.getAppContext().getString(R.string.reRoad));
                             RxBus.getInstance().post(new ReLoginEvent());

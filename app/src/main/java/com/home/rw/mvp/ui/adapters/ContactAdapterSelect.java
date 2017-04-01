@@ -120,6 +120,7 @@ public class ContactAdapterSelect extends BaseListViewAdapter {
         if (mContent.getAvatar() == null || mContent.getAvatar().equals("")) {
             viewHolder.mIvHeader.setVisibility(View.INVISIBLE);
             viewHolder.mTvHeader.setVisibility(View.VISIBLE);
+            if(!TextUtils.isEmpty(mContent.getName()))
             viewHolder.mTvHeader.setText(mContent.getName().substring(0,1));
             viewHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(mContent.getName()));
         } else {

@@ -8,12 +8,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.carduoblue.api.CarduoBlueInterface;
+import com.carduoblue.api.InitCallback;
 import com.google.android.gms.maps.MapView;
 import com.home.rw.R;
 import com.home.rw.application.App;
@@ -23,6 +26,9 @@ import com.home.rw.event.ReLoginEvent;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.entity.LoginEntity;
+import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.interactor.impl.DialOutInteractorImpl;
+import com.home.rw.mvp.presenter.impl.DialOutPresenterImpl;
 import com.home.rw.mvp.presenter.impl.LoginPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.fragments.IncrementFragment;
@@ -30,6 +36,7 @@ import com.home.rw.mvp.ui.fragments.MessageFragment;
 import com.home.rw.mvp.ui.fragments.MineMeFragment;
 import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
+import com.home.rw.mvp.view.DialOutView;
 import com.home.rw.mvp.view.LoginView;
 import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.GoogleMapUtils;
@@ -46,6 +53,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.callkit.OutGoingNotice;
+import io.rong.calllib.IRongCallListener;
+import io.rong.calllib.RongCallClient;
+import io.rong.calllib.RongCallCommon;
+import io.rong.calllib.RongCallSession;
+import io.rong.eventbus.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
@@ -57,7 +70,7 @@ import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-public class MainActivity extends BaseActivity implements LoginView {
+public class MainActivity extends BaseActivity implements LoginView,DialOutView {
 
     @BindView(R.id.ll_increment)
     LinearLayout mLlIncrement;
@@ -120,6 +133,8 @@ public class MainActivity extends BaseActivity implements LoginView {
     @Inject
     LoginPresenterImpl mLoginPresenterImpl;
 
+    @Inject
+    DialOutPresenterImpl mDialOutPresenterImpl;
     //当前选择的Fragment
     private int mCurrentIndex = -1;
 
@@ -171,6 +186,7 @@ public class MainActivity extends BaseActivity implements LoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         tabArray.add(mLlMessage);
         tabArray.add(mLlWork);
         tabArray.add(mLlIncrement);
@@ -209,8 +225,14 @@ public class MainActivity extends BaseActivity implements LoginView {
                 Log.i("RongYun","onError errorCode:"+errorCode.getMessage());
             }
         });
-
+        CarduoBlueInterface.init(this, new InitCallback() {
+            @Override
+            public void onResult(Boolean result) {
+                Log.e("Lock", "initResult = " + result);
+            }
+        });
         mLoginPresenterImpl.attachView(this);
+        mDialOutPresenterImpl.attachView(this);
         mSubscription = RxBus.getInstance().toObservable(ReLoginEvent.class)
                 .subscribe(new Action1<ReLoginEvent>() {
                     @Override
@@ -235,7 +257,11 @@ public class MainActivity extends BaseActivity implements LoginView {
         RongIM.getInstance().disconnect();
         if(mLoginPresenterImpl!=null)
             mLoginPresenterImpl.onDestroy();
+
+        if(mDialOutPresenterImpl!=null)
+            mDialOutPresenterImpl.onDestroy();
         PreferenceUtils.setPrefString(MainActivity.this,"sessionID","");
+        EventBus.getDefault().unregister(this);
     }
     public void addFragment() {
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -333,6 +359,17 @@ public class MainActivity extends BaseActivity implements LoginView {
 
     @Override
     public void showErrorMsg(int reqType, String msg) {
-        Toast.makeText(MainActivity.this,getString(R.string.reRoadFailed),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this,getString(R.string.reRoadFailed),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void dialOutCompleted(BaseEntity data) {
+
+    }
+
+    public void onEventMainThread(OutGoingNotice obj){
+        Log.i("RongCloud","呼出通知后台");
+        mDialOutPresenterImpl.dialOut(obj.getUserId());
+
     }
 }

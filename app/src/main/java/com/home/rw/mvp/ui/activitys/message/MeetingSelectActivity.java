@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,13 +22,19 @@ import com.home.rw.mvp.entity.MeetingSelectEntity;
 import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.entity.MessegeMainEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
+import com.home.rw.mvp.entity.message.BusineseCallEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.presenter.impl.BusinessCallPrensenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.social.OthersDetailActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.MeetingSelectedAdapter;
 import com.home.rw.mvp.ui.adapters.MessegeMainAdapter;
+import com.home.rw.mvp.view.BusinessCallView;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +45,7 @@ import static com.home.rw.common.Const.SEARCH_RECENT_SELECT;
 import static com.home.rw.common.Const.TYPE_ADD;
 import static com.home.rw.common.Const.TYPE_NORMAL;
 
-public class MeetingSelectActivity extends BaseActivity {
+public class MeetingSelectActivity extends BaseActivity implements BusinessCallView{
 
     @BindView(R.id.back)
     ImageButton mBack;
@@ -52,6 +59,8 @@ public class MeetingSelectActivity extends BaseActivity {
     @BindView(R.id.bt_confirm)
     Button mConfirm;
 
+    @Inject
+    BusinessCallPrensenterImpl mBusinessCallPrensenterImpl;
     private ArrayList<MeetingSelectEntity.DataEntity> dataSource = new ArrayList<>();
 
     private MeetingSelectedAdapter mAdapter;
@@ -108,50 +117,12 @@ public class MeetingSelectActivity extends BaseActivity {
         MeetingSelectEntity.DataEntity entity4 = new MeetingSelectEntity.DataEntity();
         entity4.setId(-4);
 
-        ArrayList<MeetingSelectEntity.DataEntity> subData = new ArrayList<>();
-
-        MeetingSelectEntity.DataEntity sub1 = new MeetingSelectEntity.DataEntity();
-        sub1.setId(11);
-        sub1.setTitle("山下智博");
-        sub1.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=e955d37d62600c33e474d69a7b253a6a/bd3eb13533fa828b24288d8af41f4134970a5a4b.jpg");
-
-        MeetingSelectEntity.DataEntity sub2 = new MeetingSelectEntity.DataEntity();
-        sub2.setId(12);
-        sub2.setTitle("软软冰");
-        sub2.setAvatar("https://imgsa.baidu.com/baike/w%3D268/sign=a0b1ad538e82b9013dadc4354b8ca97e/7af40ad162d9f2d33861a29badec8a136327cc56.jpg");
-
-        MeetingSelectEntity.DataEntity sub3 = new MeetingSelectEntity.DataEntity();
-        sub3.setId(13);
-        sub3.setTitle("宫崎");
-
-        MeetingSelectEntity.DataEntity sub4 = new MeetingSelectEntity.DataEntity();
-        sub4.setId(14);
-        sub4.setTitle("三河");
-
-        MeetingSelectEntity.DataEntity sub5 = new MeetingSelectEntity.DataEntity();
-        sub5.setId(15);
-        sub5.setTitle("yoyo");
-
-        MeetingSelectEntity.DataEntity sub6 = new MeetingSelectEntity.DataEntity();
-        sub6.setId(16);
-        sub6.setTitle("糖分");
-        sub6.setAvatar("http://tva1.sinaimg.cn/crop.0.0.750.750.180/9d323854jw8fa4n4l6ekxj20ku0ku3zk.jpg");
-
-        subData.add(sub1);
-        subData.add(sub2);
-        subData.add(sub3);
-        subData.add(sub4);
-        subData.add(sub5);
-        subData.add(sub6);
-        entity4.setSubData(subData);
-
 
         dataSource.add(entity1);
         dataSource.add(entity2);
         dataSource.add(entity3);
         dataSource.add(entity4);
 
-        checkInitSelect();
 
         mAdapter = new MeetingSelectedAdapter(dataSource,this);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -257,6 +228,7 @@ public class MeetingSelectActivity extends BaseActivity {
         data.setId(entity.getId());
         data.setAvatar(entity.getAvatar());
         data.setName(entity.getTitle());
+        data.setPhone(entity.getPhone());
         selectedData.add(data);
 
     }
@@ -284,7 +256,14 @@ public class MeetingSelectActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
+        mActivityComponent.inject(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mBusinessCallPrensenterImpl!=null)
+            mBusinessCallPrensenterImpl.onDestroy();
     }
 
     @Override
@@ -293,6 +272,7 @@ public class MeetingSelectActivity extends BaseActivity {
         mBack.setImageResource(R.drawable.btn_back);
         selectedData = (ArrayList<MeetingSelectTempEntity>)(getIntent().getSerializableExtra("selectedData"));
         entry = getIntent().getStringExtra("entry");
+        mBusinessCallPrensenterImpl.attachView(this);
         if(entry.equals("fromMeeting")){
             midText.setText(R.string.meetintSelectHint1);
         }else{
@@ -314,7 +294,7 @@ public class MeetingSelectActivity extends BaseActivity {
                 mConfirm.setText(String.format(getString(R.string.containRollNum),selectedData.size()));
             }
         }
-
+        mBusinessCallPrensenterImpl.getBusinessCall();
 
 
     }
@@ -354,5 +334,46 @@ public class MeetingSelectActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void getBusinessCallCompleted(BusineseCallEntity data) {
+        if(data.getCode().equals("ok")){
+            ArrayList<MeetingSelectEntity.DataEntity> subData = dataTransfer(data.getData());
+            dataSource.get(3).setSubData(subData);
+            checkInitSelect();
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
+    }
+    private ArrayList<MeetingSelectEntity.DataEntity> dataTransfer(ArrayList<MessageCommonEntity> source){
+        ArrayList<MeetingSelectEntity.DataEntity> list = new ArrayList<>();
+        if(source == null || source.size() == 0)
+            return list;
+
+        for(int i = 0;i<source.size();i++){
+            MeetingSelectEntity.DataEntity entity = new MeetingSelectEntity.DataEntity();
+            MessageCommonEntity sourceEntity = source.get(i);
+            entity.setId(Integer.parseInt(sourceEntity.getUserId()));
+            entity.setAvatar(sourceEntity.getAvatar());
+            entity.setTitle(!TextUtils.isEmpty(sourceEntity.getNickname())?sourceEntity.getNickname():sourceEntity.getRealname());
+            entity.setPhone(sourceEntity.getPhone());
+            list.add(entity);
+        }
+        return list;
     }
 }

@@ -20,9 +20,27 @@ public class MeetingSelectEntity extends BaseEntity{
         int id;
         String title;
         String avatar;
+        String nickname;
+        String phone;
         boolean isSelected;
         boolean isExpanded;
         ArrayList<DataEntity> subData;
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
 
         public void setExpanded(boolean expanded) {
             isExpanded = expanded;

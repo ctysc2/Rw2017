@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,22 @@ import android.widget.TextView;
 import com.home.rw.R;
 import com.home.rw.event.BeforeReadEvent;
 import com.home.rw.event.UnReadMessageEvent;
+import com.home.rw.greendao.entity.Friends;
+import com.home.rw.greendao.entity.UserInfo;
+import com.home.rw.greendaohelper.FriendsDaoHelper;
+import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.BusinessMeetingPhoneEntity;
 import com.home.rw.mvp.entity.CallListEntity;
 import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.entity.MessegeMainEntity;
+import com.home.rw.mvp.entity.message.MainBusinessEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.entity.message.MyFriendEntity;
+import com.home.rw.mvp.presenter.impl.BusinessCallPrensenterImpl;
+import com.home.rw.mvp.presenter.impl.MainMessagePresenterImpl;
+import com.home.rw.mvp.presenter.impl.MyFriendPresenterImpl;
 import com.home.rw.mvp.ui.activitys.increment.MeetingAppointmentListActivity;
 import com.home.rw.mvp.ui.activitys.increment.TempActivity;
 import com.home.rw.mvp.ui.activitys.lock.LockMainActivity;
@@ -44,9 +55,13 @@ import com.home.rw.mvp.ui.adapters.HomePagerAdapter;
 import com.home.rw.mvp.ui.adapters.MessegeMainAdapter;
 import com.home.rw.mvp.ui.adapters.RecycleViewSperate;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
+import com.home.rw.mvp.view.MainMessageView;
+import com.home.rw.mvp.view.MyFriendView;
+import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.RxBus;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +69,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import rx.functions.Action1;
 
 import static android.app.Activity.RESULT_OK;
@@ -65,7 +82,7 @@ import static com.home.rw.common.Const.TYPE_NORMAL;
  * Created by cty on 2016/12/13.
  */
 
-public class MessageFragment extends BaseFragment {
+public class MessageFragment extends BaseFragment implements MainMessageView,MyFriendView {
 
     private MessegeMainAdapter mAdapter;
 
@@ -87,6 +104,10 @@ public class MessageFragment extends BaseFragment {
 
     @BindView(R.id.rv_list)
     RecyclerView mRecycleView;
+    @Inject
+    MyFriendPresenterImpl mMyFriendPresenterImpl;
+    @Inject
+    MainMessagePresenterImpl mMainMessagePresenterImpl;
 
     ArrayList<MessegeMainEntity.DataEntity> dataSource = new ArrayList<>();
 
@@ -147,9 +168,30 @@ public class MessageFragment extends BaseFragment {
     public void initViews(View view) {
         midText.setText(R.string.messageTitle);
         rightText.setText(R.string.more);
+        mMainMessagePresenterImpl.attachView(this);
+        mMyFriendPresenterImpl.attachView(this);
         mScan.setImageResource(R.drawable.btn_scan);
         initRecycleView();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mMyFriendPresenterImpl!=null)
+            mMyFriendPresenterImpl.onDestroy();
+        if(mMainMessagePresenterImpl!=null)
+            mMainMessagePresenterImpl.onDestroy();
+
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            mMainMessagePresenterImpl.getMainMessage();
+            mMyFriendPresenterImpl.getMyFriendList();
+        }
     }
 
     @Override
@@ -164,17 +206,16 @@ public class MessageFragment extends BaseFragment {
         MessegeMainEntity.DataEntity child0 = new MessegeMainEntity.DataEntity(
                 -100,
                 0,
-                "新的消息",
+                getString(R.string.newMessage),
                 null,
                 null,
                 null,
                 false
         );
-
         MessegeMainEntity.DataEntity child1 = new MessegeMainEntity.DataEntity(
                 -1,
                 0,
-                "商务电话",
+                getString(R.string.shangWu),
                 "最近通话:小李",
                 "10-28",
                 null,
@@ -183,7 +224,7 @@ public class MessageFragment extends BaseFragment {
         MessegeMainEntity.DataEntity child2 = new MessegeMainEntity.DataEntity(
                 -2,
                 0,
-                "我的好友",
+                getString(R.string.haoYou),
                 null,
                 null,
                 null,
@@ -192,7 +233,7 @@ public class MessageFragment extends BaseFragment {
         MessegeMainEntity.DataEntity child3 = new MessegeMainEntity.DataEntity(
                 -3,
                 0,
-                "置地公告",
+                getString(R.string.zhiDi),
                 null,
                 "10-28",
                 null,
@@ -201,7 +242,7 @@ public class MessageFragment extends BaseFragment {
         MessegeMainEntity.DataEntity child4 = new MessegeMainEntity.DataEntity(
                 -4,
                 0,
-                "公司公告",
+                getString(R.string.gongSi),
                 null,
                 "10-28",
                 null,
@@ -210,7 +251,7 @@ public class MessageFragment extends BaseFragment {
         MessegeMainEntity.DataEntity child5 = new MessegeMainEntity.DataEntity(
                 -5,
                 0,
-                "企业通讯录",
+                getString(R.string.qiYe),
                 null,
                 null,
                 null,
@@ -219,63 +260,21 @@ public class MessageFragment extends BaseFragment {
         MessegeMainEntity.DataEntity child6 = new MessegeMainEntity.DataEntity(
                 -6,
                 0,
-                "常用联系人",
+                getString(R.string.changYong),
                 null,
                 null,
                 subData,
                 false
         );
 
-
-        MessegeMainEntity.DataEntity subchild1 = new MessegeMainEntity.DataEntity(
-                101,
-                0,
-                "张依旧",
-                "13736239384",
-                "10-28",
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity subchild2 = new MessegeMainEntity.DataEntity(
-                102,
-                0,
-                "陈无人",
-                "13947589484",
-                "10-29",
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity subchild3 = new MessegeMainEntity.DataEntity(
-                103,
-                0,
-                "导师",
-                "15543245867",
-                "10-28",
-                null,
-                false
-        );
-
-        subData.add(subchild1);
-        subData.add(subchild2);
-        subData.add(subchild3);
-        subData.add(subchild1);
-        subData.add(subchild2);
-        subData.add(subchild3);
-        subData.add(subchild2);
-        subData.add(subchild3);
-        subData.add(subchild1);
-        subData.add(subchild1);
-        subData.add(subchild2);
-        subData.add(subchild2);
-        subData.add(subchild3);
-        subData.add(subchild1);
-        subData.add(subchild3);
         dataSource.add(child0);
         dataSource.add(child1);
         dataSource.add(child3);
         dataSource.add(child4);
         dataSource.add(child5);
         dataSource.add(child2);
+
+
         dataSource.add(child6);
 
 
@@ -289,6 +288,7 @@ public class MessageFragment extends BaseFragment {
                 mSelectedPosition = position;
                 Intent intent = new Intent(mActivity, ModifiRemarkActivity.class);
                 intent.putExtra("name",dataSource.get(position).getTitle());
+                intent.putExtra("userId",String.valueOf(dataSource.get(position).getId()));
                 startActivityForResult(intent,TYPE_REMARK);
             }
         });
@@ -297,10 +297,15 @@ public class MessageFragment extends BaseFragment {
             @Override
             public void onItemClick(int position) {
                 mSelectedPosition = position;
-                FacusListEntity.DataEntity entity = new FacusListEntity.DataEntity();
-
+                MessegeMainEntity.DataEntity source = dataSource.get(position);
+                FacusListEntity.DataEntity.ResLst entity = new FacusListEntity.DataEntity.ResLst();
+                entity.setSupportNum(source.getSupportNum());
+                entity.setRealname(source.getTitle());
+                entity.setFocus(source.getFocus());
+                entity.setCompany(source.getCompany());
+                entity.setUserId(String.valueOf(source.getId()));
                 Intent intent = new Intent(mActivity, OthersDetailActivity.class);
-
+                intent.putExtra("data",entity);
                 startActivity(intent);
             }
         });
@@ -310,12 +315,14 @@ public class MessageFragment extends BaseFragment {
             public void onItemClick(int position) {
                 MessegeMainEntity.DataEntity entity = dataSource.get(position);
                 mSelectedPosition = position;
-                if(entity.getChilds()!=null){
+                if(entity.getId() == -6){
                     if(entity.isExpanded()){
-                        dataSource.removeAll(entity.getChilds());
+                        if(entity.getChilds()!=null)
+                            dataSource.removeAll(entity.getChilds());
                       entity.setExpanded(false);
                     }else{
-                        dataSource.addAll(position+1,entity.getChilds());
+                        if(entity.getChilds()!=null)
+                            dataSource.addAll(position+1,entity.getChilds());
                       entity.setExpanded(true);
                     }
                    mAdapter.notifyDataSetChanged();
@@ -343,13 +350,26 @@ public class MessageFragment extends BaseFragment {
                             startActivity(intent);
                             break;
                         default:
-                            CallListEntity.DataEntity data = new CallListEntity.DataEntity();
-                            data.setName(entity.getTitle());
-                            data.setAvatar(entity.getAvatar());
-                            data.setId(entity.getId());
-                            intent = new Intent(mActivity,PreviewCallActivity.class);
-                            intent.putExtra("data",data);
-                            startActivity(intent);
+                            if(dataSource.get(position).getIsFriend() !=null && dataSource.get(position).getIsFriend().equals("1")){
+                                UserInfo user = new UserInfo();
+                                user.setAvatar(dataSource.get(position).getAvatar());
+                                long id = dataSource.get(position).getId();
+                                user.setId(id);
+                                user.setPhone(dataSource.get(position).getSubTitle());
+                                user.setRealName(dataSource.get(position).getTitle());
+                                user.setNickName(dataSource.get(position).getNickName());
+                                UserInfoDaoHelper.getInstance().insertUserInfo(user);
+                                RongIM.getInstance().startConversation(mActivity, Conversation.ConversationType.PRIVATE,String.valueOf(dataSource.get(position).getId()),dataSource.get(position).getNickName() == null?dataSource.get(position).getTitle():dataSource.get(position).getNickName());
+                            }else{
+                                CallListEntity.DataEntity data = new CallListEntity.DataEntity();
+                                data.setName(entity.getNickName() == null ?entity.getTitle():entity.getNickName());
+                                data.setAvatar(entity.getAvatar());
+                                data.setId(entity.getId());
+                                intent = new Intent(mActivity,PreviewCallActivity.class);
+                                intent.putExtra("data",data);
+                                startActivity(intent);
+                            }
+
                             break;
 
                     }
@@ -414,5 +434,98 @@ public class MessageFragment extends BaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public void mainMessageCompleted(MainBusinessEntity data) {
+        if(data.getCode().equals("ok")){
+            MainBusinessEntity.DataEntity entity = data.getData();
+            //更新商务电话
+            if(TextUtils.isEmpty(entity.getBiPhones().getSpeakName()))
+                dataSource.get(1).setSubTitle(getString(R.string.noRecentCallName));
+            else
+                dataSource.get(1).setSubTitle(getString(R.string.recentCallName)+entity.getBiPhones().getSpeakName());
+            if(!TextUtils.isEmpty(entity.getBiPhones().getSpeakTime()))
+                dataSource.get(1).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getBiPhones().getSpeakTime()))));
+            //更新置地公告时间
+            if(!TextUtils.isEmpty(entity.getLastRwNoticeTime()))
+                dataSource.get(2).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastRwNoticeTime()))));
+            //更新公司公告时间
+            if(!TextUtils.isEmpty(entity.getLastCoNoticeTime()))
+                dataSource.get(3).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastCoNoticeTime()))));
+
+            //更新最近联系人
+            if(dataSource.get(6).isExpanded() && dataSource.get(6).getChilds()!=null){
+                dataSource.removeAll(dataSource.get(6).getChilds());
+            }
+            dataSource.get(6).setChilds(dataTransfer(entity.getFavorites()));
+
+            if(dataSource.get(6).isExpanded())
+                dataSource.addAll(dataSource.get(6).getChilds());
+
+            mAdapter.notifyDataSetChanged();
+
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
+    }
+
+    private ArrayList<MessegeMainEntity.DataEntity> dataTransfer(ArrayList<MessageCommonEntity> source){
+
+        if(source == null || source.size() == 0)
+            return null;
+
+        ArrayList<MessegeMainEntity.DataEntity> list = new ArrayList<>();
+
+        for(int i = 0;i<source.size();i++){
+            MessegeMainEntity.DataEntity entity = new MessegeMainEntity.DataEntity();
+            MessageCommonEntity sourceEntity = source.get(i);
+            entity.setTitle(sourceEntity.getRealname());
+            entity.setNickName(sourceEntity.getNickname());
+            entity.setSubTitle(sourceEntity.getPhone());
+            entity.setType(1);
+            entity.setAvatar(sourceEntity.getAvatar());
+            entity.setIsFriend(sourceEntity.getIsFriend());
+            entity.setFocus(sourceEntity.getFocus());
+            entity.setId(Integer.parseInt(sourceEntity.getUserId()));
+            entity.setFocus(sourceEntity.getFocus());
+            entity.setSupportNum(sourceEntity.getSupportNum());
+            entity.setCompany(sourceEntity.getCompany());
+            list.add(entity);
+        }
+        return list;
+    }
+
+    @Override
+    public void getMyFriendCompleted(MyFriendEntity data) {
+        if(data.getCode().equals("ok")){
+            //数据库缓存
+            ArrayList<MessageCommonEntity> source = data.getData().getFriends();
+            ArrayList<Friends> list = new ArrayList<>();
+            for(int i = 0;i<source.size();i++){
+                Friends friends = new Friends();
+                MessageCommonEntity entity = source.get(i);
+                friends.setId(Long.parseLong(entity.getUserId()));
+                friends.setPhone(entity.getPhone());
+                friends.setRealName(entity.getRealname());
+                friends.setNickName(entity.getNickname());
+                friends.setAvatar(entity.getAvatar());
+                list.add(friends);
+            }
+            FriendsDaoHelper.getInstance().insertFriends(list);
+        }
     }
 }

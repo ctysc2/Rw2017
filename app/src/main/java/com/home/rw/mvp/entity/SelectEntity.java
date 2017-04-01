@@ -21,16 +21,16 @@ public class SelectEntity extends BaseEntity {
     }
 
     public static class DataEntity implements Serializable{
-        private int id;
+        private String id;
         private String avatar;
         private String name;
         private boolean isSelected;
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 

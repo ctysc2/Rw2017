@@ -27,6 +27,7 @@ import io.rong.calllib.RongCallCommon;
 import io.rong.calllib.RongCallSession;
 import io.rong.calllib.message.CallSTerminateMessage;
 import io.rong.common.RLog;
+import io.rong.eventbus.EventBus;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.utilities.PermissionCheckUtil;
@@ -309,6 +310,7 @@ public class SingleCallActivity extends BaseCallActivity implements Handler.Call
             mLPreviewContainer.addView(localVideo);
         }
         onOutgoingCallRinging();
+        EventBus.getDefault().post(new OutGoingNotice(callSession.getTargetId()));
     }
 
     @Override

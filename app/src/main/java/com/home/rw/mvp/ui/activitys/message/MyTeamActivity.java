@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,12 +22,17 @@ import com.home.rw.mvp.entity.MeetingSelectEntity;
 import com.home.rw.mvp.entity.MeetingSelectTempEntity;
 import com.home.rw.mvp.entity.MyTeamEntity;
 import com.home.rw.mvp.entity.OrgEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.presenter.impl.MyTeamPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.MyTeamAdapter;
 import com.home.rw.mvp.ui.adapters.OriganzationAdapter;
+import com.home.rw.mvp.view.MyTeamView;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +41,7 @@ import static com.home.rw.common.Const.SEARCH_MYTEAM_ADD;
 import static com.home.rw.common.Const.SEARCH_MYTEAM_SELECT;
 import static com.home.rw.common.Const.TYPE_ADD;
 
-public class MyTeamActivity extends BaseActivity {
+public class MyTeamActivity extends BaseActivity implements MyTeamView{
 
     private ArrayList<MyTeamEntity.DataEntity> dataSource = new ArrayList();
 
@@ -62,6 +68,8 @@ public class MyTeamActivity extends BaseActivity {
     @BindView(R.id.bt_confirm)
     Button mConfirm;
 
+    @Inject
+    MyTeamPresenterImpl mMyTeamPresenterImpl;
     @OnClick({R.id.back,
             R.id.bt_confirm,
             R.id.search,
@@ -112,13 +120,14 @@ public class MyTeamActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
     public void initViews() {
         midText.setText(getString(R.string.myTeam));
         mBack.setImageResource(R.drawable.btn_back);
+        mMyTeamPresenterImpl.attachView(this);
         entryType = getIntent().getStringExtra("type");
         entry = getIntent().getStringExtra("entry");
 
@@ -152,7 +161,17 @@ public class MyTeamActivity extends BaseActivity {
                 mBottomBar.setVisibility(View.VISIBLE);
                 break;
         }
+        mMyTeamPresenterImpl.getMyTeam();
+
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mMyTeamPresenterImpl!=null)
+            mMyTeamPresenterImpl.onDestroy();
+    }
+
     private void checkInitSelect(){
         if(selectedData != null ){
 
@@ -185,6 +204,7 @@ public class MyTeamActivity extends BaseActivity {
         data.setId(entity.getId());
         data.setAvatar(entity.getAvatar());
         data.setName(entity.getTitle());
+        data.setPhone(entity.getSubTitle());
         selectedData.add(data);
 
     }
@@ -212,51 +232,8 @@ public class MyTeamActivity extends BaseActivity {
     }
 
     private void initRecycleViewSelect() {
-        MyTeamEntity.DataEntity sub1 = new MyTeamEntity.DataEntity();
-        sub1.setTitle("陈5人");
-        sub1.setId(21);
-        sub1.setAvatar("http://y0.ifengimg.com/e6ce10787c9a3bdb/2014/0423/re_53571adb03caf.jpg");
-
-        MyTeamEntity.DataEntity sub2 = new MyTeamEntity.DataEntity();
-        sub2.setTitle("张19");
-        sub2.setId(22);
-        sub2.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=9963e0334e90f60310bd9415587bd87e/ac345982b2b7d0a21f15689fcfef76094a369ad7.jpg");
-
-        MyTeamEntity.DataEntity sub3 = new MyTeamEntity.DataEntity();
-        sub3.setTitle("2B导师");
-        sub3.setId(23);
-
-        MyTeamEntity.DataEntity sub4 = new MyTeamEntity.DataEntity();
-        sub4.setTitle("李思聪");
-        sub4.setId(24);
-
-        MyTeamEntity.DataEntity sub5 = new MyTeamEntity.DataEntity();
-        sub5.setTitle("唐军");
-        sub5.setId(25);
 
 
-        MyTeamEntity.DataEntity sub6 = new MyTeamEntity.DataEntity();
-        sub6.setTitle("松松");
-        sub6.setId(26);
-
-        MyTeamEntity.DataEntity sub7 = new MyTeamEntity.DataEntity();
-        sub7.setTitle("炮神");
-        sub7.setAvatar("http://t0.qlogo.cn/mbloghead/117e399658e349b2fd24/0");
-        sub7.setId(27);
-
-        MyTeamEntity.DataEntity sub8 = new MyTeamEntity.DataEntity();
-        sub8.setTitle("糖分");
-        sub8.setAvatar("http://tva1.sinaimg.cn/crop.0.0.750.750.180/9d323854jw8fa4n4l6ekxj20ku0ku3zk.jpg");
-        sub8.setId(16);
-        dataSource.add(sub1);
-        dataSource.add(sub2);
-        dataSource.add(sub3);
-        dataSource.add(sub4);
-        dataSource.add(sub5);
-        dataSource.add(sub6);
-        dataSource.add(sub7);
-        dataSource.add(sub8);
-        checkInitSelect();
         mAdapter = new MyTeamAdapter(dataSource,this,Const.TYPE_SELECT);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -291,66 +268,6 @@ public class MyTeamActivity extends BaseActivity {
     }
 
     private void initRecycleViewAdd() {
-        MyTeamEntity.DataEntity sub1 = new MyTeamEntity.DataEntity();
-        sub1.setTitle("陈5人");
-        sub1.setSubTitle("最近通话 张19");
-        sub1.setDate("10-28");
-        sub1.setAdded(true);
-        sub1.setId(1);
-        sub1.setAvatar("http://y0.ifengimg.com/e6ce10787c9a3bdb/2014/0423/re_53571adb03caf.jpg");
-
-        MyTeamEntity.DataEntity sub2 = new MyTeamEntity.DataEntity();
-        sub2.setTitle("张19");
-        sub2.setSubTitle("最近通话 求总");
-        sub2.setDate("10-24");
-        sub2.setAdded(true);
-        sub2.setId(2);
-        sub2.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=9963e0334e90f60310bd9415587bd87e/ac345982b2b7d0a21f15689fcfef76094a369ad7.jpg");
-
-        MyTeamEntity.DataEntity sub3 = new MyTeamEntity.DataEntity();
-        sub3.setTitle("2B导师");
-        sub3.setSubTitle("最近通话 喵喵");
-        sub3.setDate("10-23");
-        sub3.setId(3);
-        sub3.setAdded(true);
-
-        MyTeamEntity.DataEntity sub4 = new MyTeamEntity.DataEntity();
-        sub4.setTitle("李思聪");
-        sub4.setSubTitle("最近通话 王尼玛");
-        sub4.setDate("10-22");
-        sub4.setAdded(true);
-        sub4.setId(4);
-
-        MyTeamEntity.DataEntity sub5 = new MyTeamEntity.DataEntity();
-        sub5.setTitle("唐军");
-        sub5.setSubTitle("最近通话 聪哥");
-        sub5.setDate("10-14");
-        sub5.setAdded(false);
-        sub5.setId(5);
-
-
-        MyTeamEntity.DataEntity sub6 = new MyTeamEntity.DataEntity();
-        sub6.setTitle("松松");
-        sub6.setSubTitle("最近通话 sy");
-        sub6.setDate("10-06");
-        sub6.setAdded(true);
-        sub6.setId(6);
-
-        MyTeamEntity.DataEntity sub7 = new MyTeamEntity.DataEntity();
-        sub7.setTitle("炮神");
-        sub7.setSubTitle("最近通话 sy");
-        sub7.setDate("10-06");
-        sub7.setAvatar("http://t0.qlogo.cn/mbloghead/117e399658e349b2fd24/0");
-        sub7.setId(7);
-        sub7.setAdded(true);
-
-        dataSource.add(sub1);
-        dataSource.add(sub2);
-        dataSource.add(sub3);
-        dataSource.add(sub4);
-        dataSource.add(sub5);
-        dataSource.add(sub6);
-        dataSource.add(sub7);
 
         mAdapter = new MyTeamAdapter(dataSource,this, TYPE_ADD);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -358,6 +275,7 @@ public class MyTeamActivity extends BaseActivity {
             public void onItemClick(int position) {
 
                 Intent intent = new Intent(MyTeamActivity.this,SendFriendVerifiAvtivity.class);
+                intent.putExtra("userId",String.valueOf(dataSource.get(position).getId()));
                 startActivity(intent);
 
             }
@@ -371,61 +289,6 @@ public class MyTeamActivity extends BaseActivity {
 
     private void initRecycleViewNormal() {
 
-        MyTeamEntity.DataEntity sub1 = new MyTeamEntity.DataEntity();
-        sub1.setTitle("陈5人");
-        sub1.setSubTitle("最近通话 张19");
-        sub1.setDate("10-28");
-        sub1.setId(1);
-        sub1.setAvatar("http://y0.ifengimg.com/e6ce10787c9a3bdb/2014/0423/re_53571adb03caf.jpg");
-
-        MyTeamEntity.DataEntity sub2 = new MyTeamEntity.DataEntity();
-        sub2.setTitle("张19");
-        sub2.setSubTitle("最近通话 求总");
-        sub2.setDate("10-24");
-        sub2.setId(2);
-        sub2.setAvatar("https://imgsa.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=9963e0334e90f60310bd9415587bd87e/ac345982b2b7d0a21f15689fcfef76094a369ad7.jpg");
-
-        MyTeamEntity.DataEntity sub3 = new MyTeamEntity.DataEntity();
-        sub3.setTitle("2B导师");
-        sub3.setSubTitle("最近通话 喵喵");
-        sub3.setDate("10-23");
-        sub3.setId(3);
-
-        MyTeamEntity.DataEntity sub4 = new MyTeamEntity.DataEntity();
-        sub4.setTitle("李思聪");
-        sub4.setSubTitle("最近通话 王尼玛");
-        sub4.setDate("10-22");
-        sub4.setId(4);
-
-        MyTeamEntity.DataEntity sub5 = new MyTeamEntity.DataEntity();
-        sub5.setTitle("唐军");
-        sub5.setSubTitle("最近通话 聪哥");
-        sub5.setDate("10-14");
-        sub5.setId(5);
-
-
-        MyTeamEntity.DataEntity sub6 = new MyTeamEntity.DataEntity();
-        sub6.setTitle("松松");
-        sub6.setSubTitle("最近通话 sy");
-        sub6.setDate("10-06");
-        sub6.setId(6);
-
-        MyTeamEntity.DataEntity sub7 = new MyTeamEntity.DataEntity();
-        sub7.setTitle("炮神");
-        sub7.setSubTitle("最近通话 sy");
-        sub7.setDate("10-06");
-        sub7.setAvatar("http://t0.qlogo.cn/mbloghead/117e399658e349b2fd24/0");
-        sub7.setId(7);
-
-
-
-        dataSource.add(sub1);
-        dataSource.add(sub2);
-        dataSource.add(sub3);
-        dataSource.add(sub4);
-        dataSource.add(sub5);
-        dataSource.add(sub6);
-        dataSource.add(sub7);
 
         mAdapter = new MyTeamAdapter(dataSource,this,Const.TYPE_NORMAL);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -476,5 +339,51 @@ public class MyTeamActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void getMyTeamCompleted(com.home.rw.mvp.entity.message.MyTeamEntity data) {
+        if(data.getCode().equals("ok")){
+            dataSource = dataTransFer(data.getData().getPersons());
+
+            if(entryType.equals(Const.TYPE_SELECT)){
+                checkInitSelect();
+            }
+            mAdapter.setDataSource(dataSource);
+        }
+    }
+    private ArrayList<MyTeamEntity.DataEntity> dataTransFer(ArrayList<MessageCommonEntity> sourceList){
+        ArrayList<MyTeamEntity.DataEntity> listData = new ArrayList<>();
+        if(sourceList == null || sourceList.size() == 0){
+            return listData;
+        }
+        for(int i = 0;i<sourceList.size();i++){
+            MyTeamEntity.DataEntity entity = new MyTeamEntity.DataEntity();
+            MessageCommonEntity source = sourceList.get(i);
+            if(source.getUserId()!=null)
+                entity.setId(Integer.parseInt(source.getUserId()));
+            entity.setAvatar(source.getAvatar());
+            entity.setTitle(!TextUtils.isEmpty(source.getNickname())?source.getNickname():source.getRealname());
+            entity.setSubTitle(source.getPhone());
+            entity.setAdded(source.getIsFriend().equals("0")?false:true);
+            listData.add(entity);
+        }
+
+
+        return listData;
+    }
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
     }
 }

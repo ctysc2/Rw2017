@@ -53,7 +53,7 @@
     <string name="normalCall">普通电话</string>
     <string name="inviteNum">可邀请%1$d人</string>
     <string name="organization">组织架构</string>
-    <string name="orgNum">(%1$d人)</string>
+    <string name="orgNum">(%1$s人)</string>
     <string name="myTeam">我的团队</string>
     <string name="addFriend">添加好友</string>
     <string name="phoneContact">手机通讯录</string>
@@ -75,7 +75,8 @@
     <string name="containRollNum">确定(%1$d)</string>
     <string name="numCantOverHint">已达到人数上限</string>
     <string name="phoneContacts">手机通讯录</string>
-
+    <string name="recentCallName">最近通话:</string>
+    <string name="noRecentCallName">最近通话:暂无</string>
     <string name="toastAtLeastOneOp">请选择一位通话对象</string>
     <string name="toastMeetingAtLeastOneOp">请选择至少一位通话对象</string>
     <string name="onlyOneOp">只能选择一位通话对象</string>
@@ -296,6 +297,7 @@
     <string name="modifiSuccessed">修改成功</string>
     <string name="modifiFailed">修改失败</string>
     <string name="inputCannotBeEmpty">修改内容不能为空</string>
+    <string name="nicknameCannotEmpty">昵称不能为空</string>
     <string name="notSamePassword">2次密码输入不一致</string>
     <string name="sendVerifiFailed">验证码发送失败</string>
     <string name="modifiPassedFailed">修改失败</string>
@@ -305,6 +307,27 @@
     <string name="passWordError">密码错误</string>
     <string name="focusSucceed">关注成功</string>
     <string name="focusFailed">关注失败</string>
+    <string name="deleteing">删除中...</string>
+    <string name="deleteSuccess">删除成功</string>
+    <string name="deleteFailed">删除失败</string>
+    <string name="createdSucceed">创建成功</string>
+    <string name="createdFailed">创建失败</string>
+    <string name="createing">创建中...</string>
+    <string name="groupNoEmpty">群组名不能为空</string>
+    <string name="chooseGroupMember">请选择群组成员</string>
+    <string name="noFriends">暂时没有好友可以添加~</string>
+    <string name="addFriendFailed">添加好友失败~</string>
+    <string name="addingFriend">添加中...</string>
+    <string name="searching">搜索中...</string>
+    <string name="opening">开门中...</string>
+    <string name="doorNotFound">没有检测到设备</string>
+    <string name="sentAddFriend">好友邀请已发出</string>
+    <string name="openDoorOk">开门成功,欢迎光临</string>
+    <string name="DoorConnectFailed">连接失败</string>
+    <string name="DoorPswError">密码错误</string>
+    <string name="Doortimeout">超时</string>
+    <string name="turnOnBt">正在开启蓝牙</string>
+    <string name="chooseKey">请选择门锁</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_meeting_appointment_list">MeetingAppointmentListActivity</string>

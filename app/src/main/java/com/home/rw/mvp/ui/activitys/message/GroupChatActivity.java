@@ -13,16 +13,23 @@ import android.widget.TextView;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.GroupChatEntity;
+import com.home.rw.mvp.entity.message.MyGroupEntity;
+import com.home.rw.mvp.presenter.impl.MyGroupPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
 import com.home.rw.mvp.ui.adapters.GroupChatAdapter;
 import com.home.rw.mvp.ui.adapters.ReceiveFriendAdapter;
+import com.home.rw.mvp.view.MyGroupView;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 
-public class GroupChatActivity extends BaseActivity {
+public class GroupChatActivity extends BaseActivity implements MyGroupView{
 
     @BindView(R.id.back)
     ImageButton mBack;
@@ -38,7 +45,11 @@ public class GroupChatActivity extends BaseActivity {
 
     private GroupChatAdapter mAdapter;
 
-    private ArrayList<GroupChatEntity.DataEntity> dataSource = new ArrayList<>();
+    private ArrayList<MyGroupEntity.DataEntity> dataSource = new ArrayList<>();
+
+    @Inject
+    MyGroupPresenterImpl mMyGroupPresenterImpl;
+
     @OnClick({R.id.back,
             R.id.rightText,
 
@@ -53,10 +64,17 @@ public class GroupChatActivity extends BaseActivity {
                 intent = new Intent(this, GroupChatSelectActivity.class);
                 startActivity(intent);
                 break;
-
             default:
                 break;
         }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mMyGroupPresenterImpl!=null)
+            mMyGroupPresenterImpl.onDestroy();
 
     }
 
@@ -67,7 +85,7 @@ public class GroupChatActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
-
+        mActivityComponent.inject(this);
     }
 
     @Override
@@ -75,6 +93,7 @@ public class GroupChatActivity extends BaseActivity {
         midText.setText(getString(R.string.groupChat));
         rightText.setText(getString(R.string.createGroupChat));
         mBack.setImageResource(R.drawable.btn_back);
+        mMyGroupPresenterImpl.attachView(this);
     }
 
     @Override
@@ -82,40 +101,16 @@ public class GroupChatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initViews();
         initRecycleView();
+        mMyGroupPresenterImpl.getMyGroupList();
     }
 
     private void initRecycleView() {
-        GroupChatEntity.DataEntity entity1 = new GroupChatEntity.DataEntity();
-        entity1.setName("同城交友");
-        entity1.setNum(678);
-
-        GroupChatEntity.DataEntity entity2 = new GroupChatEntity.DataEntity();
-        entity2.setName("老司机资源共享群");
-        entity2.setNum(1002);
-
-        GroupChatEntity.DataEntity entity3 = new GroupChatEntity.DataEntity();
-        entity3.setName("天上人间会所");
-        entity3.setNum(134);
-
-        GroupChatEntity.DataEntity entity4 = new GroupChatEntity.DataEntity();
-        entity4.setName("react native有问必答群");
-        entity4.setNum(456);
-
-        GroupChatEntity.DataEntity entity5 = new GroupChatEntity.DataEntity();
-        entity5.setName("上海申花蓝魔球迷会");
-        entity5.setNum(839);
-
-        dataSource.add(entity1);
-        dataSource.add(entity2);
-        dataSource.add(entity3);
-        dataSource.add(entity4);
-        dataSource.add(entity5);
 
         mAdapter = new GroupChatAdapter(dataSource,this);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                RongIM.getInstance().startConversation(GroupChatActivity.this, Conversation.ConversationType.GROUP,String.valueOf(dataSource.get(position).getId()),dataSource.get(position).getName());
             }
         });
         mRecycleView.setHasFixedSize(true);
@@ -123,5 +118,30 @@ public class GroupChatActivity extends BaseActivity {
                 LinearLayoutManager.VERTICAL, false));
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void getMyGroupCompleted(MyGroupEntity data) {
+        if(data.getCode().equals("ok")){
+            dataSource = data.getData();
+            mAdapter.setList(dataSource);
+            mAdapter.notifyDataSetChanged();
+
+        }
+    }
+
+    @Override
+    public void showProgress(int reqType) {
+
+    }
+
+    @Override
+    public void hideProgress(int reqType) {
+
+    }
+
+    @Override
+    public void showErrorMsg(int reqType, String msg) {
+
     }
 }

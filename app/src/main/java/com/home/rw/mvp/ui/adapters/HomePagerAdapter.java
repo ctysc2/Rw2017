@@ -109,6 +109,8 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
             holder.itemView.setTag(mPosition);
 
             if(mPosition == 0){
+                mHolder.mDraContainer.setVisibility(View.VISIBLE);
+                mHolder.sperate.setVisibility(View.VISIBLE);
                 mHolder.mCompType.setText(context.getString(R.string.compIntroduction));
                 mHolder.mCompTypeEn.setText(context.getString(R.string.compIntroductionEn));
                 mHolder.mTitle.setText(entity.getTitle());
@@ -118,6 +120,14 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
             }else{
                 mHolder.mCompType.setText(context.getString(R.string.compDynamic));
                 mHolder.mCompTypeEn.setText(context.getString(R.string.compDynamicEn));
+
+                if(mPosition == 1){
+                    mHolder.mDraContainer.setVisibility(View.VISIBLE);
+                    mHolder.sperate.setVisibility(View.VISIBLE);
+                }else{
+                    mHolder.mDraContainer.setVisibility(View.GONE);
+                    mHolder.sperate.setVisibility(View.GONE);
+                }
                 mHolder.mTitle.setText(entity.getTitle());
                 mHolder.mContent1.setVisibility(View.GONE);
                 mHolder.mContent2.setVisibility(View.VISIBLE);
@@ -170,6 +180,14 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
 
 
     class HomePageViewHolder extends RecyclerView.ViewHolder {
+
+
+        @BindView(R.id.sperate)
+        View sperate;
+
+        @BindView(R.id.ll_dra_container)
+        LinearLayout mDraContainer;
+
         @BindView(R.id.tv_comptype)
         TextView mCompType;
 

@@ -8,12 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.home.rw.R;
 import com.home.rw.listener.AlertDialogListener;
 import com.home.rw.listener.AnimationEndListener;
+import com.home.rw.listener.OnKeyClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cty on 2016/12/12.
@@ -24,6 +31,12 @@ public class DialogUtils {
     public static final int TYPE_ALERT = 1;
     public static final int TYPE_UPDATE = 2;
     public static final int TYPE_LOADING = 3;
+    public static final int TYPE_DEL = 4;
+    public static final int TYPE_CREATE = 5;
+    public static final int TYPE_ADD = 6;
+    public static final int TYPE_DOOR_SEARCH = 7;
+    public static final int TYPE_DOOR_OPEN= 8;
+    public static final int TYPE_KEY_LIST = 9;
 
     private  Context mContext;
     private  int mDialogType;
@@ -54,6 +67,21 @@ public class DialogUtils {
             case TYPE_LOADING:
                 resID = R.string.loading;
                 break;
+            case TYPE_DEL:
+                resID = R.string.deleteing;
+                break;
+            case TYPE_CREATE:
+                resID = R.string.createing;
+                break;
+            case TYPE_ADD:
+                resID = R.string.addingFriend;
+                break;
+            case TYPE_DOOR_SEARCH:
+                resID = R.string.searching;
+                break;
+            case TYPE_DOOR_OPEN:
+                resID = R.string.opening;
+                break;
             default:
                 break;
 
@@ -69,6 +97,9 @@ public class DialogUtils {
                 break;
         }
 
+    }
+    public void show(ArrayList<String> keyList,OnKeyClickListener listener){
+        showKeyList(keyList,listener);
     }
     public void show(AlertDialogListener listenerString,String hint1,String hint2){
 
@@ -86,13 +117,20 @@ public class DialogUtils {
 
 
     }
+    private TextView mHint;
+
+    public void setText(int resID){
+        if(mHint!=null)
+            mHint.setText(mContext.getString(resID));
+    }
     //加载中弹框
     private void showLoadingDialog(){
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         View contentView = inflater.inflate(R.layout.common_loading, null);
-        ((TextView)contentView.findViewById(R.id.tv_loading)).setText(mContext.getString(resID));
+        mHint = ((TextView)contentView.findViewById(R.id.tv_loading));
+        mHint.setText(mContext.getString(resID));
         mDialog = new AlertDialog.Builder(mContext).create();
         mDialog.show();
 //        if(resID == R.string.loging)
@@ -166,6 +204,37 @@ public class DialogUtils {
         mDialog.setContentView(contentView);
         Window window = mDialog.getWindow();
         window.setBackgroundDrawableResource(android.R.color.transparent);
+        WindowManager.LayoutParams params = mDialog.getWindow().getAttributes();
+        params.width = (int)(DimenUtil.getScreenWidth()*0.8);
+        window.setAttributes(params);
+
+    }
+
+    private void showKeyList(ArrayList<String> keyList,final OnKeyClickListener listener){
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+
+        View contentView = inflater.inflate(R.layout.keylist, null);
+        TextView mCancle = (TextView)contentView.findViewById(R.id.tv_cancle);
+        ListView mListview = (ListView) contentView.findViewById(R.id.lv_list);
+        mListview.setAdapter(new ArrayAdapter<String>(mContext,
+                R.layout.item_key, keyList));
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.onKeyClick(position);
+            }
+        });
+        mCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onKeyClick(-1);
+            }
+        });
+        mDialog = new AlertDialog.Builder(mContext).create();
+        mDialog.show();
+        mDialog.setCancelable(false);
+        mDialog.setContentView(contentView);
+        Window window = mDialog.getWindow();
         WindowManager.LayoutParams params = mDialog.getWindow().getAttributes();
         params.width = (int)(DimenUtil.getScreenWidth()*0.8);
         window.setAttributes(params);

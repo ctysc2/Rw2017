@@ -9,5 +9,5 @@ import rx.Subscription;
  */
 
 public interface CompanyNoticeInteractor<T> {
-    Subscription getCompanyNotice(RequestCallBack<T> callback, int page, int size);
+    Subscription getCompanyNotice(RequestCallBack<T> callback, int page, int size,int type);
 }

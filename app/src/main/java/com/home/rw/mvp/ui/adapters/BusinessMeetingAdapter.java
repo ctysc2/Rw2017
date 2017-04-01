@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.BusinessMeetingPhoneEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
+import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.DrawableUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,19 +27,19 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/23.
  */
 
-public class BusinessMeetingAdapter extends BaseRecyclerViewAdapter<BusinessMeetingPhoneEntity.DataEntity> {
+public class BusinessMeetingAdapter extends BaseRecyclerViewAdapter<MessageCommonEntity> {
 
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
-    public BusinessMeetingAdapter(List<BusinessMeetingPhoneEntity.DataEntity> dataSource,Context context) {
+    public BusinessMeetingAdapter(List<MessageCommonEntity> dataSource,Context context) {
         super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
-    public void setDataSource(List<BusinessMeetingPhoneEntity.DataEntity> dataSource){
+    public void setDataSource(List<MessageCommonEntity> dataSource){
         this.dataSource = dataSource;
         notifyDataSetChanged();
     }
@@ -84,13 +88,20 @@ public class BusinessMeetingAdapter extends BaseRecyclerViewAdapter<BusinessMeet
 
             holder.itemView.setTag(mPosition);
 
-            BusinessMeetingPhoneEntity.DataEntity entity = dataSource.get(mPosition);
+            MessageCommonEntity entity = dataSource.get(mPosition);
 
-            ((BusinessViewHolder) holder).mTitle.setText(entity.getTitle());
+            if(!TextUtils.isEmpty(entity.getNickname())){
+                ((BusinessViewHolder) holder).mTitle.setText(entity.getNickname());
+            }else{
+                ((BusinessViewHolder) holder).mTitle.setText(entity.getRealname());
+            }
 
-            ((BusinessViewHolder) holder).mSubTitle.setText(entity.getSubTitle());
+            ((BusinessViewHolder) holder).mSubTitle.setText(entity.getPhone());
 
-            ((BusinessViewHolder) holder).mDate.setText(entity.getDate());
+            if(!TextUtils.isEmpty((entity.getLastSpeakingTime())))
+                ((BusinessViewHolder) holder).mDate.setText(DateUtils.getBusinessTime(new Date(Long.parseLong(entity.getLastSpeakingTime()))));
+            else
+                ((BusinessViewHolder) holder).mDate.setText("");
 
             if(entity.getAvatar()!=null){
                 ((BusinessViewHolder) holder).mHeaderText.setVisibility(View.INVISIBLE);
@@ -99,8 +110,9 @@ public class BusinessMeetingAdapter extends BaseRecyclerViewAdapter<BusinessMeet
             }else{
                 ((BusinessViewHolder) holder).mHeaderText.setVisibility(View.VISIBLE);
                 ((BusinessViewHolder) holder).mHeader.setVisibility(View.INVISIBLE);
-                ((BusinessViewHolder) holder).mHeaderText.setText(entity.getTitle().substring(0,1));
-                ((BusinessViewHolder) holder).mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
+                if(!TextUtils.isEmpty(((BusinessViewHolder) holder).mTitle.getText()))
+                    ((BusinessViewHolder) holder).mHeaderText.setText(((BusinessViewHolder) holder).mTitle.getText().toString().substring(0,1));
+                ((BusinessViewHolder) holder).mHeaderText.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(((BusinessViewHolder) holder).mTitle.getText().toString()));
             }
 
             if(mPosition == dataSource.size()-1)

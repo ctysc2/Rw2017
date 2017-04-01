@@ -3,6 +3,7 @@ package com.home.rw.mvp.ui.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CompanyNoticeEntity;
 import com.home.rw.mvp.entity.FacusListEntity;
+import com.home.rw.mvp.entity.message.TopicCommonEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
+import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.FrescoUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,12 +33,12 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/1/18.
  */
 
-public class CompanyNoticeListAdapter extends BaseRecyclerViewAdapter<CompanyNoticeEntity.DataEntity> {
+public class CompanyNoticeListAdapter extends BaseRecyclerViewAdapter<TopicCommonEntity> {
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
     private OnItemClickListener mDelete;
-    public CompanyNoticeListAdapter(ArrayList<CompanyNoticeEntity.DataEntity> dataSource, Context context) {
+    public CompanyNoticeListAdapter(ArrayList<TopicCommonEntity> dataSource, Context context) {
         super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -86,10 +90,14 @@ public class CompanyNoticeListAdapter extends BaseRecyclerViewAdapter<CompanyNot
             final int mPosition = position;
             final CompanyNoticeViewHolder mHolder = (CompanyNoticeViewHolder)holder;
 
-            CompanyNoticeEntity.DataEntity entity = dataSource.get(mPosition);
+            TopicCommonEntity entity = dataSource.get(mPosition);
             holder.itemView.setTag(position);
             mHolder.mTitle.setText(entity.getTitle());
-            mHolder.mDate.setText(entity.getDate());
+            if(!TextUtils.isEmpty(entity.getPubTime()))
+                mHolder.mDate.setText(DateUtils.getYDM(new Date(Long.parseLong(entity.getPubTime()))));
+            else
+                mHolder.mDate.setText("");
+
             mHolder.rl_container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

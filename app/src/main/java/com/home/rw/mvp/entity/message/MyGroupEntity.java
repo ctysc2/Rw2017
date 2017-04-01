@@ -3,14 +3,26 @@ package com.home.rw.mvp.entity.message;
 import com.home.rw.mvp.entity.base.BaseApprovementEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 
+import java.util.ArrayList;
+
 /**
  * Created by cty on 2017/3/17.
  */
 
 public class MyGroupEntity extends BaseEntity{
 
-    public static class DataEntity extends BaseApprovementEntity{
-        public static class ResLst{
+    private ArrayList<DataEntity> data;
+
+    public void setData(ArrayList<DataEntity> data) {
+        this.data = data;
+    }
+
+    public ArrayList<DataEntity> getData() {
+        return data;
+    }
+
+    public static class DataEntity{
+
             private String id;
             private String name;
             private String personNum;
@@ -38,7 +50,7 @@ public class MyGroupEntity extends BaseEntity{
             public void setPersonNum(String personNum) {
                 this.personNum = personNum;
             }
-        }
+
     }
 
 }

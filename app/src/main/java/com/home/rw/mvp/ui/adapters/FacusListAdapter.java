@@ -100,7 +100,7 @@ public class FacusListAdapter extends BaseRecyclerViewAdapter<FacusListEntity.Da
 
             FacusListEntity.DataEntity.ResLst entity = dataSource.get(mPosition);
             holder.itemView.setTag(position);
-            FrescoUtils.load(Uri.parse(entity.getAvatar()),mHolder.mHeader,COMPRESS_WIDTH,COMPRESS_HEIGH);
+            mHolder.mHeader.setImageURI(entity.getAvatar());
             mHolder.mName.setText(entity.getRealname());
             mHolder.mNum.setText(""+entity.getPubNum());
         }

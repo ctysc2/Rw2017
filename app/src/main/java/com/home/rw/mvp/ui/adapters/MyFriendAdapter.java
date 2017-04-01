@@ -2,6 +2,7 @@ package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,12 @@ import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CommunicationEntity;
 import com.home.rw.mvp.entity.MyFriendEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
 import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
+import com.home.rw.utils.DateUtils;
 import com.home.rw.utils.DrawableUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,13 +29,13 @@ import butterknife.ButterKnife;
  * Created by cty on 2017/2/2.
  */
 
-public class MyFriendAdapter extends BaseRecyclerViewAdapter<MyFriendEntity.DataEntity> {
+public class MyFriendAdapter extends BaseRecyclerViewAdapter<MessageCommonEntity> {
 
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener mListener;
 
-    public MyFriendAdapter(List<MyFriendEntity.DataEntity> list, Context context) {
+    public MyFriendAdapter(List<MessageCommonEntity> list, Context context) {
         super(list);
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -75,21 +79,25 @@ public class MyFriendAdapter extends BaseRecyclerViewAdapter<MyFriendEntity.Data
             final int mPosition = position;
 
             final MyFriendViewHolder mHolder = (MyFriendViewHolder) holder;
-            final MyFriendEntity.DataEntity entity = dataSource.get(mPosition);
+            final MessageCommonEntity entity = dataSource.get(mPosition);
             mHolder.itemView.setTag(mPosition);
-
+            String name = entity.getNickname() == null?entity.getRealname():entity.getNickname();
             if (entity.getAvatar() == null || entity.getAvatar().equals("")) {
                 mHolder.mIvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mTvHeader.setVisibility(View.VISIBLE);
-                mHolder.mTvHeader.setText(entity.getName().substring(0,1));
-                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getName()));
+                if(!TextUtils.isEmpty(name))
+                    mHolder.mTvHeader.setText(name.substring(0,1));
+                mHolder.mTvHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(name));
             } else {
                 mHolder.mIvHeader.setVisibility(View.VISIBLE);
                 mHolder.mTvHeader.setVisibility(View.INVISIBLE);
                 mHolder.mIvHeader.setImageURI(entity.getAvatar());
             }
-            mHolder.mTvName.setText(entity.getName());
-            mHolder.mTvRight.setText(entity.getDate());
+            mHolder.mTvName.setText(name);
+            if(!TextUtils.isEmpty(entity.getLastSpeakingTime())){
+                mHolder.mTvRight.setText(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastSpeakingTime()))));
+            }
+
             if (mPosition == dataSource.size() - 1) {
                 mHolder.mSperate.setVisibility(View.GONE);
             } else {

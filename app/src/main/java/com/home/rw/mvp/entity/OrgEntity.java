@@ -27,10 +27,20 @@ public class OrgEntity extends BaseEntity {
         private String subTitle;
         private String avatar;
         private String date;
+        private String nickname;
         private boolean isExpanded;
         private boolean isAdded;
         private boolean isSelected;
         private  ArrayList<DataEntity> subData;
+
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
 
         public void setSelected(boolean selected) {
             isSelected = selected;

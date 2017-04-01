@@ -27,8 +27,8 @@ public class AddFriendInteractorImpl implements AddFriendInteractor<BaseEntity> 
 
     }
     @Override
-    public Subscription addFriend(final RequestCallBack<BaseEntity> callback, String userId) {
-        return RetrofitManager.getInstance(HostType.ADD_FRIEND).addFriend(userId)
+    public Subscription addFriend(final RequestCallBack<BaseEntity> callback, String userId,String remark) {
+        return RetrofitManager.getInstance(HostType.ADD_FRIEND).addFriend(userId,remark)
                 .compose(TransformUtils.<BaseEntity>defaultSchedulers())
                 .subscribe(new Observer<BaseEntity>() {
                     @Override

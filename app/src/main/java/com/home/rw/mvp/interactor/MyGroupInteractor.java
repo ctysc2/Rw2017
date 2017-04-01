@@ -9,5 +9,5 @@ import rx.Subscription;
  */
 
 public interface MyGroupInteractor<T> {
-    Subscription getMyGroupList(RequestCallBack<T> callback, int page, int size);
+    Subscription getMyGroupList(RequestCallBack<T> callback);
 }
