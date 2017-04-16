@@ -6,9 +6,6 @@ import com.home.rw.application.App;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendao.gen.UserInfoDao;
 import com.home.rw.mvp.entity.UserInfoEntity;
-import com.home.rw.utils.PreferenceUtils;
-
-import java.util.Map;
 
 /**
  * Created by cty on 2016/12/16.

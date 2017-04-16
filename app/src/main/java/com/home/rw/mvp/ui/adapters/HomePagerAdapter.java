@@ -114,6 +114,7 @@ public class HomePagerAdapter extends BaseRecyclerViewAdapter<CommunicationEntit
                 mHolder.mCompType.setText(context.getString(R.string.compIntroduction));
                 mHolder.mCompTypeEn.setText(context.getString(R.string.compIntroductionEn));
                 mHolder.mTitle.setText(entity.getTitle());
+                mHolder.mContainer.setVisibility(View.GONE);
                 mHolder.mContent1.setVisibility(View.VISIBLE);
                 mHolder.mContent1.setText(entity.getContent());
                 mHolder.mContent2.setVisibility(View.GONE);

@@ -41,6 +41,16 @@ public class ApprovementListEntity extends BaseEntity {
             public String createdDate;
             public String status;
             public String username;
+            public String avatar;
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
             public String getId() {
                 return id;
             }

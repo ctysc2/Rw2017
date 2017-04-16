@@ -245,6 +245,7 @@ public class LockMainActivity extends BaseActivity implements DoorKeyView{
         }
     }
     private void showList(List<BlueKey> listScanned){
+
         if(listScanned == null||
                 emInfo == null||
                 listScanned.size() == 0 ||

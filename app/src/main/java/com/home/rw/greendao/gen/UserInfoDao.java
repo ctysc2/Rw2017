@@ -22,7 +22,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
     /**
      * Properties of entity UserInfo.<br/>
      * Can be used for QueryBuilder and for referencing column names.
-    */
+     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property UserName = new Property(1, String.class, "userName", false, "USER_NAME");
@@ -35,7 +35,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property PubNum = new Property(8, String.class, "pubNum", false, "PUB_NUM");
         public final static Property Company = new Property(9, String.class, "company", false, "COMPANY");
         public final static Property FocusNum = new Property(10, String.class, "focusNum", false, "FOCUS_NUM");
-    };
+    }
 
 
     public UserInfoDao(DaoConfig config) {
@@ -240,6 +240,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean hasKey(UserInfo entity) {
+        return entity.getId() != null;
     }
 
     @Override

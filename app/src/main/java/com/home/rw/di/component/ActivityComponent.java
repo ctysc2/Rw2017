@@ -9,6 +9,7 @@ import com.home.rw.di.scope.ContextLife;
 import com.home.rw.di.scope.PerActivity;
 import com.home.rw.mvp.ui.activitys.LoginActivity;
 import com.home.rw.mvp.ui.activitys.MainActivity;
+import com.home.rw.mvp.ui.activitys.SplashActivity;
 import com.home.rw.mvp.ui.activitys.lock.LockMainActivity;
 import com.home.rw.mvp.ui.activitys.message.BusinessPhoneActivity;
 import com.home.rw.mvp.ui.activitys.message.CompanyNoticeActivity;
@@ -113,6 +114,8 @@ public interface ActivityComponent {
     void inject(MeetingSelectActivity conversationActivity);
     void inject(ConversationListActivity conversationListActivity);
     void inject(LockMainActivity lockMainActivity);
+    void inject(SplashActivity splashActivity);
+
 
 
 }

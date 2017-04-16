@@ -25,6 +25,7 @@ import com.home.rw.event.BeforeReadEvent;
 import com.home.rw.event.ReLoginEvent;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
+import com.home.rw.mvp.entity.AddApplyEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
 import com.home.rw.mvp.interactor.impl.DialOutInteractorImpl;
@@ -48,6 +49,7 @@ import com.socks.library.KLog;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -66,9 +68,11 @@ import io.rong.imlib.model.Conversation;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import okhttp3.ResponseBody;
+import rx.Observable;
 import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.observers.Observers;
 
 public class MainActivity extends BaseActivity implements LoginView,DialOutView {
 
@@ -130,6 +134,7 @@ public class MainActivity extends BaseActivity implements LoginView,DialOutView 
     //我的tab索引
     final int TAB_MINE = 4;
 
+    private boolean isExit = false;
     @Inject
     LoginPresenterImpl mLoginPresenterImpl;
 
@@ -260,7 +265,7 @@ public class MainActivity extends BaseActivity implements LoginView,DialOutView 
 
         if(mDialOutPresenterImpl!=null)
             mDialOutPresenterImpl.onDestroy();
-        PreferenceUtils.setPrefString(MainActivity.this,"sessionID","");
+
         EventBus.getDefault().unregister(this);
     }
     public void addFragment() {
@@ -370,6 +375,36 @@ public class MainActivity extends BaseActivity implements LoginView,DialOutView 
     public void onEventMainThread(OutGoingNotice obj){
         Log.i("RongCloud","呼出通知后台");
         mDialOutPresenterImpl.dialOut(obj.getUserId());
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        if(isExit){
+            finish();
+        }else{
+            isExit = true;
+            Toast.makeText(this,getString(R.string.clickAgaintoExit),Toast.LENGTH_SHORT).show();
+            Observable.timer(2, TimeUnit.SECONDS).compose(TransformUtils.<Object>defaultSchedulers())
+            .subscribe(new Observer<Object>() {
+                @Override
+                public void onCompleted() {
+                    isExit = false;
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Object data) {
+
+                }
+
+            });
+        }
 
     }
 }

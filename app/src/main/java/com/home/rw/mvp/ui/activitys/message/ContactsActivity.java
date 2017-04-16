@@ -37,6 +37,7 @@ import com.home.rw.mvp.ui.adapters.base.BaseListViewAdapter;
 import com.home.rw.mvp.view.UserByPhoneView;
 import com.home.rw.utils.CharacterParser;
 import com.home.rw.utils.PinyinComparator;
+import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.widget.SideBar;
 
 import java.util.ArrayList;
@@ -413,7 +414,20 @@ public class ContactsActivity extends BaseActivity implements UserByPhoneView{
     @Override
     public void getUserByPhoneCompleted(ContactListEntity data) {
         if(data.getCode().equals("ok")){
-            shiftDataSource(data.getData().getFriends());
+            ArrayList<MessageCommonEntity> friends = data.getData().getFriends();
+
+            if(entryType.equals(Const.TYPE_SELECT)||
+                    (entryType.equals(Const.TYPE_ADD))){
+                String myUserId = String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0));
+                for(int i=0;i<friends.size();i++){
+                    if(friends.get(i).getUserId().equals(myUserId)){
+                        friends.remove(i);
+                        break;
+                    }
+                }
+            }
+
+            shiftDataSource(friends);
             mAdapter.setDataSource(datasource);
             if(entryType.equals(Const.TYPE_SELECT)){
                 checkInitSelect();

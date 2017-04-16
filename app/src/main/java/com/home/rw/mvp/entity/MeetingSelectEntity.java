@@ -17,6 +17,7 @@ public class MeetingSelectEntity extends BaseEntity{
     }
 
     public static class DataEntity implements Serializable{
+        String userId;
         int id;
         String title;
         String avatar;
@@ -25,6 +26,14 @@ public class MeetingSelectEntity extends BaseEntity{
         boolean isSelected;
         boolean isExpanded;
         ArrayList<DataEntity> subData;
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
 
         public void setNickname(String nickname) {
             this.nickname = nickname;

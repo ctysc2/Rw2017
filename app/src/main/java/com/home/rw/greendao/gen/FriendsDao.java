@@ -22,14 +22,14 @@ public class FriendsDao extends AbstractDao<Friends, Long> {
     /**
      * Properties of entity Friends.<br/>
      * Can be used for QueryBuilder and for referencing column names.
-    */
+     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property NickName = new Property(1, String.class, "nickName", false, "NICK_NAME");
         public final static Property RealName = new Property(2, String.class, "realName", false, "REAL_NAME");
         public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
         public final static Property Phone = new Property(4, String.class, "phone", false, "PHONE");
-    };
+    }
 
 
     public FriendsDao(DaoConfig config) {
@@ -156,6 +156,11 @@ public class FriendsDao extends AbstractDao<Friends, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean hasKey(Friends entity) {
+        return entity.getId() != null;
     }
 
     @Override

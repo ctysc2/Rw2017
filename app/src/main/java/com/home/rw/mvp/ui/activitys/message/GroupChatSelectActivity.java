@@ -24,6 +24,7 @@ import com.home.rw.mvp.ui.adapters.GroupChatAdapter;
 import com.home.rw.mvp.ui.adapters.SelectAdapter;
 import com.home.rw.mvp.view.MyFriendView;
 import com.home.rw.utils.DialogUtils;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -170,7 +171,15 @@ public class GroupChatSelectActivity extends BaseActivity implements MyFriendVie
     @Override
     public void getMyFriendCompleted(MyFriendEntity data) {
         if(data.getCode().equals("ok")){
-            ArrayList<SelectEntity.DataEntity> temp = dataTransfer(data.getData().getFriends());
+            ArrayList<MessageCommonEntity> friends = data.getData().getFriends();
+            String myUserId = String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0));
+            for(int i = 0;i<friends.size();i++){
+                if(friends.get(i).getUserId().equals(myUserId)){
+                    friends.remove(i);
+                    break;
+                }
+            }
+            ArrayList<SelectEntity.DataEntity> temp = dataTransfer(friends);
             if(temp!=null){
                 dataSource = temp;
                 mAdapter.setList(dataSource);

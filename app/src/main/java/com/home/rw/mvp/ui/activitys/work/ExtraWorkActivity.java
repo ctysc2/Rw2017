@@ -565,13 +565,18 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
                         headerPathTemp= UriUtils.getPath(this, originalUri);
                         mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
                     }
+
                 }
                 break;
             //从照相机选择
             case RESULT_PICK_FROM_CAMERA_NORMAL:
 
                 if (resultCode == RESULT_OK ) {
+
                     mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
+
+                }else{
+                    headerPathTemp = "";
 
                 }
                 break;
@@ -593,6 +598,7 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
                            headerPathTemp = "";
 
 
+
                        }
 
 
@@ -606,7 +612,8 @@ public class ExtraWorkActivity extends BaseActivity implements AlertDialogListen
     }
     //更新数据源并启动预览画面
     private void startPreview() {
-        if((headerPathTemp == null) || (headerPathTemp.equals(""))){
+        if((headerPathTemp == null) ||
+                (headerPathTemp.equals(""))){
 
             return;
 

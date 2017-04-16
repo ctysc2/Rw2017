@@ -106,6 +106,9 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener,A
     private final int COMPRESS_WIDTH = 200;
 
     private final int COMPRESS_HEIGH = 120;
+
+    private boolean isPicSelected = false;
+
     //图库插件指定类型
     ArrayList<PhotoModel> photos = new ArrayList<>();
     //图库
@@ -700,6 +703,8 @@ public class WipedActivity extends BaseActivity implements AlertDialogListener,A
                 if (resultCode == RESULT_OK ) {
                     FrescoUtils.load(Uri.fromFile(new File(headerPathTemp)),mPhoto,200,120);
 
+                }else{
+                    headerPathTemp = "";
                 }
                 break;
             case Const.PHOTO_PREVIEW:

@@ -56,9 +56,9 @@ public class DaoSession extends AbstractDaoSession {
     }
     
     public void clear() {
-        friendsDaoConfig.getIdentityScope().clear();
-        groupDaoConfig.getIdentityScope().clear();
-        userInfoDaoConfig.getIdentityScope().clear();
+        friendsDaoConfig.clearIdentityScope();
+        groupDaoConfig.clearIdentityScope();
+        userInfoDaoConfig.clearIdentityScope();
     }
 
     public FriendsDao getFriendsDao() {

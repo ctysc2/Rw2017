@@ -17,6 +17,7 @@ public class MyExtensionModule extends DefaultExtensionModule {
         List<IPluginModule> pluginModules =  super.getPluginModules(conversationType);
         List<IPluginModule> newPluginModules = new ArrayList<>();
         newPluginModules.add(pluginModules.get(0));
+        newPluginModules.add(pluginModules.get(1));
         return newPluginModules;
     }
 }

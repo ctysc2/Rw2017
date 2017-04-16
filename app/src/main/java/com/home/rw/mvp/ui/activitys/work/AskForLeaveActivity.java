@@ -586,19 +586,24 @@ public class AskForLeaveActivity extends BaseActivity implements AlertDialogList
                         cursor.moveToFirst();
                         headerPathTemp = cursor.getString(0);
                         cursor.close();
+
                         mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
                     }else{
                         headerPathTemp= UriUtils.getPath(this, originalUri);
                         mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
                     }
+
                 }
                 break;
             //从照相机选择
             case RESULT_PICK_FROM_CAMERA_NORMAL:
 
                 if (resultCode == RESULT_OK ) {
+
                     mPhoto.setImageURI(Uri.fromFile(new File(headerPathTemp)));
 
+                }else{
+                    headerPathTemp = "";
                 }
                 break;
             case Const.PHOTO_PREVIEW:
@@ -619,6 +624,7 @@ public class AskForLeaveActivity extends BaseActivity implements AlertDialogList
                         headerPathTemp = "";
 
 
+
                     }
 
 
@@ -632,7 +638,8 @@ public class AskForLeaveActivity extends BaseActivity implements AlertDialogList
     }
     //更新数据源并启动预览画面
     private void startPreview() {
-        if((headerPathTemp == null) || (headerPathTemp.equals(""))){
+        if((headerPathTemp == null) ||
+                (headerPathTemp.equals(""))){
 
             return;
 

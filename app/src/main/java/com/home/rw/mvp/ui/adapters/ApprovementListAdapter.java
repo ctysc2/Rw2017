@@ -94,6 +94,7 @@ public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementL
             resolveAppType(mHolder.mType,mPosition);
             mHolder.mName.setText(dataSource.get(mPosition).getRealname());
             mHolder.mDate.setText(dataSource.get(mPosition).getCreatedDate());
+            mHolder.mHeader.setImageURI(dataSource.get(mPosition).getAvatar());
             if(position == dataSource.size()-1)
                 mHolder.mSperate.setVisibility(View.INVISIBLE);
             else

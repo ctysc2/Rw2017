@@ -30,6 +30,7 @@ import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.OriganzationAdapter;
 import com.home.rw.mvp.view.DepartmentView;
 import com.home.rw.utils.DateUtils;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -324,6 +325,7 @@ public class OriganizationActivity extends BaseActivity implements DepartmentVie
                         CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                         data.setName(entity.getTitle());
                         data.setAvatar(entity.getAvatar());
+                        data.setId(entity.getId());
                         data.setPhone(entity.getSubTitle());
                         Intent intent = new Intent(OriganizationActivity.this,PreviewCallActivity.class);
                         intent.putExtra("data",data);
@@ -469,7 +471,25 @@ public class OriganizationActivity extends BaseActivity implements DepartmentVie
     @Override
     public void getDepartmentListCompleted(DepartmentEntity data) {
         if(data.getCode().equals("ok")){
-            dataSource = dataTransfer(data.getData());
+            ArrayList<DepartmentEntity.DataEntity> orgList =  data.getData();
+            if(entryType.equals(Const.TYPE_SELECT)||
+                    entryType.equals(Const.TYPE_ADD)){
+
+                String myUserId = String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0));
+
+                for(int i=0;i<orgList.size();i++){
+                    ArrayList<DepartmentEntity.DataEntity.Employees> employees =  orgList.get(i).getEmployees();
+                    for(int j = 0;j<employees.size();j++){
+                        if(employees.get(j).getId().equals(myUserId)){
+                            orgList.get(i).getEmployees().remove(j);
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            dataSource = dataTransfer(orgList);
             mAdapter.setDataSource(dataSource);
             if(entryType.equals(Const.TYPE_SELECT))
                 checkInitSelect();

@@ -123,17 +123,16 @@ public class PreviewCallActivity extends BaseActivity {
                }
                 break;
             case R.id.ll_meeting:
-                if(callListLength<4){
-                    Toast.makeText(this,getString(R.string.toastMeetingAtLeastOneOp),Toast.LENGTH_SHORT).show();
-                }else if(callListLength == 4){
-                    RongCallKit.startSingleCall( this, String.valueOf(dataSource.get(1).getId()), RongCallKit.CallMediaType.CALL_MEDIA_TYPE_AUDIO );
-
+                if(callListLength<5){
+                    Toast.makeText(this,getString(R.string.toastatleast3formeeting),Toast.LENGTH_SHORT).show();
                 }else{
 
                     ArrayList<String> userIds = new ArrayList<>();
 
+
                     for(CallListEntity.DataEntity ids:dataSource){
-                        userIds.add(String.valueOf(ids.getId()));
+                        if(ids.getId()>0)
+                            userIds.add(String.valueOf(ids.getId()));
                     }
                     final ArrayList<String> userlist = userIds;
                     RongIM.getInstance().createDiscussion("temp", userIds, new RongIMClient.CreateDiscussionCallback() {

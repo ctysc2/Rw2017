@@ -307,7 +307,7 @@ public class CommListActivity extends BaseActivity implements CommListView,Focus
         if(HostType.FOCUS == reqType)
             Toast.makeText(this,getString(R.string.focusFailed),Toast.LENGTH_SHORT).show();
         else if(HostType.ZAN == reqType){
-
+            Toast.makeText(this,getString(R.string.zanFailed),Toast.LENGTH_SHORT).show();
         }else
             Toast.makeText(this,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
 
@@ -331,6 +331,7 @@ public class CommListActivity extends BaseActivity implements CommListView,Focus
             dataSource.get(zanPos).setSupport("1");
             dataSource.get(zanPos).setSupportNum(newSupport);
             mAdapter.notifyDataSetChanged();
+            Toast.makeText(this,getString(R.string.zanSucceed),Toast.LENGTH_SHORT).show();
         }
     }
 }

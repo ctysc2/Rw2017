@@ -29,6 +29,7 @@ import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.MyTeamAdapter;
 import com.home.rw.mvp.ui.adapters.OriganzationAdapter;
 import com.home.rw.mvp.view.MyTeamView;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -344,7 +345,18 @@ public class MyTeamActivity extends BaseActivity implements MyTeamView{
     @Override
     public void getMyTeamCompleted(com.home.rw.mvp.entity.message.MyTeamEntity data) {
         if(data.getCode().equals("ok")){
-            dataSource = dataTransFer(data.getData().getPersons());
+            ArrayList<MessageCommonEntity> persons = data.getData().getPersons();
+            if(entryType.equals(Const.TYPE_SELECT)||
+                    entryType.equals(Const.TYPE_ADD)){
+                String myUserId = String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0));
+                for(int i=0;i<persons.size();i++){
+                    if(persons.get(i).getUserId().equals(myUserId)){
+                        persons.remove(i);
+                        break;
+                    }
+                }
+            }
+            dataSource = dataTransFer(persons);
 
             if(entryType.equals(Const.TYPE_SELECT)){
                 checkInitSelect();

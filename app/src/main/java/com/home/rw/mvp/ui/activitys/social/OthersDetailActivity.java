@@ -368,10 +368,17 @@ public class OthersDetailActivity extends BaseActivity implements CommListView,F
             mAdapter.hideFooter();
             mIsLoadingMore = false;
         }
-        if(reqType == HostType.CANCLE_FOCUS
-                || reqType == HostType.FOCUS
-                || reqType == HostType.ZAN){
+//        || reqType == HostType.FOCUS
+//                || reqType == HostType.ZAN)
+        if(reqType == HostType.CANCLE_FOCUS){
+             //Toast.makeText(this,getString(R.string.cancleSuccess),Toast.LENGTH_SHORT).show();
 
+
+        }else if(reqType == HostType.FOCUS){
+            Toast.makeText(this,getString(R.string.focusFailed),Toast.LENGTH_SHORT).show();
+
+        }else if(reqType == HostType.ZAN){
+            Toast.makeText(this,getString(R.string.zanFailed),Toast.LENGTH_SHORT).show();
         }
         else
             Toast.makeText(this,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
@@ -401,6 +408,7 @@ public class OthersDetailActivity extends BaseActivity implements CommListView,F
             dataSource.get(zanPos).setSupport("1");
             dataSource.get(zanPos).setSupportNum(newSupport);
             mAdapter.notifyDataSetChanged();
+            Toast.makeText(this,getString(R.string.zanSucceed),Toast.LENGTH_SHORT).show();
         }
     }
 }

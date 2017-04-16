@@ -42,6 +42,7 @@ import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.GroupUserInfo;
 import io.rong.imkit.model.UIConversation;
+import io.rong.imkit.utils.StringUtils;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
@@ -176,7 +177,8 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
         RongIM.setConversationListBehaviorListener(this);
         RongIM.setConnectionStatusListener(this);
         RongIM.setUserInfoProvider(this,true);
-        RongIM.setGroupUserInfoProvider(this,true);
+        //RongIM.setGroupUserInfoProvider(this,true);
+        RongIM.setGroupInfoProvider(this,true);
         setReadReceiptConversationType();
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
@@ -259,17 +261,22 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
     @Override
     public Group getGroupInfo(String s) {
         Group RGroup = null;
-        com.home.rw.greendao.entity.Group group = GroupDaoHelper.getInstance().getGroupById(Long.parseLong(s));
-        if(group!=null){
-             RGroup = new Group(String.valueOf(group.getId()),group.getGroupName(),null);
+        try{
+            com.home.rw.greendao.entity.Group group = GroupDaoHelper.getInstance().getGroupById(Long.parseLong(s));
+            if(group!=null){
+                RGroup = new Group(String.valueOf(group.getId()),group.getGroupName(),null);
+            }
+            //异步获取
+            if(mMyGroupPresenterImpl == null){
+                mMyGroupPresenterImpl = new MyGroupPresenterImpl(new MyGroupInteractorImpl());
+                mMyGroupPresenterImpl.attachView(mMyGroupview);
+            }
+            Log.i("Retrofit","异步获取群组信息");
+            mMyGroupPresenterImpl.getMyGroupList();
+
+        }catch (NumberFormatException e){
+            return null;
         }
-        //异步获取
-        if(mMyGroupPresenterImpl == null){
-            mMyGroupPresenterImpl = new MyGroupPresenterImpl(new MyGroupInteractorImpl());
-            mMyGroupPresenterImpl.attachView(mMyGroupview);
-        }
-        Log.i("Retrofit","异步获取群组信息");
-        mMyGroupPresenterImpl.getMyGroupList();
 
         return RGroup;
     }
@@ -286,7 +293,8 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
 
     @Override
     public UserInfo getUserInfo(String s) {
-        Log.i("RongColud","getUserInfo");
+        Log.i("RongColud","getUserInfo s:"+s);
+
         UserInfo userInfo = null;
         if(s.equals("1000")){
             userInfo = new io.rong.imlib.model.UserInfo(
@@ -297,22 +305,28 @@ public class RongCloudAppContext implements RongIM.ConversationListBehaviorListe
         }else{
 
             //先从数据库获取数据
-            com.home.rw.greendao.entity.UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(Long.parseLong(s));
-            if(user != null){
-                userInfo = new io.rong.imlib.model.UserInfo(
-                        s,
-                        user.getRealName(),
-                        !TextUtils.isEmpty(user.getAvatar())?Uri.parse(user.getAvatar()):null
-                );
-                Log.i("Retrofit","数据库更新融云数据");
+            try{
+                com.home.rw.greendao.entity.UserInfo user = UserInfoDaoHelper.getInstance().getUserInfoById(Long.parseLong(s));
+                if(user != null){
+                    userInfo = new io.rong.imlib.model.UserInfo(
+                            s,
+                            user.getRealName(),
+                            !TextUtils.isEmpty(user.getAvatar())?Uri.parse(user.getAvatar()):null
+                    );
+                    Log.i("Retrofit","数据库更新融云数据");
+                }
+                //异步获取
+                if(mUserInfoPresenterImpl == null){
+                    mUserInfoPresenterImpl = new UserInfoPresenterImpl(new UserInfoInteractorImpl());
+                    mUserInfoPresenterImpl.attachView(mUserInfoView);
+                }
+                Log.i("Retrofit","异步获取他人信息");
+                mUserInfoPresenterImpl.getOtherUserInfo(s);
+            }catch (NumberFormatException e){
+                return null;
             }
-            //异步获取
-            if(mUserInfoPresenterImpl == null){
-                mUserInfoPresenterImpl = new UserInfoPresenterImpl(new UserInfoInteractorImpl());
-                mUserInfoPresenterImpl.attachView(mUserInfoView);
-            }
-            Log.i("Retrofit","异步获取他人信息");
-            mUserInfoPresenterImpl.getOtherUserInfo(s);
+
+
 
         }
        return userInfo;

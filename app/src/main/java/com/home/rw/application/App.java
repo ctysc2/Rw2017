@@ -14,6 +14,7 @@ import com.home.rw.di.component.DaggerApplicationComponent;
 import com.home.rw.di.module.ApplicationModule;
 import com.home.rw.greendao.gen.DaoMaster;
 import com.home.rw.greendao.gen.DaoSession;
+import com.home.rw.greendaohelper.MyOpenHelper;
 import com.home.rw.utils.CrashHandler;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -27,7 +28,7 @@ import io.rong.push.common.RongException;
 public class App extends MultiDexApplication {
     private static App sAppContext;
     private ApplicationComponent mApplicationComponent;
-    private DaoMaster.DevOpenHelper mHelper;
+    private MyOpenHelper mHelper;
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
@@ -67,7 +68,7 @@ public class App extends MultiDexApplication {
     }
 
     private void setDataBase() {
-        mHelper = new DaoMaster.DevOpenHelper(this, "notes-db", null);
+        mHelper = new MyOpenHelper(this, "notes-db", null);
         db = mHelper.getWritableDatabase();
         // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);

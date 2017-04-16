@@ -91,7 +91,7 @@ public class ReceivedLogFragment extends BaseFragment implements LogListView {
 
         initRecycleView();
         mLogListPresenterImpl.attachView(this);
-        mLogListPresenterImpl.setAddApplyType(HostType.SEND_LOG);
+        mLogListPresenterImpl.setAddApplyType(HostType.RECEIVE_LOG);
         isViewCreated = true;
         if(isFirstLoad && isFragmentVisible && isViewCreated){
             mLogListPresenterImpl.beforeRequest();

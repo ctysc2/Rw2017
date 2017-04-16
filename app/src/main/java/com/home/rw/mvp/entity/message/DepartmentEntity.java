@@ -21,11 +21,20 @@ public class DepartmentEntity extends BaseEntity{
     }
 
     public static class DataEntity{
+        String userId;
         String id;
         String personNum;
         String name;
         String logo;
         ArrayList<Employees> employees;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
 
         public void setLogo(String logo) {
             this.logo = logo;
@@ -68,6 +77,7 @@ public class DepartmentEntity extends BaseEntity{
         }
 
         public static class Employees{
+            String userId;
             String id;
             String username;
             String realname;
@@ -82,6 +92,14 @@ public class DepartmentEntity extends BaseEntity{
             String noticeNum;
             String pubNum;
             String isFriend;
+
+            public String getUserId() {
+                return userId;
+            }
+
+            public void setUserId(String userId) {
+                this.userId = userId;
+            }
 
             public void setNickname(String nickname) {
                 this.nickname = nickname;

@@ -31,6 +31,7 @@ import com.home.rw.mvp.ui.activitys.work.SendRollActivity;
 import com.home.rw.mvp.ui.adapters.MeetingSelectedAdapter;
 import com.home.rw.mvp.ui.adapters.MessegeMainAdapter;
 import com.home.rw.mvp.view.BusinessCallView;
+import com.home.rw.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -339,7 +340,17 @@ public class MeetingSelectActivity extends BaseActivity implements BusinessCallV
     @Override
     public void getBusinessCallCompleted(BusineseCallEntity data) {
         if(data.getCode().equals("ok")){
-            ArrayList<MeetingSelectEntity.DataEntity> subData = dataTransfer(data.getData());
+            ArrayList<MessageCommonEntity> source = data.getData();
+            String myUserId = String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0));
+            for(int i = 0;i<source.size();i++){
+                if(source.get(i).getUserId().equals(myUserId)){
+                    source.remove(i);
+                    break;
+                }
+            }
+
+            ArrayList<MeetingSelectEntity.DataEntity> subData = dataTransfer(source);
+
             dataSource.get(3).setSubData(subData);
             checkInitSelect();
             mAdapter.notifyDataSetChanged();

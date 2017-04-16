@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.home.rw">
+
     <permission
         android:name="com.home.rw.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -44,17 +46,21 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBTPXEZku1kucfIhpAhlVCGqsAusYh_oZc" />
+
         <service
             android:name="com.carduoblue.api.UartService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true"></service>
+
         <meta-data
             android:name="CARDUO_APPKEY"
             android:value="1DC0624385DC454597FC1BBDC462B6F1" />
+
         <activity
             android:name=".mvp.ui.activitys.MainActivity"
             android:launchMode="singleTask" />
         <activity android:name=".mvp.ui.activitys.LoginActivity">
+        </activity>
+        <activity android:name=".mvp.ui.activitys.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -117,8 +123,8 @@
         <activity android:name=".mvp.ui.activitys.lock.LockMainActivity" />
         <activity android:name=".mvp.ui.activitys.lock.LockHelpActivity" />
         <activity android:name=".mvp.ui.activitys.lock.LockTempKeyActivity" />
-        <activity android:name=".mvp.ui.activitys.message.SearchActivity" />
-
+        <activity android:name=".mvp.ui.activitys.message.SearchActivity" >
+        </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.home.rw.FileProvider"
@@ -168,27 +174,36 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.ui.activitys.WebViewActivity"></activity>
+        <activity android:name=".mvp.ui.activitys.WebViewActivity" />
         <!-- GCM 配置 < -->
-        <receiver android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.home.rw" />
                 <!-- 替换为自己的packagename < -->
             </intent-filter>
         </receiver>
 
-        <service android:name="io.rong.push.platform.RongGcmListenerService" android:exported="false">
+        <service
+            android:name="io.rong.push.platform.RongGcmListenerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="io.rong.push.platform.RongGCMInstanceIDListenerService" android:exported="false">
+        <service
+            android:name="io.rong.push.platform.RongGCMInstanceIDListenerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
         <!-- GCM 配置结束 < -->
+
     </application>
 
 </manifest>

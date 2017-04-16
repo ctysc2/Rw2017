@@ -145,15 +145,21 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
                 startPreview();
                 break;
             case R.id.rightTextFacus:
+                if(data == null)
+                    return;
                 mFocusPresenterImpl.setReqType(HostType.FOCUS);
                 mFocusPresenterImpl.doFocus(data.getCreatedBy());
                 break;
             case R.id.iv_zan:
+                if(data == null)
+                    return;
                 mZanPresenterImpl.zan(data.getId());
                 break;
             case R.id.iv_feed_back:
+                if(data == null)
+                    return;
                 Intent intent1 = new Intent(this, FeedBackActivity.class);
-                intent1.putExtra("ectyrType","social");
+                intent1.putExtra("mTopicId",data.getId());
                 startActivity(intent1);
                 break;
             default:
@@ -235,7 +241,7 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
         }
         mTitle.setText(data.getTitle());
         if(!TextUtils.isEmpty(data.getCreatedDate()))
-            mTime.setText(DateUtils.getTime(new Date(Long.parseLong(data.getCreatedDate()))));
+            mTime.setText(data.getCreatedDate());
         else
             mTime.setText("");
         mContent.setText(data.getContent());
@@ -351,6 +357,8 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
     public void showErrorMsg(int reqType, String msg) {
         if(reqType == HostType.FOCUS){
             Toast.makeText(this,getString(R.string.focusFailed),Toast.LENGTH_SHORT).show();
+        }else if(reqType == HostType.ZAN){
+            Toast.makeText(this,getString(R.string.zanFailed),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -376,6 +384,7 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
             mNum.setText(newSupNum);
             this.data.setSupport("1");
             this.data.setSupportNum(newSupNum);
+            Toast.makeText(this,getString(R.string.zanSucceed),Toast.LENGTH_SHORT).show();
         }
     }
 }

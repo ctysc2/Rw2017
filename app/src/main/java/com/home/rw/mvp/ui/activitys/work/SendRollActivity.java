@@ -57,6 +57,9 @@ public class SendRollActivity extends BaseActivity implements AlertDialogListene
     @BindView(R.id.content)
     EditText mContent;
 
+    @BindView(R.id.tv_select)
+    TextView mTvSelectedNum;
+
     @Inject
     SendRollPresenterImpl mSendRollPresenterImpl;
 
@@ -212,6 +215,12 @@ public class SendRollActivity extends BaseActivity implements AlertDialogListene
         if(intent == null)
             return;
         selectedData = (ArrayList<MeetingSelectTempEntity>)(intent.getSerializableExtra("newdata"));
+        if(selectedData == null || selectedData.size() == 0)
+            mTvSelectedNum.setVisibility(View.INVISIBLE);
+        else{
+            mTvSelectedNum.setVisibility(View.VISIBLE);
+            mTvSelectedNum.setText(String.format(getString(R.string.selectedRollNum),selectedData.size()));
+        }
 
     }
 

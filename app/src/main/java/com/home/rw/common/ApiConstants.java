@@ -35,7 +35,7 @@ public class ApiConstants {
 
     public static String BUSINESE = BASE_URL+"business/";
 
-    public static String COMMENT = BASE_URL+"Comment/";
+    public static String COMMENT = BASE_URL+"comment/";
 
     public static String FRIEND = BASE_URL+"friend/";
 

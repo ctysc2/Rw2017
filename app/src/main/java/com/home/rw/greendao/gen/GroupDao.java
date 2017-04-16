@@ -22,12 +22,12 @@ public class GroupDao extends AbstractDao<Group, Long> {
     /**
      * Properties of entity Group.<br/>
      * Can be used for QueryBuilder and for referencing column names.
-    */
+     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property GroupName = new Property(1, String.class, "groupName", false, "GROUP_NAME");
         public final static Property GroupNum = new Property(2, String.class, "groupNum", false, "GROUP_NUM");
-    };
+    }
 
 
     public GroupDao(DaoConfig config) {
@@ -128,6 +128,11 @@ public class GroupDao extends AbstractDao<Group, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean hasKey(Group entity) {
+        return entity.getId() != null;
     }
 
     @Override

@@ -101,7 +101,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_zan"
             android:textSize="14sp"
-            android:text="12"
+            android:text="0"
             android:textColor="@color/text_color_999999"
             android:layout_marginLeft="5dp"/>
         <ImageView

@@ -263,6 +263,11 @@ public class FocusFragment extends BaseFragment implements MixFocusView,FocusVie
     @Override
     public void showErrorMsg(int reqType, String msg) {
         mRefresh.setRefreshing(false);
+        if(reqType == HostType.FOCUS){
+            Toast.makeText(mActivity,getString(R.string.focusFailed),Toast.LENGTH_SHORT).show();
+        }else if(reqType == HostType.ZAN){
+            Toast.makeText(mActivity,getString(R.string.zanFailed),Toast.LENGTH_SHORT).show();
+        }
         //Toast.makeText(mActivity,getString(R.string.loadFailed),Toast.LENGTH_SHORT).show();
     }
 
@@ -298,6 +303,7 @@ public class FocusFragment extends BaseFragment implements MixFocusView,FocusVie
             datasource2.get(zanPos).setSupport("1");
             datasource2.get(zanPos).setSupportNum(newSupport);
             mAdapterComm.notifyDataSetChanged();
+            Toast.makeText(mActivity,getString(R.string.zanSucceed),Toast.LENGTH_SHORT).show();
 
         }
     }

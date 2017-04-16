@@ -3,9 +3,7 @@ package com.home.rw.greendaohelper;
 import android.util.Log;
 
 import com.home.rw.application.App;
-import com.home.rw.greendao.entity.Friends;
 import com.home.rw.greendao.entity.Group;
-import com.home.rw.greendao.gen.FriendsDao;
 import com.home.rw.greendao.gen.GroupDao;
 
 import java.util.ArrayList;

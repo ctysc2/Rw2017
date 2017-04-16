@@ -1,10 +1,7 @@
 package com.home.rw.mvp.ui.activitys;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,12 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.home.rw.R;
-import com.home.rw.annotation.BindValues;
-import com.home.rw.application.App;
-import com.home.rw.greendao.entity.UserInfo;
-import com.home.rw.greendao.gen.UserInfoDao;
-import com.home.rw.greendaohelper.UserInfoDaoHelper;
-import com.home.rw.listener.AnimationEndListener;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.presenter.impl.LoginPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
@@ -28,15 +19,11 @@ import com.home.rw.mvp.view.LoginView;
 import com.home.rw.utils.DialogUtils;
 import com.home.rw.utils.KeyBoardUtils;
 import com.home.rw.utils.PreferenceUtils;
-import com.home.rw.utils.SystemTool;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.rong.imkit.RongIM;
 
 public class LoginActivity extends BaseActivity implements LoginView {
     private  DialogUtils mDialog;
@@ -56,13 +43,19 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bt_login:
+
+                if(mEtName.getText().toString().equals("")){
+                    Toast.makeText(this,getString(R.string.nameCannotEmpty),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(mEtPsw.getText().toString().equals("")){
+                    Toast.makeText(this,getString(R.string.pswCannotEmpty),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mLoginPresenterImpl.beforeRequest();
                 mLoginPresenterImpl.processLogin(mEtName.getText().toString(),mEtPsw.getText().toString());
-
-//                if(mEtName.getText().toString().equals("")){
-//                    Toast.makeText(this,"请输入用户名",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
 
                 break;
             default:
@@ -82,12 +75,18 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @Override
+    protected void onPause() {
+        Log.i("blackTeq","onPause");
+        super.onPause();
+    }
+
+    @Override
     public void initViews() {
 
         mPresenter = mLoginPresenterImpl;
         mPresenter.attachView(this);
-        mEtName.setText("oa1_user1");
-        mEtPsw.setText("1234");
+//        mEtName.setText("ygbwc");
+//        mEtPsw.setText("123456");
     }
 
     @Override
