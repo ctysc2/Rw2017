@@ -81,6 +81,7 @@
     <string name="toastMeetingAtLeastOneOp">请选择至少一位通话对象</string>
     <string name="toastatleast3formeeting">至少三人可以发起电话会议</string>
     <string name="onlyOneOp">只能选择一位通话对象</string>
+    <string name="nosensePhoneNum">无效的电话号码</string>
     <string name="search">搜索</string>
     <string name="notFind">没有找到\"%1$s\"</string>
     <string name="searchCannotEmpty">搜索内容不能为空</string>

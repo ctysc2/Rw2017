@@ -62,7 +62,8 @@ public class WebViewActivity extends BaseActivity {
         title = intent.getStringExtra("title");
         url = intent.getStringExtra("url");
         midText.setText(title);
-        mWebView.loadUrl(url);
+        if(!url.startsWith("http://") && !url.startsWith("https://"))
+        mWebView.loadUrl("http://"+url);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         //设置可以访问文件
@@ -83,5 +84,24 @@ public class WebViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        initViews();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mWebView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mWebView.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mWebView.removeAllViews();
+        mWebView.destroy();
     }
 }

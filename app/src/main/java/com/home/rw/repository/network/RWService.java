@@ -11,6 +11,7 @@ import com.home.rw.mvp.entity.LinkedEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.MainPageEntity;
+import com.home.rw.mvp.entity.MineNoticeEntity;
 import com.home.rw.mvp.entity.MixFocusEntity;
 import com.home.rw.mvp.entity.message.DoorKeyEntity;
 import com.home.rw.mvp.entity.message.MyTeamEntity;
@@ -268,7 +269,7 @@ public interface RWService {
 
     //我的置业公告
     @GET("rw_notice_new.json")
-    Observable<LinkedEntity> link4();
+    Observable<MineNoticeEntity> mineNotice();
 
 
     //关注用户
@@ -434,9 +435,11 @@ public interface RWService {
             @Query("Id") String id
     );
     //通讯录注册用户列表
-    @GET("find_users_by_phone.json")
+    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
+    @FormUrlEncoded
+    @POST("find_users_by_phone.json")
     Observable<ContactListEntity> getUsersByPhone(
-            @Query("phones") String phones
+            @FieldMap HashMap<String,String> input
     );
 
     //置业公告详情

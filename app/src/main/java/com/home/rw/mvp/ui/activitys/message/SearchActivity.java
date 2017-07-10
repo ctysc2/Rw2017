@@ -406,6 +406,7 @@ public class SearchActivity extends BaseActivity {
                         CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                         data.setName(entity.getTitle());
                         data.setAvatar(entity.getAvatar());
+                        data.setPhone(entity.getSubTitle());
                         Intent intent = new Intent(SearchActivity.this,PreviewCallActivity.class);
                         intent.putExtra("data",data);
                         intent.putExtra("entry","fromMeeting");
@@ -485,6 +486,7 @@ public class SearchActivity extends BaseActivity {
                         CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                         data.setName(entity.getNickname() == null ?entity.getRealname():entity.getNickname());
                         data.setAvatar(entity.getAvatar());
+                        data.setPhone(entity.getPhone());
                         Intent intent = new Intent(SearchActivity.this,PreviewCallActivity.class);
                         intent.putExtra("data",data);
                         intent.putExtra("entry","fromMeeting");

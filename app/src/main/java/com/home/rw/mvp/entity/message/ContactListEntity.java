@@ -9,25 +9,15 @@ import java.util.ArrayList;
  */
 
 public class ContactListEntity extends BaseEntity{
-    private DataEntity data;
+    private ArrayList<MessageCommonEntity>  data;
 
-    public void setData(DataEntity data) {
+    public void setData(ArrayList<MessageCommonEntity> data) {
         this.data = data;
     }
 
-    public DataEntity getData() {
+    public ArrayList<MessageCommonEntity> getData() {
         return data;
     }
 
-    public static class DataEntity{
-        ArrayList<MessageCommonEntity> friends;
 
-        public void setFriends(ArrayList<MessageCommonEntity> friends) {
-            this.friends = friends;
-        }
-
-        public ArrayList<MessageCommonEntity> getFriends() {
-            return friends;
-        }
-    }
 }

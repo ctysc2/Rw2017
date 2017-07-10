@@ -138,6 +138,7 @@ public class BusinessPhoneActivity extends BaseActivity implements BusinessCallV
                     CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                     data.setName(entity.getNickname() == null ?entity.getRealname():entity.getNickname());
                     data.setAvatar(entity.getAvatar());
+                    data.setPhone(entity.getPhone());
                     Intent intent = new Intent(BusinessPhoneActivity.this,PreviewCallActivity.class);
                     intent.putExtra("data",data);
                     startActivity(intent);

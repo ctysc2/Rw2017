@@ -164,6 +164,7 @@ public class ContactsActivity extends BaseActivity implements UserByPhoneView{
                 CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                 data.setName(entity.getName());
                 data.setAvatar(entity.getAvatar());
+                data.setPhone(entity.getPhone());
                 Intent intent = new Intent(ContactsActivity.this,PreviewCallActivity.class);
                 intent.putExtra("data",data);
                 startActivity(intent);
@@ -414,7 +415,7 @@ public class ContactsActivity extends BaseActivity implements UserByPhoneView{
     @Override
     public void getUserByPhoneCompleted(ContactListEntity data) {
         if(data.getCode().equals("ok")){
-            ArrayList<MessageCommonEntity> friends = data.getData().getFriends();
+            ArrayList<MessageCommonEntity> friends = data.getData();
 
             if(entryType.equals(Const.TYPE_SELECT)||
                     (entryType.equals(Const.TYPE_ADD))){

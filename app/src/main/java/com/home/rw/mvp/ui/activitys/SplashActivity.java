@@ -48,6 +48,7 @@ public class SplashActivity extends BaseActivity implements LoginView {
                         if(userName.equals("") || passWord.equals("")){
                             //未登录场合跳转登录界面
                             startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                            finish();
                         }else{
                             doLogin(userName,passWord);
                         }

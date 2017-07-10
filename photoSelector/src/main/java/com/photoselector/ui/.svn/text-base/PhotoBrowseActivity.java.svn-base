@@ -1,0 +1,90 @@
+package com.photoselector.ui;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.WindowManager;
+
+import com.photoselector.domain.PhotoSelectorDomain;
+import com.photoselector.model.PhotoModel;
+import com.photoselector.ui.PhotoSelectorActivity.OnLocalReccentListener;
+import com.photoselector.util.CommonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PhotoBrowseActivity extends BasePhotoBrowseActivity implements OnLocalReccentListener {
+
+	private PhotoSelectorDomain photoSelectorDomain;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		photoSelectorDomain = new PhotoSelectorDomain(getApplicationContext());
+		
+		init(getIntent().getExtras());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void init(Bundle extras) {
+		if (extras == null)
+			return;
+
+		if (extras.containsKey("photos")) { // 预览图片
+			photos = (List<PhotoModel>) extras.getSerializable("photos");
+			current = extras.getInt("position", 0);
+			updatePercent();
+			bindData();
+		} else if (extras.containsKey("album")) { // 点击图片查看
+			String albumName = extras.getString("album"); // 相册
+			this.current = extras.getInt("position");
+			if (!CommonUtils.isNull(albumName) && albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)) {
+				photoSelectorDomain.getReccent(this);
+			} else {
+				photoSelectorDomain.getAlbum(albumName, this);
+			}
+		}
+	}
+
+	@Override
+	public void onPhotoLoaded(List<PhotoModel> photos) {
+		this.photos = photos;
+
+		bindData(); // 更新界面
+		updatePercent();
+	}
+	
+	/**
+	 * 删除一张图片更新界面
+	 */
+	@Override
+	protected void onRightBtn(int position) {
+			photos.remove(position);
+		if (photos.size()==0){
+			photos.clear();
+			ok();
+		}else {
+
+			bindData(); // 更新界面
+			updatePercent();
+		}
+
+	}
+	
+	@Override
+	protected void onBottomRightBtn() {
+		ok();
+	}
+	
+	/** 完成 */
+	private void ok() {
+		Intent data = new Intent();
+		Bundle bundle = new Bundle();
+
+		bundle.putSerializable("photos", (ArrayList)photos);
+		data.putExtras(bundle);
+		setResult(RESULT_OK, data);
+		finish();
+
+	}
+}

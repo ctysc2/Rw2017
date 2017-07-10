@@ -130,7 +130,7 @@ public class FocusFragment extends BaseFragment implements MixFocusView,FocusVie
         });
 
         //内容列表
-        mAdapterComm = new CommunicationAdapter(datasource2,mActivity);
+        mAdapterComm = new CommunicationAdapter(datasource2,"other",mActivity);
 
         mAdapterComm.setOnItemClickListener(new OnItemClickListener() {
             @Override

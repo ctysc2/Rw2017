@@ -92,24 +92,24 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f494.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f339.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f339.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f60a.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f60a.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f339.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f339.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f64f.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f64f.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f525.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f525.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_audio_left_cancel.png",
         "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_audio_left_cancel.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f525.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f525.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u26c5.png",
@@ -144,12 +144,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_float_video.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_keyboard_hover.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_keyboard_hover.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f3c2.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f3c2.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_keyboard_hover.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_keyboard_hover.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f393.png",
@@ -216,12 +216,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_fr_file_list_ad_icon_file.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_ed_pub_service_search_hover.9.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ed_pub_service_search_hover.9.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_icon_add.png",
         "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_icon_add.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_ed_pub_service_search_hover.9.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ed_pub_service_search_hover.9.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_ext_plugin_location_pressed.png",
@@ -376,12 +376,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ac_other_file_icon.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f4da.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f4da.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_select_check_nor.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_select_check_nor.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f4da.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f4da.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_input_sub_menu_bg.9.png",
@@ -400,12 +400,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f33b.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_grid_image_default.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_grid_image_default.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f47d.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f47d.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_grid_image_default.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_grid_image_default.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_ic_def_rich_content.png",
@@ -460,24 +460,24 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ext_location_marker.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f60b.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f60b.png"
-    },
-    {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f437.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f437.png"
-    },
-    {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f52b.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f52b.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_icon_input_video.png",
+        "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_icon_input_video.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_rt_location_arrow.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_rt_location_arrow.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_icon_input_video.png",
-        "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_icon_input_video.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f52b.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f52b.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f437.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f437.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f60b.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f60b.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f623.png",
@@ -500,12 +500,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_icon_admin.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_notification_network_available.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_notification_network_available.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f6b2.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f6b2.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_notification_network_available.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_notification_network_available.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_btn_voice_hover.png",
@@ -580,12 +580,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_no_hover.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_video_right.png",
-        "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_video_right.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_add_people.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_add_people.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_video_right.png",
+        "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_video_right.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_icon_input_video_pressed.png",
@@ -608,12 +608,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f613.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f6ab.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f6ab.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f389.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f389.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f6ab.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f6ab.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_ic_notice_loading.png",
@@ -644,12 +644,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u261d.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_btn_pub_service_enter_hover.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_btn_pub_service_enter_hover.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voip_minimize.png",
         "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable-xhdpi/rc_voip_minimize.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_btn_pub_service_enter_hover.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_btn_pub_service_enter_hover.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_btn_open_file_normal.png",
@@ -732,12 +732,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f633.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_file_icon_word.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_file_icon_word.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f30f.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f30f.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_file_icon_word.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_file_icon_word.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voice_input_toggle.9.png",

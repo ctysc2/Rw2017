@@ -169,4 +169,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         new KeyBoardUtils(event,im,v).hideKeyBoardIfNecessary();
         return super.dispatchTouchEvent(event);
     }
+
+
 }

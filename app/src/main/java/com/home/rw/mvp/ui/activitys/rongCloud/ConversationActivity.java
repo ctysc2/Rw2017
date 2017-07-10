@@ -106,6 +106,7 @@ public class ConversationActivity extends BaseActivity implements UserInfoView{
                 entity.setName(mTitle);
                 if(user != null){
                     entity.setAvatar(user.getAvatar());
+                    entity.setPhone(user.getPhone());
                 }
                 intent.putExtra("data",entity);
                 startActivity(intent);

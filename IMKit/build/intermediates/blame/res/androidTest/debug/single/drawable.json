@@ -8,12 +8,12 @@
         "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_sel_picsel_toolbar_back.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_sel_picsel_toolbar_send.xml",
-        "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_sel_picsel_toolbar_send.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_voice_toggle_selector.xml",
         "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_voice_toggle_selector.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_sel_picsel_toolbar_send.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/build/intermediates/bundles/debug/res/drawable/rc_sel_picsel_toolbar_send.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/androidTest/debug/drawable/rc_bg_menu.xml",

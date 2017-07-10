@@ -300,6 +300,7 @@ public class MyTeamActivity extends BaseActivity implements MyTeamView{
                     CallListEntity.DataEntity data = new CallListEntity.DataEntity();
                     data.setName(entity.getTitle());
                     data.setAvatar(entity.getAvatar());
+                    data.setPhone(entity.getSubTitle());
                     Intent intent = new Intent(MyTeamActivity.this,PreviewCallActivity.class);
                     intent.putExtra("data",data);
                     startActivity(intent);

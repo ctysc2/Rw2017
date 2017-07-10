@@ -176,12 +176,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_voice_input_toggle_hover.9.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_volume_3.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ic_volume_3.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ext_locator.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ext_locator.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_volume_3.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ic_volume_3.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_unresolved_hover.png",
@@ -200,16 +200,16 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f622.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f62b.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f62b.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_picsel_back_pressed.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_picsel_back_pressed.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f436.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f436.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_picsel_back_pressed.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_picsel_back_pressed.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f62b.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f62b.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_star.png",
@@ -220,16 +220,16 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_back_icon.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_mebmer_delete.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_mebmer_delete.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f30f.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f30f.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_mebmer_delete.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_mebmer_delete.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_btn_download_cancel.png",
@@ -240,12 +240,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_btn_pub_service_follow_hover.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_icon_add.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_icon_add.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_plugin_default.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_plugin_default.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_icon_add.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_icon_add.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_volume_4.png",
@@ -280,12 +280,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f623.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f525.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f525.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_send_toggle_hover.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_send_toggle_hover.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f525.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f525.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f609.png",
@@ -336,12 +336,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f377.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_default_portrait.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_default_portrait.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ext_plugin_image_pressed.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ext_plugin_image_pressed.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_default_portrait.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_default_portrait.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f3b5.png",
@@ -392,24 +392,24 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f613.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_evaluate_plugin_hover.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_cs_evaluate_plugin_hover.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_delete.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_cs_delete.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_evaluate_plugin_hover.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_cs_evaluate_plugin_hover.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f6ab.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f6ab.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_handfree.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_handfree.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_icon_rt_message_left.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_icon_rt_message_left.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_handfree.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_handfree.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_file_icon_file.png",
@@ -428,12 +428,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_icon_input_video.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_hang_up.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_hang_up.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_audio_right_cancel.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_audio_right_cancel.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_hang_up.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_hang_up.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_notification_connecting.png",
@@ -464,12 +464,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_btn_pub_service_enter_hover.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f4a4.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f4a4.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_fr_file_list_ad_icon_file.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_fr_file_list_ad_icon_file.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f4a4.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f4a4.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f615.png",
@@ -692,28 +692,28 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f48b.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_default_group_portrait.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_default_group_portrait.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f4aa.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f4aa.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_receive_voice_two.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_receive_voice_two.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f4aa.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f4aa.png"
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_default_group_portrait.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_default_group_portrait.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_voice_receive_play2.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ic_voice_receive_play2.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_grid_image_default.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_grid_image_default.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voip_icon_checkbox_normal.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voip_icon_checkbox_normal.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_grid_image_default.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_grid_image_default.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_keyboard.png",
@@ -840,12 +840,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_receive_voice_one.png"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_location_normal.png",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ic_location_normal.png"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f649.png",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/u1f649.png"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_location_normal.png",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable-xhdpi-v4/rc_ic_location_normal.png"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f35a.png",

@@ -12,12 +12,14 @@ import io.rong.imlib.model.Conversation;
  */
 
 public class MyExtensionModule extends DefaultExtensionModule {
+
     @Override
     public List<IPluginModule> getPluginModules(Conversation.ConversationType conversationType) {
         List<IPluginModule> pluginModules =  super.getPluginModules(conversationType);
         List<IPluginModule> newPluginModules = new ArrayList<>();
         newPluginModules.add(pluginModules.get(0));
-        newPluginModules.add(pluginModules.get(1));
+        if(!conversationType.equals(Conversation.ConversationType.GROUP))
+            newPluginModules.add(pluginModules.get(1));
         return newPluginModules;
     }
 }

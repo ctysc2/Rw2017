@@ -47,6 +47,15 @@
                 android:textSize="16sp"
                 android:text="商务电话"
                 />
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+                android:textColor="@color/text_color_919191"
+                android:textSize="14sp"
+                android:text="13636315569"
+                />
         </LinearLayout>
         <TextView
             android:id="@+id/tv_right"
@@ -55,7 +64,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="15dp"
             android:textSize="12sp"
-            android:text="10-28"
+            android:text=""
             android:layout_marginRight="10dp"
             android:textColor="@color/text_color_919191"/>
         <View

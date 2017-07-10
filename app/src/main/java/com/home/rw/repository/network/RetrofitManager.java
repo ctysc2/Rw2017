@@ -22,6 +22,7 @@ import com.home.rw.mvp.entity.LinkedEntity;
 import com.home.rw.mvp.entity.LogEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.MainPageEntity;
+import com.home.rw.mvp.entity.MineNoticeEntity;
 import com.home.rw.mvp.entity.MixFocusEntity;
 import com.home.rw.mvp.entity.message.DoorKeyEntity;
 import com.home.rw.mvp.entity.message.MyTeamEntity;
@@ -50,6 +51,7 @@ import com.socks.library.KLog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -418,8 +420,8 @@ public class RetrofitManager {
     };
 
     //我的置业公告
-    public Observable<LinkedEntity> link4(){
-        return mRWService.link4();
+    public Observable<MineNoticeEntity> getMineNotice(){
+        return mRWService.mineNotice();
     };
 
 
@@ -543,7 +545,9 @@ public class RetrofitManager {
 
     //通讯录注册用户列表
     public Observable<ContactListEntity> getUsersByPhone(String phones){
-        return mRWService.getUsersByPhone(phones);
+        HashMap<String,String> input = new HashMap<>();
+        input.put("phones",phones);
+        return mRWService.getUsersByPhone(input);
     }
     //置业公告详情
     public Observable<RwNoticeDetailEntity> getRwNoticeDetailById(String id){

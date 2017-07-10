@@ -217,7 +217,7 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
                 0,
                 getString(R.string.shangWu),
                 "最近通话:小李",
-                "10-28",
+                "",
                 null,
                 false
         );
@@ -235,7 +235,7 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
                 0,
                 getString(R.string.zhiDi),
                 null,
-                "10-28",
+                "",
                 null,
                 false
         );
@@ -244,7 +244,7 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
                 0,
                 getString(R.string.gongSi),
                 null,
-                "10-28",
+                "",
                 null,
                 false
         );
@@ -365,6 +365,7 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
                                 data.setName(entity.getNickName() == null ?entity.getTitle():entity.getNickName());
                                 data.setAvatar(entity.getAvatar());
                                 data.setId(entity.getId());
+                                data.setPhone(entity.getSubTitle());
                                 intent = new Intent(mActivity,PreviewCallActivity.class);
                                 intent.putExtra("data",data);
                                 startActivity(intent);
@@ -449,11 +450,13 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
                 dataSource.get(1).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getBiPhones().getSpeakTime()))));
             //更新置地公告时间
             if(!TextUtils.isEmpty(entity.getLastRwNoticeTime()))
-                dataSource.get(2).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastRwNoticeTime()))));
-            //更新公司公告时间
-            if(!TextUtils.isEmpty(entity.getLastCoNoticeTime()))
-                dataSource.get(3).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastCoNoticeTime()))));
+                //dataSource.get(2).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastRwNoticeTime()))));
+                dataSource.get(2).setDate("");
 
+                //更新公司公告时间
+            if(!TextUtils.isEmpty(entity.getLastCoNoticeTime()))
+                //dataSource.get(3).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastCoNoticeTime()))));
+                dataSource.get(3).setDate("");
             //更新最近联系人
             if(dataSource.get(6).isExpanded() && dataSource.get(6).getChilds()!=null){
                 dataSource.removeAll(dataSource.get(6).getChilds());

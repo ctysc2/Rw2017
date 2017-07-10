@@ -94,6 +94,7 @@ public class MyFriendAdapter extends BaseRecyclerViewAdapter<MessageCommonEntity
                 mHolder.mIvHeader.setImageURI(entity.getAvatar());
             }
             mHolder.mTvName.setText(name);
+            mHolder.mTvPhone.setText(entity.getPhone());
             if(!TextUtils.isEmpty(entity.getLastSpeakingTime())){
                 mHolder.mTvRight.setText(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastSpeakingTime()))));
             }
@@ -138,6 +139,9 @@ public class MyFriendAdapter extends BaseRecyclerViewAdapter<MessageCommonEntity
 
         @BindView(R.id.sperate)
         View mSperate;
+
+        @BindView(R.id.tv_phone)
+        TextView mTvPhone;
 
         public MyFriendViewHolder(View view) {
             super(view);

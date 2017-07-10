@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -27,10 +28,13 @@ import com.home.rw.common.HostType;
 import com.home.rw.greendao.entity.UserInfo;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.mvp.entity.LinkedEntity;
+import com.home.rw.mvp.entity.MineNoticeEntity;
 import com.home.rw.mvp.entity.UploadEntity;
 import com.home.rw.mvp.entity.UserInfoEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
+import com.home.rw.mvp.entity.message.TopicCommonEntity;
 import com.home.rw.mvp.presenter.impl.LinkedPresenterImpl;
+import com.home.rw.mvp.presenter.impl.MineNoticePresenterImpl;
 import com.home.rw.mvp.presenter.impl.ModifiUserInfoPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UploadPresenterImpl;
 import com.home.rw.mvp.presenter.impl.UserInfoPresenterImpl;
@@ -45,6 +49,7 @@ import com.home.rw.mvp.ui.activitys.social.CommListActivity;
 import com.home.rw.mvp.ui.activitys.social.FocusListActivity;
 import com.home.rw.mvp.ui.fragments.base.BaseFragment;
 import com.home.rw.mvp.view.LinkedView;
+import com.home.rw.mvp.view.MineNoticeView;
 import com.home.rw.mvp.view.ModifiUserInfoView;
 import com.home.rw.mvp.view.UploadView;
 import com.home.rw.mvp.view.UserInfoView;
@@ -74,7 +79,7 @@ import static com.home.rw.common.HostType.USER_INFO;
  * Created by cty on 2016/12/13.
  */
 
-public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView,ModifiUserInfoView,LinkedView{
+public class MineMeFragment extends BaseFragment implements UploadView,UserInfoView,ModifiUserInfoView,LinkedView,MineNoticeView{
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
@@ -130,6 +135,8 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @Inject
     LinkedPresenterImpl mLinkedPresenterImpl;
 
+    @Inject
+    MineNoticePresenterImpl mMineNoticePresenterImpl;
     //选择头像
     PicTakerPopWindow menuWindow;
 
@@ -211,7 +218,8 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
               R.id.rl_gender,
               R.id.ll_focus,
               R.id.ll_fabu,
-              R.id.ib_wallet})
+              R.id.ib_wallet,
+                R.id.iv_ad})
     public void OnClick(View v){
         switch (v.getId()){
             case R.id.iv_header:
@@ -240,6 +248,13 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
                 intent.putExtra("startType",4);
                 startActivity(intent);
                 break;
+            case R.id.iv_ad:
+                if(mEntity!=null){
+                    Intent intent1 = new Intent(mActivity, LandMarkDetail.class);
+                    intent1.putExtra("data",mEntity);
+                    startActivity(intent1);
+                }
+                break;
             default:
                 break;
         }
@@ -259,9 +274,8 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
         mUploadPresenterImpl.attachView(this);
         mUserInfoPresenterImpl.attachView(this);
         mModifiUserInfoPresenterImpl.attachView(this);
-        mLinkedPresenterImpl.attachView(this);
-        mLinkedPresenterImpl.setReqType(HostType.OUT_LINK4);
-        mLinkedPresenterImpl.getLinked();
+        mMineNoticePresenterImpl.attachView(this);
+        mMineNoticePresenterImpl.getMineNotice();
 
     }
 
@@ -452,28 +466,35 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @Override
     public void getUserInfoCompleted(UserInfoEntity data) {
         Log.i("Retrofit","getUserInfoCompleted data:"+data.toString());
-        updateViews(data.getData());
-        headNetUrl = data.getData().getAvatar();
-        UserInfo user = UserInfoDaoHelper.getInstance().parseEntity2UserInfo(data.getData());
-        UserInfoDaoHelper.getInstance().insertUserInfo(user);
+        if(data.getCode().equals("ok")){
+            if(data == null)
+                return;
+            updateViews(data.getData());
+            headNetUrl = data.getData().getAvatar();
+            UserInfo user = UserInfoDaoHelper.getInstance().parseEntity2UserInfo(data.getData());
+            UserInfoDaoHelper.getInstance().insertUserInfo(user);
+        }
+
 
     }
     private void updateViewsByCache(UserInfo user){
         mUserName.setText(user.getRealName());
-        mtvGender.setText(user.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
+        if(user.getGender() != null)
+            mtvGender.setText(user.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
         //if(!headNetUrl.equals(user.getAvatar()))
         mHeaderView.setImageURI(user.getAvatar());
         mFocus.setText(user.getFocusNum());
         mPublish.setText(user.getPubNum());
         mComp.setText(user.getCompany());
         String phone = user.getPhone();
-        if(phone!=null){
+        if(!TextUtils.isEmpty(phone)){
             mPhoneNum.setText(phone.substring(0,2)+"***"+phone.substring(5,phone.length()));
         }else
             mPhoneNum.setText("");
     }
     private void updateViews(UserInfoEntity.DataEntity data){
         mUserName.setText(data.getRealname());
+        if(data.getGender() != null)
         mtvGender.setText(data.getGender().equals("0")?getString(R.string.male):getString(R.string.female));
        // if(!headNetUrl.equals(data.getAvatar()))
         mHeaderView.setImageURI(data.getAvatar());
@@ -481,7 +502,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
         mPublish.setText(data.getPubNum());
         mComp.setText(data.getCompany().getName());
         String phone = data.getPhone();
-        if(phone!=null){
+        if(!TextUtils.isEmpty(phone)){
             mPhoneNum.setText(phone.substring(0,2)+"***"+phone.substring(5,phone.length()));
         }else
             mPhoneNum.setText("");
@@ -537,33 +558,20 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
 
     @Override
     public void getLinkedCompleted(int reqType, LinkedEntity data) {
+
+    }
+    private TopicCommonEntity mEntity;
+    @Override
+    public void getMineNoticeCompleted(MineNoticeEntity data) {
         if(data.getCode().equals("ok")){
+            Glide.with(mActivity).load(data.getData().getImgs()).into(mAD);
+            mEntity = new TopicCommonEntity();
+            mEntity.setImgs(data.getData().getImgs());
+            mEntity.setTitle(data.getData().getTitle());
+            mEntity.setContent(data.getData().getContent());
+            mEntity.setPubTime(data.getData().getPubTime());
 
-            if(data.getData().size() == 0)
-                return;
 
-            final LinkedEntity.DataEntity entity = data.getData().get(0);
-            Glide.with(this).load(data.getData().get(0).getImgs()).into(mAD);
-            mAD.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent;
-                    if(entity.getType().equals("0")){
-                        intent = new Intent(mActivity, WebViewActivity.class);
-                        intent.putExtra("title",entity.getTitle());
-                        intent.putExtra("url",entity.getToLink());
-                        startActivity(intent);
-                    }else if(entity.getType().equals("1")){
-                        intent = new Intent(mActivity, LandMarkDetail.class);
-                        intent.putExtra("id",entity.getId());
-                        startActivity(intent);
-                    }else {
-                        intent = new Intent(mActivity, CommDetailActivity.class);
-                        intent.putExtra("id",entity.getId());
-                        startActivity(intent);
-                    }
-                }
-            });
         }
     }
 }

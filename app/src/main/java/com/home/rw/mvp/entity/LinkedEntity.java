@@ -20,12 +20,28 @@ public class LinkedEntity extends BaseEntity{
     }
 
     public static class DataEntity{
-        private String id;
+        private String fkId;
         private String imgs;
         private String title;
         private String toLink;
         private String type;
+        private String content;
+        private String pubTime;
+        public void setContent(String content) {
+            this.content = content;
+        }
 
+        public String getContent() {
+            return content;
+        }
+
+        public void setPubTime(String pubTime) {
+            this.pubTime = pubTime;
+        }
+
+        public String getPubTime() {
+            return pubTime;
+        }
 
         public void setTitle(String title) {
             this.title = title;
@@ -60,11 +76,11 @@ public class LinkedEntity extends BaseEntity{
         }
 
         public void setId(String id) {
-            this.id = id;
+            this.fkId = fkId;
         }
 
         public String getId() {
-            return id;
+            return fkId;
         }
     }
 }

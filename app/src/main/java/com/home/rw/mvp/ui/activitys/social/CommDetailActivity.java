@@ -240,10 +240,18 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
             rightTextFacus.setEnabled(true);
         }
         mTitle.setText(data.getTitle());
-        if(!TextUtils.isEmpty(data.getCreatedDate()))
-            mTime.setText(data.getCreatedDate());
-        else
+
+
+        if(!TextUtils.isEmpty(data.getCreatedDate())){
+            if((entryType!=null)&&(entryType.equals("HomePage")))
+                mTime.setText(data.getCreatedDate());
+            else
+                mTime.setText(DateUtils.getTime(new Date(Long.parseLong(data.getCreatedDate()))));
+        }
+        else{
             mTime.setText("");
+        }
+
         mContent.setText(data.getContent());
         mNum.setText(""+data.getSupportNum());
         if(data.getSupport().equals("1")){

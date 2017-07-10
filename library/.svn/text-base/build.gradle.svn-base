@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    repositories {
+        jcenter()
+        mavenCentral()  // GPUImage for Android
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile files('libs/universal-image-loader-1.9.3-with-sources.jar')
+    compile 'com.edmodo:cropper:1.0.1'
+    //    compile "com.github.bumptech.glide:glide:3.7.0"
+    //    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'com.makeramen:roundedimageview:2.2.1'
+    // If you want to use the GPU Filters
+    //
+    testCompile 'junit:junit:4.12'
+}

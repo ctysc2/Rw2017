@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -156,9 +157,14 @@ public class PreviewCallActivity extends BaseActivity {
                 }else if(callListLength >4){
                     Toast.makeText(this,getString(R.string.onlyOneOp),Toast.LENGTH_SHORT).show();
                 }else{
-                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + receiveData.getPhone()));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    if(TextUtils.isEmpty(receiveData.getPhone())){
+                        Toast.makeText(this,getString(R.string.nosensePhoneNum),Toast.LENGTH_SHORT).show();
+                    }else{
+                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + receiveData.getPhone()));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+
                 }
                 break;
             default:

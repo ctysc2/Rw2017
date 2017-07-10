@@ -40,12 +40,12 @@
         "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_bg_sidebar.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/debug/drawable/rc_ic_phone_selector.xml",
-        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_ic_phone_selector.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/debug/drawable/rc_ext_plugin_location_selector.xml",
         "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_ext_plugin_location_selector.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/debug/drawable/rc_ic_phone_selector.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_ic_phone_selector.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/debug/drawable/rc_ext_plugin_image_selector.xml",

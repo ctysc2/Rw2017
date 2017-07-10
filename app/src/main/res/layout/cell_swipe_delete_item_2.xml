@@ -7,7 +7,7 @@
     app:ios="false"
     android:background="@color/widowColor"
     app:leftSwipe="true"
-    app:swipeEnable="true">
+    app:swipeEnable="false">
 <RelativeLayout
     android:id="@+id/rl_container"
     android:layout_width="match_parent"

@@ -42,9 +42,6 @@ public class LinkedInteractorImpl implements LinkedInteractor<LinkedEntity> {
             case HostType.OUT_LINK3:
                 mObservable = RetrofitManager.getInstance(reqType).link3();
                 break;
-            case HostType.OUT_LINK4:
-                mObservable = RetrofitManager.getInstance(reqType).link4();
-                break;
             default:
                 return null;
 

@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.rw.R;
+import com.home.rw.greendao.entity.Friends;
 import com.home.rw.greendao.entity.UserInfo;
+import com.home.rw.greendaohelper.FriendsDaoHelper;
 import com.home.rw.greendaohelper.UserInfoDaoHelper;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.CommunicationEntity;
@@ -174,6 +176,20 @@ public class MyFriendActivity extends BaseActivity implements MyFriendView{
             dataSource = data.getData().getFriends();
             mAdapter.setList(dataSource);
             mAdapter.notifyDataSetChanged();
+
+            ArrayList<MessageCommonEntity> source = data.getData().getFriends();
+            ArrayList<Friends> list = new ArrayList<>();
+            for(int i = 0;i<source.size();i++){
+                Friends friends = new Friends();
+                MessageCommonEntity entity = source.get(i);
+                friends.setId(Long.parseLong(entity.getUserId()));
+                friends.setPhone(entity.getPhone());
+                friends.setRealName(entity.getRealname());
+                friends.setNickName(entity.getNickname());
+                friends.setAvatar(entity.getAvatar());
+                list.add(friends);
+            }
+            FriendsDaoHelper.getInstance().insertFriends(list);
 
             TextView tv = (TextView)mHeader.findViewById(R.id.tv_friend_num);
             if(data.getData().getWaitAppFriendNum().equals("0")){
