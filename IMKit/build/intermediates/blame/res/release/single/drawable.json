@@ -20,16 +20,16 @@
         "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_read_receipt_request_button.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/drawable/rc_emotion_toggle_selector.xml",
-        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_emotion_toggle_selector.xml"
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/drawable/rc_menu_text_selector.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_menu_text_selector.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/drawable/rc_selector_title_back_press.xml",
         "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_selector_title_back_press.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/drawable/rc_menu_text_selector.xml",
-        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_menu_text_selector.xml"
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/drawable/rc_emotion_toggle_selector.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/drawable/rc_emotion_toggle_selector.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/drawable/rc_menu_background_selector.xml",

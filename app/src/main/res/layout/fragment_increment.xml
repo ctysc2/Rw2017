@@ -19,36 +19,25 @@
         <RelativeLayout
             android:id="@+id/rl_1"
             android:layout_width="match_parent"
-            android:background="@color/widowColor"
-            android:layout_height="145dp">
-            <ImageView
-                android:id="@+id/iv_1"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/icon_yuyueoffic"
-                android:layout_centerHorizontal="true"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:text="@string/OfficeAppontment"
-                android:textColor="@color/black"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/iv_1"
-                android:gravity="center"
-                android:layout_marginTop="8dp"/>
+            android:background="@drawable/bac_meeting_appointment"
+            android:layout_height="70dp">
         </RelativeLayout>
         <TextView
             android:id="@+id/tv_used"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="55dp"
             android:textColor="@color/black"
             android:gravity="center_vertical|left"
             android:paddingLeft="15dp"
             android:textSize="16sp"
             android:text="@string/alwaysUsed"
             android:layout_below="@+id/rl_1"/>
+        <View
+            android:id="@+id/v_sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F8F8F8"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -62,18 +51,19 @@
                 android:layout_height="40dp">
                 <ImageView
                     android:id="@+id/iv_baoxiu"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
-                    android:layout_centerVertical="true"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/icon_baoxiu"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerVertical="true"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/iv_baoxiu"
                     android:gravity="center_vertical|left"
                     android:textSize="16sp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
                     android:text="@string/askForRepaire"
                     android:textColor="@color/black"/>
                 <ImageView
@@ -109,8 +99,8 @@
                         android:background="@drawable/selector_layoutbac"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_print"
                             />
                         <TextView
@@ -119,7 +109,7 @@
                             android:textSize="15sp"
                             android:text="@string/print"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                     <View
@@ -135,8 +125,8 @@
                         android:background="@drawable/selector_layoutbac"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_haocai"
                             />
                         <TextView
@@ -145,7 +135,7 @@
                             android:textSize="15sp"
                             android:text="@string/consumeMateria"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                     <View
@@ -161,8 +151,8 @@
                         android:orientation="vertical"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_clear"
                             />
                         <TextView
@@ -171,7 +161,7 @@
                             android:textSize="15sp"
                             android:text="@string/clear"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -193,8 +183,8 @@
                         android:background="@drawable/selector_layoutbac"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_kuaidi"
                             />
                         <TextView
@@ -203,7 +193,7 @@
                             android:textSize="15sp"
                             android:text="@string/express"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                     <View
@@ -219,8 +209,8 @@
                         android:background="@drawable/selector_layoutbac"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_zuche"
                             />
                         <TextView
@@ -229,7 +219,7 @@
                             android:textSize="15sp"
                             android:text="@string/rentcar"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                     <View
@@ -245,8 +235,8 @@
                         android:orientation="vertical"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_wenju"
                             />
                         <TextView
@@ -255,7 +245,7 @@
                             android:textSize="15sp"
                             android:text="@string/writeMateria"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -277,8 +267,8 @@
                         android:background="@drawable/selector_layoutbac"
                         android:gravity="center">
                         <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/icon_add"
                             />
                         <TextView
@@ -287,7 +277,7 @@
                             android:textSize="15sp"
                             android:text="@string/incrementAdd"
                             android:gravity="center"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="5dp"
                             android:textColor="@color/text_color_919191"/>
                     </LinearLayout>
                     <View

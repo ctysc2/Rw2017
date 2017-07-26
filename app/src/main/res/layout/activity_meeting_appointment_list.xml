@@ -22,14 +22,29 @@
         app:cardPreventCornerOverlap="true"
         app:cardBackgroundColor="@color/widowColor"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:text="1号会议室"
-            android:paddingLeft="15dp"
-            android:gravity="center_vertical|left"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icon_meeting_room"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:text="1号会议室"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|left"/>
+
+        </LinearLayout>
+
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:id="@+id/card2"
@@ -44,14 +59,28 @@
         app:cardPreventCornerOverlap="true"
         app:cardBackgroundColor="@color/widowColor"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:text="2号会议室"
-            android:paddingLeft="15dp"
-            android:gravity="center_vertical|left"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icon_meeting_room"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:text="2号会议室"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|left"/>
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:id="@+id/card3"
@@ -66,14 +95,28 @@
         app:cardPreventCornerOverlap="true"
         app:cardBackgroundColor="@color/widowColor"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:text="3号会议室"
-            android:paddingLeft="15dp"
-            android:gravity="center_vertical|left"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icon_meeting_room"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:text="3号会议室"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|left"/>
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:id="@+id/card4"
@@ -88,13 +131,27 @@
         app:cardPreventCornerOverlap="true"
         app:cardBackgroundColor="@color/widowColor"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:text="4号会议室"
-            android:paddingLeft="15dp"
-            android:gravity="center_vertical|left"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icon_meeting_room"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:text="4号会议室"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|left"/>
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

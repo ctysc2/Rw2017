@@ -1,14 +1,10 @@
 package com.home.rw.mvp.ui.activitys;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,18 +13,10 @@ import android.widget.Toast;
 
 import com.carduoblue.api.CarduoBlueInterface;
 import com.carduoblue.api.InitCallback;
-import com.google.android.gms.maps.MapView;
 import com.home.rw.R;
-import com.home.rw.application.App;
-import com.home.rw.common.HostType;
-import com.home.rw.event.BeforeReadEvent;
 import com.home.rw.event.ReLoginEvent;
-import com.home.rw.greendao.entity.UserInfo;
-import com.home.rw.greendaohelper.UserInfoDaoHelper;
-import com.home.rw.mvp.entity.AddApplyEntity;
 import com.home.rw.mvp.entity.LoginEntity;
 import com.home.rw.mvp.entity.base.BaseEntity;
-import com.home.rw.mvp.interactor.impl.DialOutInteractorImpl;
 import com.home.rw.mvp.presenter.impl.DialOutPresenterImpl;
 import com.home.rw.mvp.presenter.impl.LoginPresenterImpl;
 import com.home.rw.mvp.ui.activitys.base.BaseActivity;
@@ -39,14 +27,11 @@ import com.home.rw.mvp.ui.fragments.SocialFragment;
 import com.home.rw.mvp.ui.fragments.WorkFragment;
 import com.home.rw.mvp.view.DialOutView;
 import com.home.rw.mvp.view.LoginView;
-import com.home.rw.repository.network.RetrofitManager;
 import com.home.rw.utils.GoogleMapUtils;
 import com.home.rw.utils.PreferenceUtils;
 import com.home.rw.utils.RxBus;
 import com.home.rw.utils.TransformUtils;
-import com.socks.library.KLog;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,23 +41,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.rong.callkit.OutGoingNotice;
-import io.rong.calllib.IRongCallListener;
-import io.rong.calllib.RongCallClient;
-import io.rong.calllib.RongCallCommon;
-import io.rong.calllib.RongCallSession;
 import io.rong.eventbus.EventBus;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
-import io.rong.push.RongPushClient;
-import io.rong.push.common.RongException;
-import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.observers.Observers;
 
 public class MainActivity extends BaseActivity implements LoginView,DialOutView {
 
@@ -332,7 +306,7 @@ public class MainActivity extends BaseActivity implements LoginView,DialOutView 
                 ((TextView)ll.getChildAt(1)).setTextColor(getResources().getColor(R.color.text_color_7B858E));
             }else{
                 ((ImageView)ll.getChildAt(0)).setImageResource(selectedResouceArray[i]);
-                ((TextView)ll.getChildAt(1)).setTextColor(getResources().getColor(R.color.text_color_176BF9));
+                ((TextView)ll.getChildAt(1)).setTextColor(getResources().getColor(R.color.golden));
             }
 
         }

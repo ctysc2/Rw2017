@@ -13,8 +13,8 @@
         android:id="@+id/tb_Top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabIndicatorColor="@color/golden"
+        app:tabSelectedTextColor="@color/golden"
         app:tabTextColor="@color/black"
         />
     <android.support.v4.view.ViewPager

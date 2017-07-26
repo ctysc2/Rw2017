@@ -147,7 +147,7 @@ public class ApprovedByMeActivity extends BaseActivity implements ViewPager.OnPa
     private void setSegmentSelect(int index){
         if(LEFT == index){
             mTvLeft.setTextColor(Color.parseColor("#FFFFFF"));
-            mTvLeft.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#3B41FF"),RADIUS_LEFT,10));
+            mTvLeft.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#BD9C57"),RADIUS_LEFT,10));
 
             mTvRight.setTextColor(Color.parseColor("#000000"));
             mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_RIGHT,10));
@@ -158,7 +158,7 @@ public class ApprovedByMeActivity extends BaseActivity implements ViewPager.OnPa
             mTvLeft.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_LEFT,10));
 
             mTvRight.setTextColor(Color.parseColor("#FFFFFF"));
-            mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#3B41FF"),RADIUS_RIGHT,10));
+            mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#BD9C57"),RADIUS_RIGHT,10));
 
         }
 

@@ -21,7 +21,7 @@
     <string name="sendMsg">发送短信</string>
     <string name="multiInput">多行输入</string>
     <string name="doorOpened">门开了,欢迎光临</string>
-    <!--消息-->
+    <!--tab_message_unselected-->
     <string name="conversationList">会话列表</string>
     <string name="systemMessage">系统消息</string>
     <string name="messageTitle">商务中心</string>
@@ -56,6 +56,7 @@
     <string name="orgNum">(%1$s人)</string>
     <string name="myTeam">我的团队</string>
     <string name="addFriend">添加好友</string>
+    <string name="addFriend2">加好友</string>
     <string name="phoneContact">手机通讯录</string>
     <string name="newFriend">新的好友</string>
     <string name="add">添加</string>
@@ -85,14 +86,14 @@
     <string name="search">搜索</string>
     <string name="notFind">没有找到\"%1$s\"</string>
     <string name="searchCannotEmpty">搜索内容不能为空</string>
-    <!--办公-->
+    <!--tab_work_unselected-->
     <string name="compWork">企业办公</string>
     <string name="intelligentMobileWork">智能移动办公</string>
     <string name="signLabel">签到</string>
     <string name="dairyLabel">日志</string>
     <string name="approveLabel">审批</string>
     <string name="cardLabel">考勤打卡</string>
-    <string name="rollLabel">若一下</string>
+    <string name="rollLabel">DO一下</string>
     <string name="approvebyme">待我审批</string>
     <string name="fromme">我发起的</string>
     <string name="getout">外出</string>
@@ -155,8 +156,7 @@
 
     <string name="shangbanCard">上班打卡</string>
     <string name="xiabanCard">下班打卡</string>
-
-    <string name="rollme">若我的人</string>
+    <string name="rollme">DO我的人</string>
 
     <string name="today">今天</string>
     <string name="receiver">接收人</string>
@@ -195,7 +195,7 @@
     <string name="expect">敬请期待</string>
     <string name="waitexpect">敬请期待...</string>
     <!--企业交流-->
-    <string name="compSocial">企业交流</string>
+    <string name="compSocial">社区交流</string>
     <string name="publish">发布</string>
     <string name="find">发现</string>
     <string name="homepage">主页</string>
@@ -214,6 +214,7 @@
     <string name="addFacus">+关注</string>
     <string name="Facused">已关注</string>
     <string name="MyFacus">我关注的</string>
+    <string name="FacusedCompany">关注的公司</string>
     <string name="MyFacusEn">focus on</string>
     <string name="AllFacus">全部 ></string>
     <string name="FacusNum">关注的人</string>

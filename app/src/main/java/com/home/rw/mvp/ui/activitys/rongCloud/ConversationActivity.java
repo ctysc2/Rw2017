@@ -202,7 +202,7 @@ public class ConversationActivity extends BaseActivity implements UserInfoView{
 
     }
     /**
-     * 判断是否是 Push 消息，判断是否需要做 connect 操作
+     * 判断是否是 Push tab_message_unselected，判断是否需要做 connect 操作
      */
     private void isPushMessage(Intent intent) {
 

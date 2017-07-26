@@ -15,14 +15,14 @@
         <LinearLayout
             android:id="@+id/top_bac"
             android:layout_width="match_parent"
-            android:layout_height="185dp"
+            android:layout_height="225dp"
             android:orientation="vertical"
             android:background="@drawable/bac_usercenter">
             <include layout="@layout/common_toolbar" />
             <LinearLayout
                 android:id="@+id/ll_top"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="110dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_below="@+id/toolbar"
@@ -30,135 +30,167 @@
                 android:layout_alignParentStart="true">
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_header"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     fresco:actualImageScaleType="centerCrop"
                     fresco:placeholderImage="@drawable/icon_empty_head"
                     fresco:placeholderImageScaleType="centerCrop"
                     fresco:roundAsCircle="true"
                     fresco:roundingBorderColor="@color/text_color_A2A8EB"
-                    fresco:roundingBorderWidth="3dp"
+                    fresco:roundingBorderWidth="1dp"
                     android:layout_marginLeft="15dp"
                     />
 
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="4dp"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/tv_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:textSize="17sp"
                         android:gravity="left"
                         android:text="罗密欧啦啦"
                         android:singleLine="true"
-                        android:layout_marginTop="8dp"
+
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/widowColor"/>
-                    <ImageButton
-                        android:id="@+id/ib_wallet"
-                        android:layout_width="match_parent"
-                        android:layout_height="23dp"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:scaleType="centerInside"
-                        android:background="@color/transparent"
-                        android:src="@drawable/icon_wallet"
-                        />
                 </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+
                     >
-                    <LinearLayout
-                        android:id="@+id/ll_focus"
-                        android:layout_width="45dp"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:layout_marginLeft="70dp"
-                        android:layout_marginRight="70dp"
-                        android:layout_alignParentRight="true"
+                    <TextView
+                        android:id="@+id/tv_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:text="若为置业有限公司"
                         android:layout_centerVertical="true"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tv_focus"
-                            android:layout_width="45dp"
-                            android:layout_height="20dp"
-                            android:textSize="15sp"
-                            android:textColor="@color/widowColor"
-                            android:layout_marginTop="8dp"
-                            android:text="651"
-                            android:background="@drawable/shape_focus_bac"
-                            android:gravity="center"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_marginTop="7dp"
-                            android:text="@string/facus"
-                            android:gravity="center"
-                            android:textSize="13sp"
-                            android:textColor="@color/widowColor"
-                            android:layout_height="20dp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/ll_fabu"
-                        android:layout_width="55dp"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/iv_right_arrow"
+                        android:textColor="@color/bg_white"/>
+                    <ImageView
+                        android:id="@+id/iv_right_arrow"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_marginRight="10dp"
                         android:layout_centerVertical="true"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tv_publish"
-                            android:layout_width="45dp"
-                            android:layout_height="20dp"
-                            android:textSize="15sp"
-                            android:textColor="@color/widowColor"
-                            android:layout_marginTop="8dp"
-                            android:text="0"
-                            android:background="@drawable/shape_focus_bac"
-                            android:gravity="center"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_marginTop="7dp"
-                            android:text="@string/publish"
-                            android:gravity="center"
-                            android:textSize="13sp"
-                            android:textColor="@color/widowColor"
-                            android:layout_height="20dp" />
-                    </LinearLayout>
+                        android:layout_alignParentRight="true"
+
+                        android:src="@drawable/arrow_right"/>
                 </RelativeLayout>
 
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/rl_mid"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#5C000000"
+                android:layout_below="@+id/top_bac">
+                <LinearLayout
+                    android:id="@+id/ll_wallet"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/icon_wallet"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wallet"
+                        android:layout_marginTop="5dp"
+                        android:textSize="13sp"
+                        android:textColor="@color/bg_white"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="#4CF8F8F8"
+                    android:layout_height="30dp"/>
+                <LinearLayout
+                    android:id="@+id/ll_focus"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/tv_focus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/bg_white" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/facus"
+                        android:layout_marginTop="1dp"
+                        android:textSize="13sp"
+                        android:textColor="@color/bg_white"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="#4CF8F8F8"
+                    android:layout_height="30dp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/tv_bt_company"
+                        android:text="0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/bg_white" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/company"
+                        android:layout_marginTop="1dp"
+                        android:textSize="13sp"
+                        android:textColor="@color/bg_white"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="#4CF8F8F8"
+                    android:layout_height="30dp"/>
+                <LinearLayout
+                    android:id="@+id/ll_fabu"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/tv_publish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/bg_white" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/publish"
+                        android:layout_marginTop="1dp"
+                        android:textSize="13sp"
+                        android:textColor="@color/bg_white"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_mid"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:background="@color/bac_color_3B56B4"
-            android:layout_below="@+id/top_bac">
-            <TextView
-                android:id="@+id/compName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="@color/widowColor"
-                android:text="若为置业有限公司"
-                android:gravity="center"
-                android:layout_marginLeft="15dp"
-                android:textSize="16sp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_next"/>
-        </RelativeLayout>
+
         <View
             android:id="@+id/sperate"
             android:layout_width="match_parent"

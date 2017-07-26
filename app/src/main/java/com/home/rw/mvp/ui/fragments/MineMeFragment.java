@@ -86,6 +86,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @BindView(R.id.back)
     ImageButton mSetting;
 
+    @BindView(R.id.ib_right)
+    ImageButton mBtnRight;
+
     @BindView(R.id.midText)
     TextView midText;
 
@@ -110,7 +113,7 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @BindView(R.id.tv_focus)
     TextView mFocus;
 
-    @BindView(R.id.compName)
+    @BindView(R.id.tv_company)
     TextView mComp;
 
     @BindView(R.id.tv_phone)
@@ -214,11 +217,11 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @OnClick({R.id.iv_header,
               R.id.back,
               R.id.rl_changePsw,
-              R.id.rightText,
+              R.id.ib_right,
               R.id.rl_gender,
               R.id.ll_focus,
               R.id.ll_fabu,
-              R.id.ib_wallet,
+              R.id.ll_wallet,
                 R.id.iv_ad})
     public void OnClick(View v){
         switch (v.getId()){
@@ -234,10 +237,10 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
             case R.id.rl_changePsw:
                 startActivity(new Intent(mActivity, ChangePassWord.class));
                 break;
-            case R.id.rightText:
+            case R.id.ib_right:
                 startActivity(new Intent(mActivity, OrderActivity.class));
                 break;
-            case R.id.ib_wallet:
+            case R.id.ll_wallet:
                 startActivity(new Intent(mActivity, WalletActivity.class));
                 break;
             case R.id.ll_focus:
@@ -268,7 +271,9 @@ public class MineMeFragment extends BaseFragment implements UploadView,UserInfoV
     @Override
     public void initViews(View view) {
         mToolBar.setBackgroundResource(R.color.transparent);
-        rightText.setText(R.string.order);
+        mBtnRight.setVisibility(View.VISIBLE);
+        rightText.setVisibility(View.GONE);
+        mBtnRight.setImageResource(R.drawable.icon_center_order);
         mSetting.setImageResource(R.drawable.btn_setting);
         initCache();
         mUploadPresenterImpl.attachView(this);

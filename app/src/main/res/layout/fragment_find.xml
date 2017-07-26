@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bac_color_EFEFF4"
+    android:background="@color/bg_white"
     tools:context="com.home.rw.mvp.ui.fragments.social.FindFragment">
     <ScrollView
         android:layout_width="match_parent"
@@ -41,25 +41,17 @@
                 android:id="@+id/ll_chosen"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="@color/bac_color_EFEFF4"
+                android:background="@color/bg_white"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:layout_marginLeft="15dp"
                     android:textColor="@color/text_color_333333"
                     android:text="@string/channelChosen"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="15sp"
-                    android:gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/text_color_999999"
-                    android:text="@string/channelChosenEn"/>
+
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -158,27 +150,18 @@
             <LinearLayout
                     android:id="@+id/ll_board"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@color/bac_color_EFEFF4"
+                    android:layout_height="40dp"
+                    android:background="@color/bg_white"
                     android:orientation="horizontal"
                     android:layout_above="@+id/iv_ad">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
+                        android:textSize="16sp"
                         android:gravity="center"
                         android:layout_marginLeft="15dp"
                         android:textColor="@color/text_color_333333"
                         android:text="@string/Chosen"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="15sp"
-                        android:gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/text_color_999999"
-                        android:text="@string/ChosenEn"/>
                 </LinearLayout>
                 <ImageView
                     android:layout_width="match_parent"

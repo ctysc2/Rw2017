@@ -8,24 +8,24 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable/rc_ic_files_selector.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_voip_audio_answer_selector.xml",
-        "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable/rc_voip_audio_answer_selector.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_ic_star_selector.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable/rc_ic_star_selector.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_voip_audio_answer_selector.xml",
+        "source": "/Users/cty/projects/Rw/CallKit/src/main/res/drawable/rc_voip_audio_answer_selector.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_edit_text_background_selector.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable/rc_edit_text_background_selector.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_btn_send.xml",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable/rc_btn_send.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_ic_phone_selector.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable/rc_ic_phone_selector.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_btn_send.xml",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/drawable/rc_btn_send.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/drawable/rc_ext_plugin_location_selector.xml",

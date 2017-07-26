@@ -76,12 +76,12 @@
         "source": "/Users/cty/projects/Rw/IMKit/src/main/res/layout/rc_dialog_popup_prompt.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/layout/rc_item_preview_fragment.xml",
-        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/layout/rc_item_preview_fragment.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/layout/rc_picsel_grid_item.xml",
         "source": "/Users/cty/projects/Rw/IMKit/src/main/res/layout/rc_picsel_grid_item.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/layout/rc_item_preview_fragment.xml",
+        "source": "/Users/cty/projects/Rw/IMKit/src/main/res/layout/rc_item_preview_fragment.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/IMKit/build/intermediates/res/merged/release/layout/rc_ext_sub_menu_container.xml",

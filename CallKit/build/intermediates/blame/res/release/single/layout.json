@@ -96,12 +96,12 @@
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_cs_item_single_choice.xml"
     },
     {
-        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/layout/rc_dialog_popup_options.xml",
-        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_dialog_popup_options.xml"
-    },
-    {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/layout/rc_item_public_service_input_menu_item.xml",
         "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_item_public_service_input_menu_item.xml"
+    },
+    {
+        "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/layout/rc_dialog_popup_options.xml",
+        "source": "/Users/cty/projects/Rw/CallKit/build/intermediates/exploded-aar/Rw/IMKit/unspecified/res/layout/rc_dialog_popup_options.xml"
     },
     {
         "merged": "/Users/cty/projects/Rw/CallKit/build/intermediates/res/merged/release/layout/rc_plugin_location_activity.xml",

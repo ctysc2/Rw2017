@@ -85,8 +85,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         mPresenter = mLoginPresenterImpl;
         mPresenter.attachView(this);
-//        mEtName.setText("ygbwc");
-//        mEtPsw.setText("123456");
+        mEtName.setText("1ft");
+        mEtPsw.setText("123456");
     }
 
     @Override

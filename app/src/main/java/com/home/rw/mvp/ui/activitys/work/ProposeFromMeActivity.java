@@ -138,7 +138,7 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
     private void setSegmentSelect(int index){
         if(LEFT == index){
             mTvLeft.setTextColor(Color.parseColor("#FFFFFF"));
-            mTvLeft.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#3B41FF"),RADIUS_LEFT,10));
+            mTvLeft.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#BD9C57"),RADIUS_LEFT,10));
 
             mTvMid.setTextColor(Color.parseColor("#000000"));
             mTvMid.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_NONE,10));
@@ -155,14 +155,14 @@ public class ProposeFromMeActivity extends BaseActivity implements ViewPager.OnP
             mTvMid.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_NONE,10));
 
             mTvRight.setTextColor(Color.parseColor("#FFFFFF"));
-            mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#3B41FF"),RADIUS_RIGHT,10));
+            mTvRight.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#BD9C57"),RADIUS_RIGHT,10));
 
         }else{
             mTvLeft.setTextColor(Color.parseColor("#000000"));
             mTvLeft.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#FFFFFF"),RADIUS_LEFT,10));
 
             mTvMid.setTextColor(Color.parseColor("#FFFFFF"));
-            mTvMid.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#3B41FF"),RADIUS_NONE,10));
+            mTvMid.setBackground(DrawableUtils.getShapeDrawable(Color.parseColor("#BD9C57"),RADIUS_NONE,10));
 
 
             mTvRight.setTextColor(Color.parseColor("#000000"));

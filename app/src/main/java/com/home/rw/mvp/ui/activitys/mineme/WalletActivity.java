@@ -43,6 +43,11 @@ public class WalletActivity extends BaseActivity {
 
     @BindView(R.id.rightText)
     TextView rightText;
+
+
+    @BindView(R.id.ib_right)
+    ImageButton mIbRight;
+
     @BindView(R.id.tb_Top)
     TabLayout mTabLayout;
 
@@ -76,8 +81,9 @@ public class WalletActivity extends BaseActivity {
     @Override
     public void initViews() {
         midText.setText(R.string.wallet);
-        rightText.setText(R.string.exchange);
+        rightText.setVisibility(View.GONE);
         mback.setImageResource(R.drawable.btn_back);
+        mIbRight.setVisibility(View.GONE);
 
         mFragmentList.add(personerWalletFragment);
         mFragmentList.add(companyWalletFragment);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#116FFF</color>
-    <color name="colorPrimaryDark">#116FFF</color>
+    <color name="colorPrimary">#000001</color>
+    <color name="colorPrimaryDark">#000001</color>
     <color name="colorAccent">#7AA3DF</color>
     <color name="widowColor">#ffffff</color>
     <color name="black">#000000</color>
@@ -10,6 +10,9 @@
     <color name="black_0.5">#80000000</color>
     <color name="black_0.7">#B2000000</color>
     <color name="black_0.8">#CC000000</color>
+    <color name="golden">#BD9C57</color>
+
+
     <!--Tabbar默认-->
     <color name="text_color_7B858E">#7B858E</color>
     <!--Tabbar选中-->
