@@ -14,8 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.vision.text.Text;
 import com.home.rw.R;
 import com.home.rw.event.BeforeReadEvent;
 import com.home.rw.event.UnReadMessageEvent;
@@ -111,6 +114,41 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
 
     ArrayList<MessegeMainEntity.DataEntity> dataSource = new ArrayList<>();
 
+    private boolean isExpanded = false;
+
+
+    private RelativeLayout mContainerChangYong;
+
+    private RelativeLayout mContainerQiYe;
+
+    private RelativeLayout mContainerShangWu;
+
+    private RelativeLayout mContainerZhiDi;
+
+    private RelativeLayout mContainerNewMessage;
+
+    private RelativeLayout mContainerCompany;
+
+    private RelativeLayout mContainerFriend;
+
+
+    private View mRedPointZhidi;
+
+    private View mRedPointMessage;
+
+    private View mRedPointGongsi;
+
+    private View mRedPointHaoyou;
+
+
+    private TextView mZhidiDate;
+
+    private TextView mGongsiDate;
+
+    private TextView mShangwuRecent;
+
+    private TextView mShangwuRight;
+
     @OnClick({R.id.rightText,
             R.id.back,
     })
@@ -201,87 +239,91 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
 
     private void initRecycleView() {
 
-        ArrayList<MessegeMainEntity.DataEntity> subData = new ArrayList<>();
-
-        MessegeMainEntity.DataEntity child0 = new MessegeMainEntity.DataEntity(
-                -100,
-                0,
-                getString(R.string.newMessage),
-                null,
-                null,
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity child1 = new MessegeMainEntity.DataEntity(
-                -1,
-                0,
-                getString(R.string.shangWu),
-                "最近通话:小李",
-                "",
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity child2 = new MessegeMainEntity.DataEntity(
-                -2,
-                0,
-                getString(R.string.haoYou),
-                null,
-                null,
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity child3 = new MessegeMainEntity.DataEntity(
-                -3,
-                0,
-                getString(R.string.zhiDi),
-                null,
-                "",
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity child4 = new MessegeMainEntity.DataEntity(
-                -4,
-                0,
-                getString(R.string.gongSi),
-                null,
-                "",
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity child5 = new MessegeMainEntity.DataEntity(
-                -5,
-                0,
-                getString(R.string.qiYe),
-                null,
-                null,
-                null,
-                false
-        );
-        MessegeMainEntity.DataEntity child6 = new MessegeMainEntity.DataEntity(
-                -6,
-                0,
-                getString(R.string.changYong),
-                null,
-                null,
-                subData,
-                false
-        );
-
-        dataSource.add(child0);
-        dataSource.add(child1);
-        dataSource.add(child3);
-        dataSource.add(child4);
-        dataSource.add(child5);
-        dataSource.add(child2);
-
-
-        dataSource.add(child6);
-
-
-
-        saveSetions();
-
+        //saveSetions();
         mAdapter = new MessegeMainAdapter(dataSource,mActivity);
+        View headview = LayoutInflater.from(mActivity).inflate(R.layout.cell_message_header,null);
+
+        //red point
+        mRedPointZhidi = (View)headview.findViewById(R.id.v_red_point_zhidi);
+        mRedPointMessage = (View)headview.findViewById(R.id.v_red_point_message);
+        mRedPointGongsi = (View)headview.findViewById(R.id.v_red_point_gongsi);
+        mRedPointHaoyou = (View)headview.findViewById(R.id.v_red_point_haoyou);
+
+
+        mContainerChangYong = (RelativeLayout) headview.findViewById(R.id.rl_changyong);
+        mContainerQiYe = (RelativeLayout) headview.findViewById(R.id.rl_qiye);
+        mContainerShangWu = (RelativeLayout) headview.findViewById(R.id.rl_shansgwu);
+
+
+        mContainerZhiDi = (RelativeLayout)  headview.findViewById(R.id.rl_zhidi);
+        mContainerNewMessage = (RelativeLayout) headview.findViewById(R.id.rl_new_message);
+        mContainerCompany = (RelativeLayout)  headview.findViewById(R.id.rl_company);
+        mContainerFriend = (RelativeLayout) headview.findViewById(R.id.rl_friend);
+
+
+       mZhidiDate  = (TextView) headview.findViewById(R.id.tv_zhidi_date);
+
+       mGongsiDate = (TextView) headview.findViewById(R.id.tv_gongsi_date);
+
+       mShangwuRecent = (TextView) headview.findViewById(R.id.tv_line2_shangwu);
+
+        mShangwuRight = (TextView) headview.findViewById(R.id.tv_right_shangwu);
+
+
+        mContainerZhiDi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, LandMarkNotice.class));
+            }
+        });
+
+        mContainerNewMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, ConversationListActivity.class));
+            }
+        });
+
+        mContainerCompany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, CompanyNoticeActivity.class));
+            }
+        });
+
+        mContainerFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, MyFriendActivity.class));
+            }
+        });
+
+        mContainerChangYong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isExpanded = !isExpanded;
+                openOrClose();
+            }
+        });
+
+        mContainerQiYe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                 Intent intent = new Intent(mActivity, OriganizationActivity.class);
+                    intent.putExtra("type",TYPE_NORMAL);
+                    startActivity(intent);
+            }
+        });
+
+        mContainerShangWu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, BusinessPhoneActivity.class));
+            }
+        });
+        mAdapter.setIsShowHeader(true);
+        mAdapter.setHeaderView(headview);
         mAdapter.setOnRemarkClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -315,66 +357,30 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
             public void onItemClick(int position) {
                 MessegeMainEntity.DataEntity entity = dataSource.get(position);
                 mSelectedPosition = position;
-                if(entity.getId() == -6){
-                    if(entity.isExpanded()){
-                        if(entity.getChilds()!=null)
-                            dataSource.removeAll(entity.getChilds());
-                      entity.setExpanded(false);
-                    }else{
-                        if(entity.getChilds()!=null)
-                            dataSource.addAll(position+1,entity.getChilds());
-                      entity.setExpanded(true);
-                    }
-                   mAdapter.notifyDataSetChanged();
-                }else {
+
+
+                if(dataSource.get(position).getIsFriend() !=null && dataSource.get(position).getIsFriend().equals("1")){
+                    UserInfo user = new UserInfo();
+                    user.setAvatar(dataSource.get(position).getAvatar());
+                    long id = dataSource.get(position).getId();
+                    user.setId(id);
+                    user.setPhone(dataSource.get(position).getSubTitle());
+                    user.setRealName(dataSource.get(position).getTitle());
+                    user.setNickName(dataSource.get(position).getNickName());
+                    UserInfoDaoHelper.getInstance().insertUserInfo(user);
+                    RongIM.getInstance().startConversation(mActivity, Conversation.ConversationType.PRIVATE,String.valueOf(dataSource.get(position).getId()),dataSource.get(position).getNickName() == null?dataSource.get(position).getTitle():dataSource.get(position).getNickName());
+                }else{
                     Intent intent;
-                    switch (entity.getId()){
-                        case -100:
-                            startActivity(new Intent(mActivity, ConversationListActivity.class));
-                            break;
-                        case -1:
-                            startActivity(new Intent(mActivity, BusinessPhoneActivity.class));
-                            break;
-                        case -2:
-                            startActivity(new Intent(mActivity, MyFriendActivity.class));
-                            break;
-                        case -3:
-                            startActivity(new Intent(mActivity, LandMarkNotice.class));
-                            break;
-                        case -4:
-                            startActivity(new Intent(mActivity, CompanyNoticeActivity.class));
-                            break;
-                        case -5:
-                            intent = new Intent(mActivity, OriganizationActivity.class);
-                            intent.putExtra("type",TYPE_NORMAL);
-                            startActivity(intent);
-                            break;
-                        default:
-                            if(dataSource.get(position).getIsFriend() !=null && dataSource.get(position).getIsFriend().equals("1")){
-                                UserInfo user = new UserInfo();
-                                user.setAvatar(dataSource.get(position).getAvatar());
-                                long id = dataSource.get(position).getId();
-                                user.setId(id);
-                                user.setPhone(dataSource.get(position).getSubTitle());
-                                user.setRealName(dataSource.get(position).getTitle());
-                                user.setNickName(dataSource.get(position).getNickName());
-                                UserInfoDaoHelper.getInstance().insertUserInfo(user);
-                                RongIM.getInstance().startConversation(mActivity, Conversation.ConversationType.PRIVATE,String.valueOf(dataSource.get(position).getId()),dataSource.get(position).getNickName() == null?dataSource.get(position).getTitle():dataSource.get(position).getNickName());
-                            }else{
-                                CallListEntity.DataEntity data = new CallListEntity.DataEntity();
-                                data.setName(entity.getNickName() == null ?entity.getTitle():entity.getNickName());
-                                data.setAvatar(entity.getAvatar());
-                                data.setId(entity.getId());
-                                data.setPhone(entity.getSubTitle());
-                                intent = new Intent(mActivity,PreviewCallActivity.class);
-                                intent.putExtra("data",data);
-                                startActivity(intent);
-                            }
-
-                            break;
-
-                    }
+                    CallListEntity.DataEntity data = new CallListEntity.DataEntity();
+                    data.setName(entity.getNickName() == null ?entity.getTitle():entity.getNickName());
+                    data.setAvatar(entity.getAvatar());
+                    data.setId(entity.getId());
+                    data.setPhone(entity.getSubTitle());
+                    intent = new Intent(mActivity,PreviewCallActivity.class);
+                    intent.putExtra("data",data);
+                    startActivity(intent);
                 }
+
             }
         });
 
@@ -441,33 +447,38 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
     public void mainMessageCompleted(MainBusinessEntity data) {
         if(data.getCode().equals("ok")){
             MainBusinessEntity.DataEntity entity = data.getData();
-            //更新商务电话
-            if(TextUtils.isEmpty(entity.getBiPhones().getSpeakName()))
-                dataSource.get(1).setSubTitle(getString(R.string.noRecentCallName));
-            else
-                dataSource.get(1).setSubTitle(getString(R.string.recentCallName)+entity.getBiPhones().getSpeakName());
-            if(!TextUtils.isEmpty(entity.getBiPhones().getSpeakTime()))
-                dataSource.get(1).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getBiPhones().getSpeakTime()))));
-            //更新置地公告时间
+
+            //置地时间
             if(!TextUtils.isEmpty(entity.getLastRwNoticeTime()))
-                //dataSource.get(2).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastRwNoticeTime()))));
-                dataSource.get(2).setDate("");
+                mZhidiDate.setText(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastRwNoticeTime()))));
+            else
+                mZhidiDate.setText("");
 
-                //更新公司公告时间
+            //公司时间
             if(!TextUtils.isEmpty(entity.getLastCoNoticeTime()))
-                //dataSource.get(3).setDate(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastCoNoticeTime()))));
-                dataSource.get(3).setDate("");
-            //更新最近联系人
-            if(dataSource.get(6).isExpanded() && dataSource.get(6).getChilds()!=null){
-                dataSource.removeAll(dataSource.get(6).getChilds());
+                mGongsiDate.setText(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getLastCoNoticeTime()))));
+            else
+                mGongsiDate.setText("");
+
+            //商务电话
+            if(!TextUtils.isEmpty(entity.getBiPhones().getSpeakTime())){
+                mShangwuRecent.setVisibility(View.VISIBLE);
+                mShangwuRecent.setText(DateUtils.getMessageMain(new Date(Long.parseLong(entity.getBiPhones().getSpeakTime()))));
             }
-            dataSource.get(6).setChilds(dataTransfer(entity.getFavorites()));
+            else{
+                mShangwuRecent.setVisibility(View.GONE);
+                mShangwuRecent.setText("");
+            }
 
-            if(dataSource.get(6).isExpanded())
-                dataSource.addAll(dataSource.get(6).getChilds());
 
-            mAdapter.notifyDataSetChanged();
+            //商务电话最近
+            if(TextUtils.isEmpty(entity.getBiPhones().getSpeakName()))
+                mShangwuRight.setText("");
+            else
+                mShangwuRight.setText(getString(R.string.recentCallName)+entity.getBiPhones().getSpeakName());
 
+            dataSource = dataTransfer(entity.getFavorites());
+            openOrClose();
         }
     }
 
@@ -530,5 +541,17 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
             }
             FriendsDaoHelper.getInstance().insertFriends(list);
         }
+    }
+
+    private void openOrClose(){
+        ArrayList<MessegeMainEntity.DataEntity> ds = new ArrayList<>();
+        if(isExpanded){
+            ds = dataSource;
+            mContainerChangYong.setBackgroundResource(R.drawable.shape_message_main_half_bac);
+        }else{
+            mContainerChangYong.setBackgroundResource(R.drawable.shape_message_main_bac);
+        }
+        mAdapter.setList(ds);
+        mAdapter.notifyDataSetChanged();
     }
 }

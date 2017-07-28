@@ -75,11 +75,11 @@ public interface RWService {
             @Body MultipartBody body);
 
 
-    //请假/报销/外出/加班新增接口
+    //请假/icon_wiped/icon_getout/加班新增接口
     @GET("add.json")
     Observable<AddApplyEntity> addApply();
 
-    //请假/报销/外出/加班编辑接口
+    //请假/icon_wiped/icon_getout/加班编辑接口
     @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8;")
     @FormUrlEncoded
     @POST("edit.json")
@@ -95,7 +95,7 @@ public interface RWService {
             @Query("size") int size
     );
 
-    //待我审批
+    //icon_byme
     @GET("waiting_check.json")
     Observable<ApprovementListEntity> waitinghecked(
             @Query("page") int page,
@@ -135,7 +135,7 @@ public interface RWService {
             @Query("id") String id
     );
 
-    //外出,请假,报销,加班详情
+    //icon_getout,请假,icon_wiped,加班详情
     @GET("details.json")
     Observable<ApplyDetailEntity> applyDetail(
             @Query("id") String id

@@ -130,7 +130,7 @@ public class ApprovementListAdapter extends BaseRecyclerViewAdapter<ApprovementL
                 break;
             case "2":
                 type.setText(R.string.extrawork);
-                type.setBackgroundResource(R.drawable.shape_extra_bac);
+                type.setBackgroundResource(R.drawable.shape_wiped_bac);
                 break;
             case "3":
                 type.setText(R.string.wiped);

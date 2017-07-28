@@ -5,6 +5,9 @@
     <string name="loging">登录中...</string>
     <string name="updating">提交中...</string>
     <string name="loading">加载中...</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="applyin">申请入驻</string>
     <!--TabBar-->
     <string name="message">消息</string>
     <string name="work">办公</string>
@@ -94,6 +97,7 @@
     <string name="approveLabel">审批</string>
     <string name="cardLabel">考勤打卡</string>
     <string name="rollLabel">DO一下</string>
+    <string name="more_wedo">MORE WEDO</string>
     <string name="approvebyme">待我审批</string>
     <string name="fromme">我发起的</string>
     <string name="getout">外出</string>

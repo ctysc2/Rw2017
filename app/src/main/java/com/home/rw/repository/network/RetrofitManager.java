@@ -271,7 +271,7 @@ public class RetrofitManager {
     }
 
     /**
-     * 请假/报销/外出/加班新增接口
+     * 请假/icon_wiped/icon_getout/加班新增接口
      */
     public Observable<AddApplyEntity> addApply() {
         return mRWService.addApply();
@@ -279,7 +279,7 @@ public class RetrofitManager {
 
 
     /**
-     * 请假/外出/加班新增接口
+     * 请假/icon_getout/加班新增接口
      */
     public Observable<BaseEntity> editApply(String id,HashMap<String,Object> input) {
         return mRWService.editApply(id,input);
@@ -291,7 +291,7 @@ public class RetrofitManager {
         return mRWService.checked(page,size);
     }
 
-    //待我审批
+    //icon_byme
     public Observable<ApprovementListEntity> waitinghecked(int page, int size){
         return mRWService.waitinghecked(page,size);
     }

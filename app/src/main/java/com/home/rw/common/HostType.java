@@ -50,7 +50,7 @@ public class HostType {
     //我已审批
     public static final int APPROVE_CHECKED= 12;
 
-    //待我审批
+    //icon_byme
     public static final int APPROVE_WAITINNG_CHECKED = 13;
 
     //审批中

@@ -22,7 +22,7 @@
             android:layout_height="48dp"
             android:gravity="center"
             android:textSize="16sp"
-            android:textColor="@color/widowColor"
+            android:textColor="@color/golden"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/iv_select"
@@ -52,7 +52,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/golden"
                 android:textSize="16sp"
                 android:text="米兰"
                 />

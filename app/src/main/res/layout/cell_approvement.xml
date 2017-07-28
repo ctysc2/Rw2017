@@ -44,7 +44,7 @@
         android:layout_width="40dp"
         android:layout_height="20dp"
         android:layout_alignBaseline="@+id/tv_name"
-        android:textColor="@color/widowColor"
+        android:textColor="@color/golden"
         android:layout_marginLeft="5dp"
         android:gravity="center"
         android:layout_toRightOf="@+id/tv_name"

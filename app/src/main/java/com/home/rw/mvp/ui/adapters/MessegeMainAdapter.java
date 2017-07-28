@@ -1,6 +1,7 @@
 package com.home.rw.mvp.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,8 +17,11 @@ import com.home.rw.R;
 import com.home.rw.listener.OnItemClickListener;
 import com.home.rw.mvp.entity.FacusListEntity;
 import com.home.rw.mvp.entity.MessegeMainEntity;
+import com.home.rw.mvp.entity.message.MessageCommonEntity;
+import com.home.rw.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.home.rw.utils.DimenUtil;
 import com.home.rw.utils.DrawableUtils;
+import com.home.rw.widget.SwipeMenuLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,18 +35,17 @@ import butterknife.OnClick;
  * Created by cty on 2017/1/15.
  */
 
-public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private final static int TYPE_MAIN  = 0;
-    private final static int TYPE_SUB   = 1;
+public class MessegeMainAdapter extends BaseRecyclerViewAdapter<MessegeMainEntity.DataEntity> {
+
     private OnItemClickListener mListener;
     private OnItemClickListener mRemark;
     private OnItemClickListener mDetail;
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<MessegeMainEntity.DataEntity> dataSource;
-    private Map<String,Integer> headMap = new HashMap<>();
+
     private int chatNum = 0;
 
+    //更新聊天未读消息数
     public void updateChatNum(int chatNum){
         this.chatNum = chatNum;
         notifyDataSetChanged();
@@ -64,200 +67,116 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public MessegeMainAdapter(ArrayList<MessegeMainEntity.DataEntity> dataSource, Context context){
-        this.dataSource = dataSource;
+        super(dataSource);
         this.context = context;
         inflater = LayoutInflater.from(context);
 
-        headMap.put(context.getString(R.string.newMessage),R.drawable.icon_haoyou);
-        headMap.put(context.getString(R.string.shangWu),R.drawable.icon_shangwu);
-        headMap.put(context.getString(R.string.zhiDi),R.drawable.icon_zhidi);
-        headMap.put(context.getString(R.string.gongSi),R.drawable.icon_gongsi);
-        headMap.put(context.getString(R.string.qiYe),R.drawable.icon_qiye);
-        headMap.put(context.getString(R.string.haoYou),R.drawable.icon_haoyou);
-        headMap.put(context.getString(R.string.changYong),R.drawable.icon_changyong);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        RecyclerView.ViewHolder  holder = null;
         View view = null;
-        RecyclerView.ViewHolder holder = null;
-
         switch (viewType){
-            case TYPE_MAIN:
-                view = inflater.inflate(R.layout.cell_messege_common_list, parent, false);
+            case TYPE_FOOTER:
+                break;
+            case TYPE_HEADER:
+                holder = new BaseRecyclerViewAdapter.HeaderViewHolder(mHeaderView);
+                break;
+            case TYPE_ITEM:
+                view = inflater.inflate(R.layout.cell_swipe_delete_item_2, parent, false);
+                holder = new SubViewHolder(view);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mListener.onItemClick((int)v.getTag());
                     }
                 });
-                holder = new MainViewHolder(view);
                 break;
-            case TYPE_SUB:
-                view = inflater.inflate(R.layout.cell_swipe_delete_item_2, parent, false);
-                holder = new SubViewHolder(view);
+            default:
                 break;
         }
 
-
-
         return holder;
+
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,  int pos) {
 
+        if(holder instanceof BaseRecyclerViewAdapter.HeaderViewHolder){
+            return;
+        }
+
+        final int position = pos-1;
 
         final MessegeMainEntity.DataEntity entity = dataSource.get(position);
 
-        if (holder instanceof MainViewHolder) {
-            holder.itemView.setTag(position);
-            ((MainViewHolder)holder).mHeader.setImageResource(headMap.get(entity.getTitle()));
-            ((MainViewHolder)holder).mtitle.setText(entity.getTitle());
-            if(entity.getSubTitle()!=null){
-                ((MainViewHolder)holder).mSubTitle.setVisibility(View.VISIBLE);
-                ((MainViewHolder)holder).mSubTitle.setText(entity.getSubTitle());
-            } else{
-                ((MainViewHolder)holder).mSubTitle.setVisibility(View.GONE);
-            }
-            if(entity.getDate()!=null){
-                ((MainViewHolder)holder).mRightText.setVisibility(View.VISIBLE);
-                ((MainViewHolder)holder).mRightText.setText(entity.getDate());
-            } else{
-                ((MainViewHolder)holder).mRightText.setVisibility(View.GONE);
-            }
-            if(entity.getTitle().equals(context.getString(R.string.changYong))){
+        if(!TextUtils.isEmpty(entity.getAvatar())){
+            ((SubViewHolder)holder).mHeader.setVisibility(View.INVISIBLE);
+            ((SubViewHolder)holder).mHeader2.setVisibility(View.VISIBLE);
+            ((SubViewHolder)holder).mHeader2.setImageURI(entity.getAvatar());
+        }else{
+            ((SubViewHolder)holder).mHeader.setVisibility(View.VISIBLE);
+            ((SubViewHolder)holder).mHeader2.setVisibility(View.INVISIBLE);
+            ((SubViewHolder)holder).mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
 
-                ((MainViewHolder)holder).mRightImg.setVisibility(View.VISIBLE);
-                if(entity.isExpanded())
-                    ((MainViewHolder)holder).mRightImg.setImageResource(R.drawable.icon_down);
-                else
-                    ((MainViewHolder)holder).mRightImg.setImageResource(R.drawable.icon_right_more);
-            }else{
-                ((MainViewHolder)holder).mRightImg.setVisibility(View.GONE);
-            }
-
-            if(entity.getId() == -100 && chatNum!=0){
-                ((MainViewHolder)holder).mChatNum.setVisibility(View.VISIBLE);
-                ((MainViewHolder)holder).mChatNum.setText(String.valueOf(chatNum));
-            }else{
-                ((MainViewHolder)holder).mChatNum.setVisibility(View.GONE);
-            }
-            if(position == dataSource.size()-1){
-                ((MainViewHolder)holder).mSperate.setVisibility(View.GONE);
-            }
-            else{
-                ((MainViewHolder)holder).mSperate.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)((MainViewHolder)holder).mSperate.getLayoutParams();
-                if(dataSource.get(position+1).getType() == 1){
-                    params.setMargins(0,0,0,0);
-                }else{
-                    params.setMargins((int)DimenUtil.dp2px(65),0,0,0);
-                }
-                ((MainViewHolder)holder).mSperate.setLayoutParams(params);
-
-            }
-
-        } else if (holder instanceof SubViewHolder){
-            if(!TextUtils.isEmpty(entity.getAvatar())){
-                ((SubViewHolder)holder).mHeader.setVisibility(View.INVISIBLE);
-                ((SubViewHolder)holder).mHeader2.setVisibility(View.VISIBLE);
-                ((SubViewHolder)holder).mHeader2.setImageURI(entity.getAvatar());
-            }else{
-                ((SubViewHolder)holder).mHeader.setVisibility(View.VISIBLE);
-                ((SubViewHolder)holder).mHeader2.setVisibility(View.INVISIBLE);
-                ((SubViewHolder)holder).mHeader.setBackgroundResource(DrawableUtils.getRandomBackgroundResource(entity.getTitle()));
-
-                if(!TextUtils.isEmpty(entity.getTitle()))
-                    ((SubViewHolder)holder).mHeader.setText(entity.getTitle().substring(0,1));
-            }
-
-            if(!TextUtils.isEmpty(entity.getNickName())){
-                ((SubViewHolder)holder).mtitle.setText(entity.getNickName());
-            }else{
-                ((SubViewHolder)holder).mtitle.setText(entity.getTitle());
-            }
-
-            ((SubViewHolder)holder).mSubTitle.setText(entity.getSubTitle());
-            ((SubViewHolder)holder).mContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onItemClick(position);
-                }
-            });
-
-            if(position == dataSource.size()-1)
-                ((SubViewHolder)holder).mSperate.setVisibility(View.GONE);
-            else
-                ((SubViewHolder)holder).mSperate.setVisibility(View.VISIBLE);
-
-            ((SubViewHolder)holder).mButtonLeft.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //查看详细
-                    mDetail.onItemClick(position);
-                }
-            });
-
-            ((SubViewHolder)holder).mButtonRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //修改备注
-                    mRemark.onItemClick(position);
-                }
-            });
+            if(!TextUtils.isEmpty(entity.getTitle()))
+                ((SubViewHolder)holder).mHeader.setText(entity.getTitle().substring(0,1));
         }
 
+        if(!TextUtils.isEmpty(entity.getNickName())){
+            ((SubViewHolder)holder).mtitle.setText(entity.getNickName());
+        }else{
+            ((SubViewHolder)holder).mtitle.setText(entity.getTitle());
+        }
+
+        ((SubViewHolder)holder).mSubTitle.setText(entity.getSubTitle());
+        ((SubViewHolder)holder).mContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClick(position);
+            }
+        });
+
+
+
+        ((SubViewHolder)holder).mButtonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //查看详细
+                mDetail.onItemClick(position);
+            }
+        });
+
+        ((SubViewHolder)holder).mButtonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //修改备注
+                mRemark.onItemClick(position);
+            }
+        });
+
+        if(position == dataSource.size()-1)
+            ((SubViewHolder)holder).swipe.setBackgroundResource(R.drawable.shape_message_main_half_bac2);
+        else
+            ((SubViewHolder)holder).swipe.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
     }
 
-    @Override
-    public int getItemCount() {
-        return dataSource.size();
-    }
 
     @Override
     public int getItemViewType(int position) {
 
-        int type = dataSource.get(position).getType();
-       switch (type){
-           case 0:
-               return TYPE_MAIN;
-           case 1:
-               return TYPE_SUB;
-           default:
-               return TYPE_MAIN;
-       }
-    }
-
-    class MainViewHolder extends RecyclerView.ViewHolder{
-
-        @BindView(R.id.iv_header)
-        ImageView mHeader;
-
-        @BindView(R.id.tv_line1)
-        TextView mtitle;
-
-        @BindView(R.id.tv_line2)
-        TextView mSubTitle;
-
-        @BindView(R.id.tv_right)
-        TextView mRightText;
-
-        @BindView(R.id.iv_right)
-        ImageView mRightImg;
-
-        @BindView(R.id.tv_chat_num)
-        TextView mChatNum;
-
-        @BindView(R.id.sperate)
-        View mSperate;
-
-        public MainViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        if (mIsShowFooter && isFooterPosition(position)) {
+            return TYPE_FOOTER;
+        } else if (mIsShowHeader && isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_ITEM;
         }
     }
+
 
     class SubViewHolder extends RecyclerView.ViewHolder{
 
@@ -285,10 +204,14 @@ public class MessegeMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.rl_container)
         RelativeLayout mContainer;
 
+        @BindView(R.id.swipe)
+        SwipeMenuLayout swipe;
+
 
         public SubViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
+
 }

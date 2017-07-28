@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.home.rw.R;
@@ -57,9 +58,6 @@ public class SocialFragment extends BaseFragment implements ViewPager.OnPageChan
     @BindView(R.id.midText)
     TextView midText;
 
-    @BindView(R.id.rightText)
-    TextView rightText;
-
     @BindView(R.id.tv_left)
     TextView mTvLeft;
 
@@ -82,10 +80,20 @@ public class SocialFragment extends BaseFragment implements ViewPager.OnPageChan
     @BindView(R.id.sperate2)
     View mSperate;
 
+    @BindView(R.id.rl_right)
+    RelativeLayout mRlRight;
+
+    @BindView(R.id.ib_inner_right)
+    ImageButton mIbInner;
+
+    @BindView(R.id.tv_inner_right)
+    TextView mTvInner;
+
+
     @OnClick({
             R.id.tv_left,
             R.id.tv_right,
-            R.id.rightText,
+            R.id.rl_right,
             R.id.tv_mid
     })
     public void OnClick(View v){
@@ -102,7 +110,7 @@ public class SocialFragment extends BaseFragment implements ViewPager.OnPageChan
                 setSegmentSelect(MIDDLE);
                 mViewPager.setCurrentItem(MIDDLE);
                 break;
-            case R.id.rightText:
+            case R.id.rl_right:
                 //发布
                 startActivity(new Intent(mActivity, CommPublishActivity.class));
                 break;
@@ -159,7 +167,12 @@ public class SocialFragment extends BaseFragment implements ViewPager.OnPageChan
     @Override
     public void initViews(View view) {
         midText.setText(R.string.compSocial);
-        rightText.setText(R.string.publish);
+
+        mRlRight.setVisibility(View.VISIBLE);
+        mIbInner.setImageResource(R.drawable.icon_social_publish);
+        mTvInner.setText("发布");
+
+
 
         mTvMid.setVisibility(View.VISIBLE);
         mSperate.setVisibility(View.VISIBLE);

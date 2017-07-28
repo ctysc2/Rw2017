@@ -4,13 +4,11 @@
 
     <item>
         <shape>
-            <gradient
-                android:startColor="#1268ff"
-                android:endColor="#7A1DFF"
-                android:angle="-90"
+            <solid
+                android:color="#AD995c"
                 />
 
-            <corners android:radius="19dp" />
+            <corners android:radius="23dp" />
         </shape>
 
     </item>

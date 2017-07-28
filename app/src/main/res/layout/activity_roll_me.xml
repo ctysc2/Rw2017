@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/bac_color_EFEFF4">
     </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <ImageView
         android:id="@+id/iv_top"
         android:layout_width="40dp"
@@ -27,5 +28,4 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
         android:layout_alignParentRight="true"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

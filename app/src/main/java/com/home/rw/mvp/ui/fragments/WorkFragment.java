@@ -223,8 +223,8 @@ public class WorkFragment extends BaseFragment implements LinkedView {
         for (int i = 0; i < size; i++)
         {
             View iv = new View(getActivity());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)DimenUtil.dp2px(7), ViewGroup.LayoutParams.MATCH_PARENT);
-            params.rightMargin = (int)DimenUtil.dp2px(10);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)DimenUtil.dp2px(4), ViewGroup.LayoutParams.MATCH_PARENT);
+            params.rightMargin = (int)DimenUtil.dp2px(4);
             if (i != 0)
             {
                 iv.setBackgroundResource(R.drawable.shape_carousel_indigcate);

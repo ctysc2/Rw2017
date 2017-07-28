@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/pickerview_topbar_paddingleft"
         android:paddingRight="@dimen/pickerview_topbar_paddingright"
         android:text="@string/pickerview_cancel"
-        android:textColor="@drawable/selector_pickerview_btn"
+        android:textColor="#BD9C57"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
 
     <TextView
@@ -33,11 +33,11 @@
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:gravity="center_vertical|left"
+        android:gravity="center_vertical|right"
         android:paddingLeft="@dimen/pickerview_topbar_paddingright"
         android:paddingRight="@dimen/pickerview_topbar_paddingleft"
         android:text="@string/pickerview_submit"
-        android:textColor="@drawable/selector_pickerview_btn"
+        android:textColor="#BD9C57"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
     <View
         android:layout_width="match_parent"

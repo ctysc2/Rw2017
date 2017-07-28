@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.home.rw.widget.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/swipe"
     android:layout_height="60dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     app:ios="false"
-    android:background="@color/widowColor"
+    android:background="@color/bg_white"
     app:leftSwipe="true"
     app:swipeEnable="false">
 <RelativeLayout
@@ -14,11 +15,11 @@
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/tv_header"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:gravity="center"
         android:textSize="16sp"
-        android:textColor="@color/widowColor"
+        android:textColor="@color/golden"
         android:layout_centerVertical="true"
         android:visibility="invisible"
         android:layout_marginLeft="15dp"
@@ -38,7 +39,7 @@
         android:id="@+id/ll_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:orientation="vertical"
         android:gravity="center_vertical"
         android:layout_toRightOf="@+id/tv_header">
@@ -65,8 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/bac_color_EFEFF4"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/ll_text"/>
+        />
 </RelativeLayout>
     <Button
         android:id="@+id/btnLeft"
