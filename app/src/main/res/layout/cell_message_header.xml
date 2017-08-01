@@ -271,6 +271,7 @@
             android:layout_marginRight="15dp"
             android:layout_centerVertical="true"
             android:src="@drawable/icon_right_more"/>
+
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -390,5 +391,6 @@
             android:layout_marginRight="15dp"
             android:layout_centerVertical="true"
             android:src="@drawable/icon_right_more"/>
+
     </RelativeLayout>
 </LinearLayout>

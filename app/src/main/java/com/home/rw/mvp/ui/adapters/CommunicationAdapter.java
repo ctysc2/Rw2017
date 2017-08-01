@@ -118,8 +118,14 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
         @BindView(R.id.tv_name)
         TextView mName;
 
+        @BindView(R.id.ll_focus)
+        LinearLayout mLLFocus;
+
         @BindView(R.id.tv_facus)
         TextView mFacus;
+
+        @BindView(R.id.iv_focus)
+        ImageView mIvFocus;
 
         @BindView(R.id.tv_zan_num)
         TextView mZanNum;
@@ -170,11 +176,14 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
             mHolder.mZanNum.setText(String.valueOf(entity.getSupportNum()));
             mHolder.content.setText(entity.getContent());
             if (entity.getFocus().equals("0")) {
-                mHolder.mFacus.setEnabled(true);
+                mHolder.mLLFocus.setEnabled(true);
                 mHolder.mFacus.setText(context.getString(R.string.addFacus));
+                mHolder.mIvFocus.setImageResource(R.drawable.icon_qiye_focus);
+
             } else {
-                mHolder.mFacus.setEnabled(false);
+                mHolder.mLLFocus.setEnabled(false);
                 mHolder.mFacus.setText(context.getString(R.string.Facused));
+                mHolder.mIvFocus.setImageResource(R.drawable.icon_qiye_focused);
             }
 
             if (entity.getSupport().equals("0")) {
@@ -191,12 +200,12 @@ public class CommunicationAdapter extends BaseRecyclerViewAdapter<CommunicationE
 
             if (String.valueOf(PreferenceUtils.getPrefLong(context,"ID",0)).equals(entity.getCreatedBy())
                     || ((entryType != null) && (entryType.equals("other")))) {
-                mHolder.mFacus.setVisibility(View.GONE);
+                mHolder.mLLFocus.setVisibility(View.GONE);
             } else {
-                mHolder.mFacus.setVisibility(View.VISIBLE);
+                mHolder.mLLFocus.setVisibility(View.VISIBLE);
             }
 
-            mHolder.mFacus.setOnClickListener(new View.OnClickListener() {
+            mHolder.mLLFocus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mListenerFocus.onItemClick(mPosition);

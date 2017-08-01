@@ -114,13 +114,18 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
     @BindView(R.id.iv_feed_back)
     ImageView mFeedBack;
 
+
+    @BindView(R.id.ib_right)
+    ImageButton mBtnRight;
+
     @OnClick({R.id.back,
             R.id.iv_picture1,
             R.id.iv_picture2,
             R.id.iv_picture3,
             R.id.iv_zan,
             R.id.iv_feed_back,
-            R.id.rightTextFacus
+            R.id.rightTextFacus,
+            R.id.ib_right
 
 
     })
@@ -144,7 +149,8 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
                 selectedPosition = 2;
                 startPreview();
                 break;
-            case R.id.rightTextFacus:
+            //case R.id.rightTextFacus:
+            case R.id.ib_right:
                 if(data == null)
                     return;
                 mFocusPresenterImpl.setReqType(HostType.FOCUS);
@@ -195,6 +201,10 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
         data = (CommunicationEntity.DataEntity.ResLst)getIntent().getSerializableExtra("commData");
         mTopicID = getIntent().getStringExtra("id");
         entryType = getIntent().getStringExtra("entryType");
+
+        mBtnRight.setVisibility(View.VISIBLE);
+        mBtnRight.setEnabled(true);
+        mBtnRight.setImageResource(R.drawable.icon_cancle_focus);
         if(data == null){
             //根据id获取帖子详情
             if(mTopicID!=null){
@@ -210,17 +220,17 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
 
     private void resolveData(CommunicationEntity.DataEntity.ResLst data){
         if(String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0)).equals(data.getCreatedBy())){
-            rightTextFacus.setVisibility(View.GONE);
+            mBtnRight.setVisibility(View.GONE);
             mFeedBack.setVisibility(View.GONE);
         }else{
-            rightTextFacus.setVisibility(View.VISIBLE);
+            mBtnRight.setVisibility(View.VISIBLE);
         }
         if((entryType!=null) && (entryType.equals("Other"))){
-            rightTextFacus.setVisibility(View.GONE);
+            mBtnRight.setVisibility(View.GONE);
         }
 
         if((entryType!=null) && (entryType.equals("HomePage"))){
-            rightTextFacus.setVisibility(View.GONE);
+            mBtnRight.setVisibility(View.GONE);
             mZan.setVisibility(View.GONE);
             mFeedBack.setVisibility(View.GONE);
             mNum.setVisibility(View.GONE);
@@ -229,16 +239,27 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
 
         rightText.setVisibility(View.GONE);
         if(data.getFocus().equals("1")){
-            rightTextFacus.setText(getString(R.string.Facused));
-            rightTextFacus.setTextColor(Color.WHITE);
-            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
-            rightTextFacus.setEnabled(false);
+            mBtnRight.setVisibility(View.GONE);
+            mBtnRight.setEnabled(false);
+//            rightTextFacus.setText(getString(R.string.Facused));
+//            rightTextFacus.setTextColor(Color.WHITE);
+//            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
+//            rightTextFacus.setEnabled(false);
         }else{
-            rightTextFacus.setText(getString(R.string.addFacus));
-            rightTextFacus.setTextColor(Color.parseColor("#0034F7"));
-            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_enable);
-            rightTextFacus.setEnabled(true);
+//            rightTextFacus.setText(getString(R.string.addFacus));
+//            rightTextFacus.setTextColor(Color.parseColor("#0034F7"));
+//            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_enable);
+//            rightTextFacus.setEnabled(true);
+            mBtnRight.setVisibility(View.VISIBLE);
+            mBtnRight.setEnabled(true);
         }
+
+        if(String.valueOf(PreferenceUtils.getPrefLong(this,"ID",0)).equals(data.getCreatedBy())){
+            mBtnRight.setVisibility(View.GONE);
+            mBtnRight.setEnabled(false);
+        }
+
+
         mTitle.setText(data.getTitle());
 
 
@@ -373,10 +394,12 @@ public class CommDetailActivity extends BaseActivity implements TopicDetailView,
     @Override
     public void doFocusCompleted(BaseEntity data) {
         if(data.getCode().equals("ok")){
-            rightTextFacus.setText(getString(R.string.Facused));
-            rightTextFacus.setTextColor(Color.WHITE);
-            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
-            rightTextFacus.setEnabled(false);
+//            rightTextFacus.setText(getString(R.string.Facused));
+//            rightTextFacus.setTextColor(Color.WHITE);
+//            rightTextFacus.setBackgroundResource(R.drawable.shape_detail_facus_unable);
+//            rightTextFacus.setEnabled(false);
+            mBtnRight.setVisibility(View.GONE);
+            mBtnRight.setEnabled(false);
             this.data.setFocus("1");
             Toast.makeText(this,getString(R.string.focusSucceed),Toast.LENGTH_SHORT).show();
         }

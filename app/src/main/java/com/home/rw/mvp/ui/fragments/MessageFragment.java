@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -149,6 +150,8 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
 
     private TextView mShangwuRight;
 
+    private ImageView mIvRightDown;
+
     @OnClick({R.id.rightText,
             R.id.back,
     })
@@ -243,6 +246,7 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
         mAdapter = new MessegeMainAdapter(dataSource,mActivity);
         View headview = LayoutInflater.from(mActivity).inflate(R.layout.cell_message_header,null);
 
+        mIvRightDown = (ImageView)headview.findViewById(R.id.iv_right_changyong);
         //red point
         mRedPointZhidi = (View)headview.findViewById(R.id.v_red_point_zhidi);
         mRedPointMessage = (View)headview.findViewById(R.id.v_red_point_message);
@@ -543,13 +547,16 @@ public class MessageFragment extends BaseFragment implements MainMessageView,MyF
         }
     }
 
+
     private void openOrClose(){
         ArrayList<MessegeMainEntity.DataEntity> ds = new ArrayList<>();
         if(isExpanded){
             ds = dataSource;
             mContainerChangYong.setBackgroundResource(R.drawable.shape_message_main_half_bac);
+            mIvRightDown.setImageResource(R.drawable.icon_right_down);
         }else{
             mContainerChangYong.setBackgroundResource(R.drawable.shape_message_main_bac);
+            mIvRightDown.setImageResource(R.drawable.icon_right_more);
         }
         mAdapter.setList(ds);
         mAdapter.notifyDataSetChanged();
